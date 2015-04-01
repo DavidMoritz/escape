@@ -1,0 +1,12 @@
+{
+  "name": "parks",
+  "version": "0.1.0",
+  "dependencies": {
+    "bootstrap": "latest",
+    "jquery": "latest",
+    "qunit": "latest",
+    "fontawesome": "latest",
+    "lodash": "latest",
+    "angular": "latest"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "thrive",
+  "version": "0.2.0",
+  "description": "Thrive is a text-based RPG",
+  "homepage": "http://moritzcompany.com",
+  "author": "Moritz Company",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidmoritz/thrive.git"
+  },
+  "bugs": {
+    "url": "https://github.com/davidmoritz/thrive/issues"
+  },
+  "scripts": {
+    "install": "bower install"
+  },
+  "devDependencies": {
+    "bower": "1.x",
+    "grunt": "~0.4.2",
+    "grunt-bump": "0.0.14",
+    "grunt-cli": "~0.1.x",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-jade": "^0.14.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-less": "~0.11.4",
+    "grunt-contrib-qunit": "~0.2.1",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-phonegap": "~0.15.2",
+    "grunt-pleeease": "~0.0.5",
+    "grunt-replace": "~0.7.7",
+    "grunt-jscs": "^1.5.0",
+    "jshint-stylish": "~0.2.0"
+  }
+}
