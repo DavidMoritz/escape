@@ -17,52 +17,6 @@ html
 			header.hide
 				h1 Trapped!
 			.jumbotron
-				p The ID is {{greeting.id}}
-				p The content is {{greeting.content}}
-				button.btn.btn-default(ng-show='display.next', ng-click='nextMessage()') Next #[i.fa.fa-chevron-right]
-				.choices(ng-show='!display.next')
-					ul
-						li(ng-repeat='choice in display.choices')
-							button(ng-click='makeChoice(choice)', ng-class='choice.css.join(" ")') {{choice.buttonText}}
-			.row.mainLayout(ng-if='location && !decisionToMake')
-				.col-sm-6
-					div
-						h3 Location: {{location.display}}
-					div
-						h3 Get More Resources
-						button.btn.btn-primary.resource(
-							ng-repeat='resource in HF.resources',
-							ng-click="addToSupply(resource)",
-							ng-disabled='!readyToWork',
-							ng-show='isUnlocked(resource.name)'
-						) #[i(class="fa {{resource.icon}}")] {{resource.text}}
-					div
-						h3 Build
-						button.btn.btn-success.structure(
-							ng-repeat='structure in HF.structures',
-							ng-click="build(structure)",
-							ng-show='isUnlocked(structure.name)'
-						) #[i(class="fa {{structure.icon}}")] {{structure.text}}
-				.col-sm-6
-					h4 Workers
-					ul
-						li(ng-repeat='worker in workers')
-							a(ng-class='{workerSelected: isSelected(worker)}' ng-click='toggleWorkerSelection(worker)')
-								| {{worker.name}}: ({{worker.task.displayName()}} #[i.fa(ng-class='worker.task.getIcon()')])
-							a(ng-click='removeWorker(worker)') #[i.fa.fa-times-circle]
-					h4 Supply
-					ul
-						li(ng-repeat='palette in supply') {{HF.capitalize(palette.resource.name)}} #[i.fa(ng-class='palette.resource.icon')]: ({{palette.quantity}})
-					h4 Plot
-					ul
-						li(ng-repeat='lot in lots')
-							| {{HF.capitalize(lot.structure.name)}} #[i.fa(ng-class='lot.structure.icon')]: ({{lot.quantity}})
-							a(ng-click='removeStructure(lot.structure)') #[i.fa.fa-times-circle]
-			button.btn.btn-primary(ng-show='!gameStarted' ng-click='startGame()') #[i.fa.fa-play] Start
-			footer.clear
-				p Created by David &amp; Jeremy Moritz
-		.container(ng-if='isUnlocked("win")')
-			.jumbotron
-				h1 Congratulations! You built a monument to your success!
-				h4 It only took you {{turns / 20}} minutes.
+				h1 {{displayTime}}
+				button(ng-click="startGame()" ng-hide="gameStarted") Click to begin
 		| @@javascriptReplaceFiles
