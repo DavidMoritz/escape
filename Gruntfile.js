@@ -49,8 +49,7 @@ module.exports = function(grunt) {
 		'pleeease:dev',
 		'concat:dev',
 		'copy:tests',
-		'jshint',
-		'jscs'
+		'jshint'
 	]);
 
 	// Register task for generating minified (Prod ready) output files
