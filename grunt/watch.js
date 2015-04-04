@@ -5,7 +5,7 @@ module.exports = function exportWatch(grunt) {
 				'src/**/*.*'
 			],
 			tasks: [
-				'default'
+				'dev'
 			]
 		}
 	});

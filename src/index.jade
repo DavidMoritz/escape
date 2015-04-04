@@ -21,8 +21,16 @@ html
 				h3 {{session.displayMessage}}
 				button(ng-click="restartTimer()" ng-show="admin") Restart Timer
 			ul.chatbox
+			div.chooseTeam(ng-hide="session" class="nullable")
+				select(ng-model="sessionId" ng-options="o as o for o in availableTeams")
+					option(value="" disabled selected) -- choose team --
+				button(ng-click="chooseSession(sessionId)") Choose Team
 			form(ng-submit="changeMessage()" ng-show="admin")
 				textarea(type="text" ng-model="store.message")
 				input(type="submit" value="Add Message")
 			h3 Team: {{ session.$id }}
+			input(type="text" ng-model="resultSearch.$" placeholder="Result Search")
+			ul(ng-repeat="result in results")
+				li {{result.$id}}
+			button(ng-click="createTeam()") Create Team
 		| @@javascriptReplaceFiles

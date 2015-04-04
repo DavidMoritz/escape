@@ -3,13 +3,20 @@ trappedApp.controller('TrappedCtrl', [
 	'$interval',
 	'$timeout',
 	'$firebaseObject',
-	function TrappedCtrl($s, $interval, $timeout, $fbObject) {
+	'$firebaseArray',
+	function TrappedCtrl($s, $interval, $timeout, $fbObject, $fbArray) {
 		'use strict';
 
-		function newSession(id, obj) {
-			var ref = new Firebase('http://kewl.firebaseio.com/' + id);
+		function getTeams() {
+			var ref = new Firebase('http://kewl.firebaseio.com/20150403');
 
-			return $fbObject(ref.child(obj));
+			window.allTeams = $fbArray(ref);
+		}
+
+		function newSession(id) {
+			var ref = new Firebase('http://kewl.firebaseio.com/20150403');
+
+			return $fbObject(ref.child(id));
 		}
 
 		function convertTimer(time) {
@@ -18,26 +25,26 @@ trappedApp.controller('TrappedCtrl', [
 			return moment(timeLeft).format('mm:ss');
 		}
 
-		var dateId = moment().format('YYYYMMDD'),
-			sessionId = prompt('What is your team name?');
-
 		//	initialize scoped variables
 		_.assign($s, {
 			clues: 0,
 			user: 'Guest ' + Math.round(Math.random() * 100),
 			admin: location.search == '?host=false' ? true : false,
+			newTeamName: 'My New Team',
 			store: {
 				message: ''
 			}
 		});
 
-		newSession(dateId, sessionId).$bindTo($s, 'session');
-
 		$interval(function everySecond() {
-			if ($s.session.timer) {
+			if ($s.session) {
 				$s.displayTime = convertTimer($s.session.timer);
 			}
 		}, 1000);
+
+		$s.chooseSession = function chooseSession(id) {
+			newSession(id).$bindTo($s, 'session');
+		};
 
 		$s.restartTimer = function restartTimer() {
 			if(confirm('Are you sure?')) {
@@ -50,6 +57,22 @@ trappedApp.controller('TrappedCtrl', [
 			$s.store.message = '';
 		};
 
+		$s.createTeam = function createTeam() {
+			allTeams.$add({
+				name: $s.newTeamName,
+				finished: false
+			}).then(function editNewTeam(ref) {
+				var id = ref.key();
+				setTimeout(function editDelay() {
+					var newest = allTeams.$indexFor(id);
+
+					allTeams[newest].$id = moment().format('YYYYMMDD-HH:mm');
+					allTeams.$save();
+				}, 100);
+			});
+		};
+
 		$('body').removeClass('angularNotDone');
+		getTeams();
 	}
 ]);
