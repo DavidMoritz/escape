@@ -6,65 +6,67 @@ trappedApp.controller('TrappedCtrl', [
 	function TrappedCtrl($s, $interval, $timeout, $fbObject) {
 		'use strict';
 
-		var timer = 60 * 60; // one hour in seconds
+		var dateID = getDateID(),
+			sessionID = prompt('What is your team name?');
 
 		//	initialize scoped variables
 		_.assign($s, {
 			clues: 0,
-			gameStarted: false,
-			user: 'Guest ' + Math.round(Math.random() * 100)
+			user: 'Guest ' + Math.round(Math.random() * 100),
+			admin: location.search == '?host=false' ? true : false,
+			store: {
+				message: ''
+			}
 		});
 
-		function newProfile(id, obj) {
+		function getDateID() {
+			var today = new Date(),
+				dd = today.getDate(),
+				mm = today.getMonth()+1, //January is 0!
+				yyyy = today.getFullYear();
+
+			dd = dd < 10 ? ('0' + dd) : dd;
+			mm = mm < 10 ? ('0' + mm) : mm;
+
+			return yyyy + mm + dd;
+		}
+
+		function newSession(id, obj) {
 			var ref = new Firebase('http://kewl.firebaseio.com/' + id);
 
 			return $fbObject(ref.child(obj));
 		}
 
-		function subtractSecond($s) {
-			var minutes = Math.floor((--timer % 3600) / 60),
-				seconds = timer - (minutes * 60);
+		function convertTimer(time) {
+			var timeLeft = (time - Date.now()) / 1000,
+				minutes = Math.floor(timeLeft / 60),
+				seconds = Math.floor(timeLeft - (minutes * 60));
 
 			seconds = seconds < 10 ? ('0' + seconds) : seconds;
 			minutes = minutes < 10 ? ('0' + minutes) : minutes;
 
-			$s.profile.displayTime = minutes + ':' + seconds;
+			return minutes + ':' + seconds;
 		}
 
-		newProfile(749687, 'myNewId').$bindTo($s, 'profile');
+		newSession(dateID, sessionID).$bindTo($s, 'session');
 
 		$interval(function everySecond() {
-			if ($s.gameStarted) {
-				subtractSecond($s);
+			if ($s.session.timer) {
+				$s.displayTime = convertTimer($s.session.timer);
 			}
-		}, 1000, $s.timer);
+		}, 1000);
 
-		$s.startGame = function startGame() {
-			$s.gameStarted = true;
-		};
-/*
-		// a method to create new messages; called by ng-submit
-		$s.addMessage = function() {
-			// calling $add on a synchronized array is like Array.push(),
-			// except that it saves the changes to Firebase!
-			$s.messages.$add({
-				from: $s.user,
-				content: $s.displayTime
-			});
-
-			// reset the message input
-			$s.message = '';
+		$s.restartTimer = function restartTimer() {
+			if(confirm('Are you sure?')) {
+				$s.session.timer = Date.now() + 60 * 60 * 1000;
+			}
 		};
 
-		// if the messages are empty, add something for fun!
-		$s.messages.$loaded(function() {
-			if ($s.messages.length === 0) {
-				$s.messages.$add({
-					from: 'Firebase Docs',
-					content: 'Hello world!'
-				});
-			}
-		});
-*/
+		$s.changeMessage = function changeMessage() {
+			$s.session.displayMessage = $s.store.message;
+			$s.store.message = '';
+		};
+
+		$('body').removeClass('angularNotDone');
 	}
 ]);

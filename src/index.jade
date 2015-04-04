@@ -12,26 +12,17 @@ html
 		link(rel='shortcut icon', href='favicon.ico')
 		link(rel='stylesheet', href='inc/trapped.css')
 		script(src='inc/angular.js')
-	body(ng-app='trappedApp', ng-controller='TrappedCtrl')
+	body.angularNotDone(ng-app='trappedApp', ng-controller='TrappedCtrl')
 		.container(ng-if='!isUnlocked("win")')
 			header.hide
 				h1 Trapped!
 			.jumbotron
-				h1 {{profile.displayTime}}
-				button(ng-click="startGame()" ng-hide="gameStarted") Click to begin
+				h1 {{displayTime}}
+				h3 {{session.displayMessage}}
+				button(ng-click="restartTimer()" ng-show="admin") Restart Timer
 			ul.chatbox
-				li(ng-repeat="message in messages"){{ message.from }}: {{ message.content }}
-			form(ng-submit="addMessage()")
-				input(type="text" ng-model="message")
+			form(ng-submit="changeMessage()" ng-show="admin")
+				textarea(type="text" ng-model="store.message")
 				input(type="submit" value="Add Message")
-			h3 Edit {{ profile.$id }}
-			form(ng-submit="saveProfile()")
-				label Name:
-				input(type="text" ng-model="profile.name")
-				label Email:
-				input(type="text" ng-model="profile.email")
-				button(type="submit") Save Changes
-				input(type="text" ng-model="idInput")
-				button(ng-click="setId()") Set ID
-			p {{ abcd }}
+			h3 Team: {{ session.$id }}
 		| @@javascriptReplaceFiles
