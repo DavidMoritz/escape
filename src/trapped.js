@@ -6,23 +6,6 @@ trappedApp.controller('TrappedCtrl', [
 	function TrappedCtrl($s, $interval, $timeout, $fbObject) {
 		'use strict';
 
-		var dateID = getDateID(),
-			sessionID = prompt('What is your team name?');
-
-		//	initialize scoped variables
-		_.assign($s, {
-			clues: 0,
-			user: 'Guest ' + Math.round(Math.random() * 100),
-			admin: location.search == '?host=false' ? true : false,
-			store: {
-				message: ''
-			}
-		});
-
-		function getDateID() {
-			return moment().format('YYYYMMDD');
-		}
-
 		function newSession(id, obj) {
 			var ref = new Firebase('http://kewl.firebaseio.com/' + id);
 
@@ -35,7 +18,20 @@ trappedApp.controller('TrappedCtrl', [
 			return moment(timeLeft).format('mm:ss');
 		}
 
-		newSession(dateID, sessionID).$bindTo($s, 'session');
+		var dateId = moment().format('YYYYMMDD'),
+			sessionId = prompt('What is your team name?');
+
+		//	initialize scoped variables
+		_.assign($s, {
+			clues: 0,
+			user: 'Guest ' + Math.round(Math.random() * 100),
+			admin: location.search == '?host=false' ? true : false,
+			store: {
+				message: ''
+			}
+		});
+
+		newSession(dateId, sessionId).$bindTo($s, 'session');
 
 		$interval(function everySecond() {
 			if ($s.session.timer) {
