@@ -30,14 +30,9 @@ trappedApp.controller('TrappedCtrl', [
 		}
 
 		function convertTimer(time) {
-			var timeLeft = (time - Date.now()) / 1000,
-				minutes = Math.floor(timeLeft / 60),
-				seconds = Math.floor(timeLeft - (minutes * 60));
+			var timeLeft = moment(time).diff();
 
-			seconds = seconds < 10 ? ('0' + seconds) : seconds;
-			minutes = minutes < 10 ? ('0' + minutes) : minutes;
-
-			return minutes + ':' + seconds;
+			return moment(timeLeft).format('mm:ss');
 		}
 
 		newSession(dateID, sessionID).$bindTo($s, 'session');
