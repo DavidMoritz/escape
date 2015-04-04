@@ -20,15 +20,7 @@ trappedApp.controller('TrappedCtrl', [
 		});
 
 		function getDateID() {
-			var today = new Date(),
-				dd = today.getDate(),
-				mm = today.getMonth()+1, //January is 0!
-				yyyy = today.getFullYear();
-
-			dd = dd < 10 ? ('0' + dd) : dd;
-			mm = mm < 10 ? ('0' + mm) : mm;
-
-			return yyyy + mm + dd;
+			return moment().format('YYYYMMDD');
 		}
 
 		function newSession(id, obj) {

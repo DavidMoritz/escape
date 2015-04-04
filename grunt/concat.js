@@ -36,7 +36,7 @@ module.exports = function exportConcat(grunt) {
 					'lib/lodash/dist/lodash.js',
 					'lib/firebase/firebase.js',
 					'lib/angularfire/dist/angularfire.min.js',,
-					'lib/moment/moment.js'
+					'lib/moment/moment.js',
 					'!src/tests/*',
 					'src/**/*.js'
 				],
