@@ -14,7 +14,8 @@ module.exports = function exportConcat(grunt) {
 					'lib/bootstrap/dist/js/bootstrap.js',
 					'lib/lodash/lodash.js',
 					'lib/firebase/firebase.js',
-					'lib/angularfire/dist/angularfire.js'
+					'lib/angularfire/dist/angularfire.js',
+					'lib/moment/moment.js'
 				],
 				'<%= distPath %>trapped.js': [
 					'src/app.js',
@@ -34,7 +35,8 @@ module.exports = function exportConcat(grunt) {
 					'lib/bootstrap/dist/js/bootstrap.js',
 					'lib/lodash/dist/lodash.js',
 					'lib/firebase/firebase.js',
-					'lib/angularfire/dist/angularfire.min.js',
+					'lib/angularfire/dist/angularfire.min.js',,
+					'lib/moment/moment.js'
 					'!src/tests/*',
 					'src/**/*.js'
 				],

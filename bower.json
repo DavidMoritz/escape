@@ -9,6 +9,7 @@
     "lodash": "latest",
     "angular": "latest",
     "firebase": "latest",
-    "angularfire": "latest"
+    "angularfire": "latest",
+    "moment": "latest"
   }
 }
