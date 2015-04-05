@@ -7,14 +7,21 @@ trappedApp.controller('TrappedCtrl', [
 	function TrappedCtrl($s, $interval, $timeout, $fbObject, $fbArray) {
 		'use strict';
 
-		function getTeams() {
-			var ref = new Firebase('http://kewl.firebaseio.com/20150403');
+		function getTeams($s) {
+			var ref = new Firebase('http://kewl.firebaseio.com/escape');
 
 			window.allTeams = $fbArray(ref);
+			allTeams.$loaded(function() {
+				$s.listTeams = _.where(allTeams, {finished: false});
+				if($s.listTeams.length == 1 && !$s.admin) {
+					$s.chooseSession($s.listTeams[0].$id);
+				}
+				$('body').removeClass('angularNotDone');
+			});			
 		}
 
 		function newSession(id) {
-			var ref = new Firebase('http://kewl.firebaseio.com/20150403');
+			var ref = new Firebase('http://kewl.firebaseio.com/escape');
 
 			return $fbObject(ref.child(id));
 		}
@@ -27,13 +34,8 @@ trappedApp.controller('TrappedCtrl', [
 
 		//	initialize scoped variables
 		_.assign($s, {
-			clues: 0,
 			user: 'Guest ' + Math.round(Math.random() * 100),
-			admin: location.search == '?host=false' ? true : false,
-			newTeamName: 'My New Team',
-			store: {
-				message: ''
-			}
+			admin: location.search ? true : false
 		});
 
 		$interval(function everySecond() {
@@ -49,30 +51,44 @@ trappedApp.controller('TrappedCtrl', [
 		$s.restartTimer = function restartTimer() {
 			if(confirm('Are you sure?')) {
 				$s.session.timer = Date.now() + 60 * 60 * 1000;
+				$s.changeMessage('Timer started');
 			}
 		};
 
-		$s.changeMessage = function changeMessage() {
-			$s.session.displayMessage = $s.store.message;
-			$s.store.message = '';
-		};
+		$s.changeMessage = function changeMessage(message) {
+			var oldMessages = $s.session.storedMessages;
 
-		$s.createTeam = function createTeam() {
-			allTeams.$add({
-				name: $s.newTeamName,
-				finished: false
-			}).then(function editNewTeam(ref) {
-				var id = ref.key();
-				setTimeout(function editDelay() {
-					var newest = allTeams.$indexFor(id);
-
-					allTeams[newest].$id = moment().format('YYYYMMDD-HH:mm');
-					allTeams.$save();
-				}, 100);
+			$s.session.displayMessage = message;
+			oldMessages.push({
+				time: Date.now(),
+				text: message
 			});
+			$s.session.storedMessages = oldMessages;
+
+			$('.changeMessage').val('');
 		};
 
-		$('body').removeClass('angularNotDone');
-		getTeams();
+		$s.createTeam = function createTeam(name) {
+			var timeId = moment().format('YYMMDD-HHmm'),
+				idx = allTeams.push({
+				$id: timeId,
+				name: name,
+				clues: 0,
+				finished: false,
+				storedMessages: [{
+					time: Date.now(),
+					text: 'We are about to begin'
+				}]
+			});
+			allTeams.$save(--idx);
+			$s.chooseSession(timeId);
+		};
+
+		$s.finish = function finishGame() {
+			$s.session.finished = true;
+			$s.session.timeLeft = convertTimer($s.session.timer);
+		};
+
+		getTeams($s);
 	}
 ]);

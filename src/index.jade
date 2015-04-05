@@ -17,20 +17,34 @@ html
 			header.hide
 				h1 Trapped!
 			.jumbotron
-				h1 {{displayTime}}
-				h3 {{session.displayMessage}}
+				h1(ng-hide="session.timeLeft") {{displayTime}}
+				h1(ng-show="session.timeLeft") {{session.timeLeft}}
+				.displayMessage
+					h3(ng-repeat="message in session.storedMessages") {{message.text}}
 				button(ng-click="restartTimer()" ng-show="admin") Restart Timer
+				button(data-toggle="modal" data-target="#previousMessagesModal" ng-show="session") Show All Messages
 			ul.chatbox
-			div.chooseTeam(ng-hide="session" class="nullable")
-				select(ng-model="sessionId" ng-options="o as o for o in availableTeams")
+			.chooseTeam(ng-hide="session" class="nullable")
+				select(ng-model="sessionId" ng-options="team.$id as team.name for team in listTeams")
 					option(value="" disabled selected) -- choose team --
 				button(ng-click="chooseSession(sessionId)") Choose Team
-			form(ng-submit="changeMessage()" ng-show="admin")
-				textarea(type="text" ng-model="store.message")
+			form(ng-submit="changeMessage(message)" ng-show="admin")
+				textarea.changeMessage(type="text" ng-model="message")
 				input(type="submit" value="Add Message")
-			h3 Team: {{ session.$id }}
-			input(type="text" ng-model="resultSearch.$" placeholder="Result Search")
-			ul(ng-repeat="result in results")
-				li {{result.$id}}
-			button(ng-click="createTeam()") Create Team
+			h3(ng-show="session") Team: {{ session.name }}
+			form(ng-submit="createTeam(newTeamName)" ng-show="admin")
+				input(type="text" ng-model="newTeamName")
+				input(type="submit" value="Create Team")
+			button(ng-click="finish()" ng-show="admin") Finish!
+		#previousMessagesModal.modal.fade
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal" aria-label="Close")
+							span(aria-hidden="true")&times;
+						h4.modal-title All Messages
+					.modal-body
+						p(ng-repeat="message in session.storedMessages") {{message.text}}
+					.modal-footer
+						button.btn.btn-default(data-dismiss="modal") Close
 		| @@javascriptReplaceFiles
