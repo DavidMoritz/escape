@@ -27,7 +27,7 @@ html
 			.chooseTeam(ng-hide="session" class="nullable")
 				select.form-control(ng-model="sessionId" ng-options="team.$id as team.name for team in listTeams")
 					option(value="" disabled selected) -- choose team --
-				button(ng-click="chooseSession(sessionId)") Choose Team
+				button.btn.btn-primary(ng-click="chooseSession(sessionId)") Choose Team
 			form(ng-submit="changeMessage(message)" ng-show="admin")
 				textarea.form-control.changeMessage(type="text" ng-model="message")
 				input.form-control(type="submit" value="Add Message")
@@ -37,10 +37,10 @@ html
 				input.form-control(type="submit" value="Create Team")
 				button.btn.btn-primary(ng-click="finish()" ng-show="admin") Finish!
 			.row
-				+col(null, 6)(ng-repeat='q in questions')
+				+col(null, 6, 4)(ng-repeat='q in questions')
 					h4 Question \#{{$index + 1}}
 					p {{q.text}}
-					input.form-control(type='text' ng-model='q.guess' placeholder='{{q.placeholder}}')
+					input.form-control(type='text' ng-model='q.guess' placeholder='{{getPlaceholder(q)}}')
 		#previousMessagesModal.modal.fade
 			.modal-dialog
 				.modal-content

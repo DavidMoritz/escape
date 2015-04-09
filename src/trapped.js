@@ -32,17 +32,50 @@ trappedApp.controller('TrappedCtrl', [
 			return moment(timeLeft).format('mm:ss');
 		}
 
-		//	initialize scoped variables
-		_.assign($s, {
-			user: 'Guest ' + Math.round(Math.random() * 100),
-			admin: location.search ? true : false
-		});
-
 		$interval(function everySecond() {
 			if ($s.session) {
 				$s.displayTime = convertTimer($s.session.timer);
 			}
 		}, 1000);
+
+		//	initialize scoped variables
+		_.assign($s, {
+			user: 'Guest ' + Math.round(Math.random() * 100),
+			admin: location.search ? true : false,
+			questions: [
+				{
+					text: 'What color is a fire truck?',
+					answer: 'Red',
+					guess: '',
+					placeholder: 'Mix magenta and yellow'
+				}, {
+					text: 'Who shot Alexander Hamilton?',
+					answer: 'Aaron Burr',
+					guess: '',
+					placeholder: 'Drink Milk'
+				}, {
+					text: 'How many men does it take to invent a light bulb?',
+					answer: '1.  Thomas Edison',
+					guess: ''
+				}, {
+					text: 'Who\'s got the show that gets the most applause?',
+					answer: 'Colonel Buff\'lo Bill',
+					guess: ''
+				}, {
+					text: 'What makes the world go around?',
+					answer: 'Money',
+					guess: ''
+				}, {
+					text: 'What is Superman\'s weakness?',
+					answer: 'Kryptonite',
+					guess: ''
+				}, {
+					text: 'What is the capital of Texas?',
+					answer: 'Austin',
+					guess: ''
+				}
+			]
+		});
 
 		$s.chooseSession = function chooseSession(id) {
 			newSession(id).$bindTo($s, 'session');
@@ -89,19 +122,9 @@ trappedApp.controller('TrappedCtrl', [
 			$s.session.timeLeft = convertTimer($s.session.timer);
 		};
 
-		$s.questions = [
-			{
-				text: 'What color is a fire truck?',
-				answer: 'Red',
-				guess: '',
-				placeholder: 'Answer here'
-			}, {
-				text: 'Who shot Alexander Hamilton?',
-				answer: 'Aaron Burr',
-				guess: '',
-				placeholder: 'Drink Milk'
-			}
-		];
+		$s.getPlaceholder = function getPlaceholder(question) {
+			return question.placeholder || 'Answer here';
+		};
 
 		getTeams($s);
 	}
