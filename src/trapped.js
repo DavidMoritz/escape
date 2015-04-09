@@ -17,7 +17,7 @@ trappedApp.controller('TrappedCtrl', [
 					$s.chooseSession($s.listTeams[0].$id);
 				}
 				$('body').removeClass('angularNotDone');
-			});			
+			});
 		}
 
 		function newSession(id) {
@@ -88,6 +88,20 @@ trappedApp.controller('TrappedCtrl', [
 			$s.session.finished = true;
 			$s.session.timeLeft = convertTimer($s.session.timer);
 		};
+
+		$s.questions = [
+			{
+				text: 'What color is a fire truck?',
+				answer: 'Red',
+				guess: '',
+				placeholder: 'Answer here'
+			}, {
+				text: 'Who shot Alexander Hamilton?',
+				answer: 'Aaron Burr',
+				guess: '',
+				placeholder: 'Drink Milk'
+			}
+		];
 
 		getTeams($s);
 	}

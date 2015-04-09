@@ -8,14 +8,14 @@ html
 		meta(name='author', content='David Moritz')
 		//- for Bootstrap
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
-		title Trapped
+		title The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
 		link(rel='stylesheet', href='inc/trapped.css')
 		script(src='inc/angular.js')
 	body.angularNotDone(ng-app='trappedApp', ng-controller='TrappedCtrl')
 		.container(ng-if='!isUnlocked("win")')
 			header.hide
-				h1 Trapped!
+				h1 The Game Escape
 			.jumbotron
 				h1(ng-hide="session.timeLeft") {{displayTime}}
 				h1(ng-show="session.timeLeft") {{session.timeLeft}}
@@ -25,17 +25,22 @@ html
 				button(data-toggle="modal" data-target="#previousMessagesModal" ng-show="session") Show All Messages
 			ul.chatbox
 			.chooseTeam(ng-hide="session" class="nullable")
-				select(ng-model="sessionId" ng-options="team.$id as team.name for team in listTeams")
+				select.form-control(ng-model="sessionId" ng-options="team.$id as team.name for team in listTeams")
 					option(value="" disabled selected) -- choose team --
 				button(ng-click="chooseSession(sessionId)") Choose Team
 			form(ng-submit="changeMessage(message)" ng-show="admin")
-				textarea.changeMessage(type="text" ng-model="message")
-				input(type="submit" value="Add Message")
-			h3(ng-show="session") Team: {{ session.name }}
+				textarea.form-control.changeMessage(type="text" ng-model="message")
+				input.form-control(type="submit" value="Add Message")
+			h3(ng-show="session") Team: {{session.name}}
 			form(ng-submit="createTeam(newTeamName)" ng-show="admin")
-				input(type="text" ng-model="newTeamName")
-				input(type="submit" value="Create Team")
-			button(ng-click="finish()" ng-show="admin") Finish!
+				input.form-control(type="text" ng-model="newTeamName")
+				input.form-control(type="submit" value="Create Team")
+				button.btn.btn-primary(ng-click="finish()" ng-show="admin") Finish!
+			.row
+				+col(null, 6)(ng-repeat='q in questions')
+					h4 Question \#{{$index + 1}}
+					p {{q.text}}
+					input.form-control(type='text' ng-model='q.guess' placeholder='{{q.placeholder}}')
 		#previousMessagesModal.modal.fade
 			.modal-dialog
 				.modal-content
