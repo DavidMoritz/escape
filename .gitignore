@@ -5,6 +5,7 @@ dist/
 phonegap/
 .sass-cache/
 lib
+src/
 
 # Extensions
 *.orig
