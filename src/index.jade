@@ -23,13 +23,13 @@ html
 					span(ng-show="session.timeLeft") {{session.timeLeft}}
 				.displayMessage
 					h3.digital(ng-repeat="message in session.storedMessages") {{message.text}}
-				button(ng-click="restartTimer()" ng-show="admin") Restart Timer
-				button(data-toggle="modal" data-target="#previousMessagesModal" ng-show="session") Show All Messages
+				button.btn.btn-primary(ng-click="restartTimer()" ng-show="admin") Restart Timer
+				button.btn.btn-info(data-toggle="modal" data-target="#previousMessagesModal" ng-show="session") Show All Messages
 			ul.chatbox
 			.chooseTeam(ng-hide="session" class="nullable")
 				select.form-control(ng-model="sessionId" ng-options="team.$id as team.name for team in listTeams")
 					option(value="" disabled selected) -- choose team --
-				button.btn.btn-primary(ng-click="chooseSession(sessionId)") Choose Team
+				button.btn.btn-default(ng-click="chooseSession(sessionId)") Choose Team
 			form(ng-submit="changeMessage(message)" ng-show="admin")
 				textarea.form-control.changeMessage(type="text" ng-model="message")
 				input.form-control(type="submit" value="Add Message")
@@ -37,7 +37,7 @@ html
 			form(ng-submit="createTeam(newTeamName)" ng-show="admin")
 				input.form-control(type="text" ng-model="newTeamName")
 				input.form-control(type="submit" value="Create Team")
-				button.btn.btn-primary(ng-click="finish()" ng-show="admin") Finish!
+				button.btn.btn-default(ng-click="finish()" ng-show="admin") Finish!
 			.row
 				+col(null, 6, 4)(ng-repeat='q in questions')
 					h4 Question \#{{$index + 1}}
