@@ -26,6 +26,14 @@ module.exports = function exportCopy(grunt) {
 					dest: '<%= distRoot %>/fonts/'
 				},
 
+				// copy all custom fonts
+				{
+					expand: true,
+					cwd: 'src/fonts/',
+					src: ['**'],
+					dest: '<%= distRoot %>/fonts/'
+				},
+
 				// copy Angular for head
 				{
 					src: 'lib/angular/angular.js',

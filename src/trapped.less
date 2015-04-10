@@ -5,8 +5,24 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
-input {
-	color: black;
+@import "monokai-colors.less";
+
+body {
+	background-color: @mk-background;
+	color: @mk-caret;
+}
+
+@font-face {
+	font-family: digital;
+	src: url(../fonts/digital.ttf);
+}
+
+.jumbotron {
+	background-color: @mk-invisibles;
+	.digital {
+		font-family: digital, courier, monospace;
+		color: @mk-Class-name;
+	}
 }
 
 .choices ul {

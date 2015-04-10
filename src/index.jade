@@ -17,8 +17,8 @@ html
 			header.hide
 				h1 The Game Escape
 			.jumbotron
-				h1(ng-hide="session.timeLeft") {{displayTime}}
-				h1(ng-show="session.timeLeft") {{session.timeLeft}}
+				h1.digital(ng-hide="session.timeLeft") {{displayTime}}
+				h1.ditital(ng-show="session.timeLeft") {{session.timeLeft}}
 				.displayMessage
 					h3(ng-repeat="message in session.storedMessages") {{message.text}}
 				button(ng-click="restartTimer()" ng-show="admin") Restart Timer
