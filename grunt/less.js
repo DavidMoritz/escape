@@ -6,7 +6,7 @@ module.exports = function exportLess(grunt) {
 		dev: {
 			files: {
 				'<%= distPath %>trapped.css': [
-					'lib/bootstrap/less/bootstrap.less',
+					'src/less/monokai-theme.less',
 					'lib/fontawesome/less/font-awesome.less',
 					'src/**/*.less'
 				]
@@ -19,7 +19,7 @@ module.exports = function exportLess(grunt) {
 			},
 			files: {
 				'<%= distPath %>trapped.css': [
-					'lib/bootstrap/less/bootstrap.less',
+					'src/less/monokai-theme.less',
 					'lib/fontawesome/less/font-awesome.less',
 					'src/**/*.less'
 				]

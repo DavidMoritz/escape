@@ -4,7 +4,7 @@
   "newcap": true,
   "quotmark": "single",
   "browser": true,
-  "maxstatements": 12,
+  //"maxstatements": 12,
   //"maxparams": 3,
   "maxdepth": 3,
   "maxcomplexity":10

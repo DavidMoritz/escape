@@ -32,6 +32,18 @@ trappedApp.controller('TrappedCtrl', [
 			return moment(timeLeft).format('mm:ss');
 		}
 
+		function typeOutMessage() {
+			var $latestMessage = $('.displayMessage :last-child'),
+				text;
+
+			if (!$latestMessage.hasClass('typed')) {
+				text = $latestMessage.text();
+				$latestMessage.text('')
+					.addClass('typed')
+					.writeText(text);
+			}
+		}
+
 		$interval(function everySecond() {
 			if ($s.session) {
 				$s.displayTime = convertTimer($s.session.timer);
@@ -78,7 +90,16 @@ trappedApp.controller('TrappedCtrl', [
 		});
 
 		$s.chooseSession = function chooseSession(id) {
-			newSession(id).$bindTo($s, 'session');
+			var session = newSession(id);
+
+			session.$bindTo($s, 'session');
+			session.$watch(function() {
+				typeOutMessage();
+			});
+			// show most recent message
+			$timeout(function() {
+				$('.displayMessage :last-child').addClass('typed');
+			}, 100);
 		};
 
 		$s.restartTimer = function restartTimer() {
@@ -91,7 +112,6 @@ trappedApp.controller('TrappedCtrl', [
 		$s.changeMessage = function changeMessage(message) {
 			var oldMessages = $s.session.storedMessages;
 
-			$s.session.displayMessage = message;
 			oldMessages.push({
 				time: Date.now(),
 				text: message

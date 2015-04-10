@@ -17,10 +17,12 @@ html
 			header.hide
 				h1 The Game Escape
 			.jumbotron
-				h1.digital(ng-hide="session.timeLeft") {{displayTime}}
-				h1.ditital(ng-show="session.timeLeft") {{session.timeLeft}}
+				h1.digital 
+					span(ng-hide="session.timeLeft") {{displayTime}}
+				h1.ditital
+					span(ng-show="session.timeLeft") {{session.timeLeft}}
 				.displayMessage
-					h3(ng-repeat="message in session.storedMessages") {{message.text}}
+					h3.digital(ng-repeat="message in session.storedMessages") {{message.text}}
 				button(ng-click="restartTimer()" ng-show="admin") Restart Timer
 				button(data-toggle="modal" data-target="#previousMessagesModal" ng-show="session") Show All Messages
 			ul.chatbox

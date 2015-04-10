@@ -18,9 +18,9 @@ module.exports = function exportConcat(grunt) {
 					'lib/moment/moment.js'
 				],
 				'<%= distPath %>trapped.js': [
-					'src/app.js',
+					'src/js/app.js',
 					'src/services/*.js',
-					'src/*.js'
+					'src/**/*.js'
 				]
 			}
 		},

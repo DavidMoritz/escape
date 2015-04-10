@@ -8,8 +8,8 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 @import "monokai-colors.less";
 
 body {
-	background-color: @mk-background;
-	color: @mk-caret;
+	//background-color: @mk-background;
+	//color: @mk-caret;
 }
 
 @font-face {
@@ -17,11 +17,20 @@ body {
 	src: url(../fonts/digital.ttf);
 }
 
-.jumbotron {
-	background-color: @mk-invisibles;
-	.digital {
-		font-family: digital, courier, monospace;
-		color: @mk-Class-name;
+@font-face {
+	font-family: message;
+	src: url(../fonts/monospace.ttf);
+}
+
+.digital.digital {
+	font-family: digital, message, courier, monospace;
+	color: @mk-Class-name;
+}
+
+h1.digital {
+	text-align: center;
+	span {
+		font-size: 200%;
 	}
 }
 
@@ -50,6 +59,13 @@ body {
 		display: none;
 		&:last-child {
 			display: block;
+			min-height: 26px;
+			opacity: 0;
+			font-family: message, monospace;
+			color: @mk-String;
+			&.typed {
+				opacity: 1;
+			}
 		}
 	}
 }
