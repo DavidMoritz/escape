@@ -21,7 +21,7 @@ trappedApp.run(function runWithDependencies($rootScope) {
             if(current < contentArray.length) {
                 elem.text(elem.text() + contentArray[current++]);
             }
-        }, 100);
+        }, 1000);
     };
 
 })(jQuery);
