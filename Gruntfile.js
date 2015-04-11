@@ -1,5 +1,4 @@
 module.exports = function(grunt) {
-
 	// load in package.json to reference any data from it (like the version number)
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json')

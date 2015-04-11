@@ -17,7 +17,7 @@ module.exports = function exportConcat(grunt) {
 					'lib/angularfire/dist/angularfire.js',
 					'lib/moment/moment.js'
 				],
-				'<%= distPath %>trapped.js': [
+				'<%= distPath %>escape.js': [
 					'src/js/app.js',
 					'src/services/*.js',
 					'src/**/*.js'
@@ -30,7 +30,7 @@ module.exports = function exportConcat(grunt) {
 				banner: '<%= banner %>'
 			},
 			files: {
-				'<%= distPath %>trapped.js': [
+				'<%= distPath %>escape.js': [
 					'lib/jquery/dist/jquery.js',
 					'lib/bootstrap/dist/js/bootstrap.js',
 					'lib/lodash/dist/lodash.js',
@@ -40,7 +40,7 @@ module.exports = function exportConcat(grunt) {
 					'!src/tests/*',
 					'src/**/*.js'
 				],
-				'<%= distPath %>trapped.css': '<%= distPath %>trapped.css'
+				'<%= distPath %>escape.css': '<%= distPath %>escape.css'
 			}
 		}
 	});

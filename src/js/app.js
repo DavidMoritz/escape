@@ -1,6 +1,6 @@
-var trappedApp = angular.module('trappedApp', ['firebase']);
+var escapeApp = angular.module('escapeApp', ['firebase']);
 
-trappedApp.run(function runWithDependencies($rootScope) {
+escapeApp.run(function runWithDependencies($rootScope) {
 	$rootScope._ = _;
 	$rootScope.moment = moment;
 });

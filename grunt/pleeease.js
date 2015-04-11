@@ -7,7 +7,7 @@ module.exports = function exportPleeease(grunt) {
 				}
 			},
 			files: {
-				'<%= distPath %>trapped.css': '<%= distPath %>trapped.css'
+				'<%= distPath %>escape.css': '<%= distPath %>escape.css'
 			}
 		},
 		prod: {
@@ -17,7 +17,7 @@ module.exports = function exportPleeease(grunt) {
 				}
 			},
 			files: {
-				'<%= distPath %>trapped.css': '<%= distPath %>trapped.css'
+				'<%= distPath %>escape.css': '<%= distPath %>escape.css'
 			}
 		}
 	});

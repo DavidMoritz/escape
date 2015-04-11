@@ -10,14 +10,25 @@ html
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 		title The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
-		link(rel='stylesheet', href='inc/trapped.css')
+		link(rel='stylesheet', href='inc/escape.css')
 		script(src='inc/angular.js')
-	body.angularNotDone(ng-app='trappedApp', ng-controller='TrappedCtrl')
+	body.angularNotDone(ng-app='escapeApp', ng-controller='EscapeCtrl')
+		#previousMessagesModal.modal.fade
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal" aria-label="Close")
+							span(aria-hidden="true")&times;
+						h4.modal-title All Messages
+					.modal-body
+						p(ng-repeat="message in session.storedMessages") {{message.text}}
+					.modal-footer
+						button.btn.btn-default(data-dismiss="modal") Close
 		.container(ng-if='!isUnlocked("win")')
 			header.hide
 				h1 The Game Escape
 			.jumbotron
-				h1.digital 
+				h1.digital
 					span(ng-hide="session.timeLeft") {{displayTime}}
 				h1.ditital
 					span(ng-show="session.timeLeft") {{session.timeLeft}}
@@ -43,15 +54,4 @@ html
 					h4 Question \#{{$index + 1}}
 					p {{q.text}}
 					input.form-control(type='text' ng-model='q.guess' placeholder='{{getPlaceholder(q)}}')
-		#previousMessagesModal.modal.fade
-			.modal-dialog
-				.modal-content
-					.modal-header
-						button.close(data-dismiss="modal" aria-label="Close")
-							span(aria-hidden="true")&times;
-						h4.modal-title All Messages
-					.modal-body
-						p(ng-repeat="message in session.storedMessages") {{message.text}}
-					.modal-footer
-						button.btn.btn-default(data-dismiss="modal") Close
 		| @@javascriptReplaceFiles

@@ -5,7 +5,7 @@ module.exports = function exportLess(grunt) {
 	grunt.config('less', {
 		dev: {
 			files: {
-				'<%= distPath %>trapped.css': [
+				'<%= distPath %>escape.css': [
 					'src/less/monokai-theme.less',
 					'lib/fontawesome/less/font-awesome.less',
 					'src/**/*.less'
@@ -18,7 +18,7 @@ module.exports = function exportLess(grunt) {
 				compress: true
 			},
 			files: {
-				'<%= distPath %>trapped.css': [
+				'<%= distPath %>escape.css': [
 					'src/less/monokai-theme.less',
 					'lib/fontawesome/less/font-awesome.less',
 					'src/**/*.less'

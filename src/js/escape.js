@@ -1,10 +1,10 @@
-trappedApp.controller('TrappedCtrl', [
+escapeApp.controller('EscapeCtrl', [
 	'$scope',
 	'$interval',
 	'$timeout',
 	'$firebaseObject',
 	'$firebaseArray',
-	function TrappedCtrl($s, $interval, $timeout, $fbObject, $fbArray) {
+	function EscapeCtrl($s, $interval, $timeout, $fbObject, $fbArray) {
 		'use strict';
 
 		function getTeams($s) {

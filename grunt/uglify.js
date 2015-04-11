@@ -8,7 +8,7 @@ module.exports = function exportUglify(grunt) {
 				banner: '<%= banner %>',
 			},
 			files: {
-				'<%= distPath %>trapped.js': '<%= distPath %>trapped.js'
+				'<%= distPath %>escape.js': '<%= distPath %>escape.js'
 			}
 		}
 	});

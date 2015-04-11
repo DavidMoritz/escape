@@ -30,7 +30,7 @@ module.exports = function exportReplace(grunt) {
 				patterns: [
 					{
 						match: 'javascriptReplaceFiles',
-						replacement: '<script src="inc/lib.js"></script><script src="inc/trapped.js"></script>'
+						replacement: '<script src="inc/lib.js"></script><script src="inc/escape.js"></script>'
 					}
 				]
 			},
@@ -50,7 +50,7 @@ module.exports = function exportReplace(grunt) {
 				patterns: [
 					{
 						match: 'javascriptReplaceFiles',
-						replacement: '<script src="inc/trapped.js"></script>'
+						replacement: '<script src="inc/escape.js"></script>'
 					}
 				]
 			},
