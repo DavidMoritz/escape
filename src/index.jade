@@ -54,4 +54,5 @@ html
 					h4 Question \#{{$index + 1}}
 					p {{q.text}}
 					input.form-control(type='text' ng-model='q.guess' placeholder='{{getPlaceholder(q)}}')
+					button.btn.btn-primary(ng-click='submitGuess(q)') #[i.fa.fa-lightbulb-o] Submit
 		| @@javascriptReplaceFiles

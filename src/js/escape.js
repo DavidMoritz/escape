@@ -57,37 +57,49 @@ escapeApp.controller('EscapeCtrl', [
 			questions: [
 				{
 					text: 'What color is a fire truck?',
-					answer: 'Red',
+					answers: ['Red'],
 					guess: '',
 					placeholder: 'Mix magenta and yellow'
 				}, {
 					text: 'Who shot Alexander Hamilton?',
-					answer: 'Aaron Burr',
+					answers: ['Aaron Burr'],
 					guess: '',
 					placeholder: 'Drink Milk'
 				}, {
 					text: 'How many men does it take to invent a light bulb?',
-					answer: '1.  Thomas Edison',
+					answers: ['1.  Thomas Edison'],
 					guess: ''
 				}, {
 					text: 'Who\'s got the show that gets the most applause?',
-					answer: 'Colonel Buff\'lo Bill',
+					answers: ['Colonel Buff\'lo Bill'],
 					guess: ''
 				}, {
 					text: 'What makes the world go around?',
-					answer: 'Money',
+					answers: ['Money'],
 					guess: ''
 				}, {
 					text: 'What is Superman\'s weakness?',
-					answer: 'Kryptonite',
+					answers: ['Kryptonite'],
 					guess: ''
 				}, {
 					text: 'What is the capital of Texas?',
-					answer: 'Austin',
+					answers: ['Austin'],
 					guess: ''
 				}
 			]
 		});
+
+		$s.submitGuess = function submitGuess(q) {
+			var lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
+				return ans.toLowerCase();
+			});
+
+			if (_.contains(lowerCaseAnswers, q.guess.toLowerCase())) {
+				alert('correct!');
+			} else {
+				alert('nope!  the correct answer is ' + q.answers[0]);
+			}
+		};
 
 		$s.chooseSession = function chooseSession(id) {
 			var session = newSession(id);
