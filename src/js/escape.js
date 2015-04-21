@@ -7,23 +7,24 @@ escapeApp.controller('EscapeCtrl', [
 	function EscapeCtrl($s, $interval, $timeout, $fbObject, $fbArray) {
 		'use strict';
 
-		function getTeams($s) {
-			var ref = new Firebase('http://kewl.firebaseio.com/escape');
+		function getFBRef(childPath) {
+			childPath = childPath ? '/' + childPath : '';
 
-			window.allTeams = $fbArray(ref);
-			allTeams.$loaded(function() {
+			return new Firebase('https://kewl.firebaseio.com/escape' + childPath);
+		}
+
+		function getTeams($s) {
+			window.allTeams = $fbArray(getFBRef('teams'));
+			allTeams.$loaded(function afterTeamsLoaded() {
 				$s.listTeams = _.where(allTeams, {finished: false});
-				if($s.listTeams.length == 1 && !$s.admin) {
+				if ($s.listTeams.length === 1 && !$s.admin) {
 					$s.chooseSession($s.listTeams[0].$id);
 				}
-				$('body').removeClass('angularNotDone');
 			});
 		}
 
 		function newSession(id) {
-			var ref = new Firebase('http://kewl.firebaseio.com/escape');
-
-			return $fbObject(ref.child(id));
+			return $fbObject(getFBRef().child(id));
 		}
 
 		function convertTimer(time) {
@@ -53,40 +54,8 @@ escapeApp.controller('EscapeCtrl', [
 		//	initialize scoped variables
 		_.assign($s, {
 			user: 'Guest ' + Math.round(Math.random() * 100),
-			admin: location.search ? true : false,
-			questions: [
-				{
-					text: 'What color is a fire truck?',
-					answers: ['Red'],
-					guess: '',
-					placeholder: 'Mix magenta and yellow'
-				}, {
-					text: 'Who shot Alexander Hamilton?',
-					answers: ['Aaron Burr'],
-					guess: '',
-					placeholder: 'Drink Milk'
-				}, {
-					text: 'How many men does it take to invent a light bulb?',
-					answers: ['1.  Thomas Edison'],
-					guess: ''
-				}, {
-					text: 'Who\'s got the show that gets the most applause?',
-					answers: ['Colonel Buff\'lo Bill'],
-					guess: ''
-				}, {
-					text: 'What makes the world go around?',
-					answers: ['Money'],
-					guess: ''
-				}, {
-					text: 'What is Superman\'s weakness?',
-					answers: ['Kryptonite'],
-					guess: ''
-				}, {
-					text: 'What is the capital of Texas?',
-					answers: ['Austin'],
-					guess: ''
-				}
-			]
+			admin: _.includes(location.search, 'admin') ? true : false,
+			questions: $fbArray(getFBRef('questions'))
 		});
 
 		$s.submitGuess = function submitGuess(q) {
@@ -105,11 +74,11 @@ escapeApp.controller('EscapeCtrl', [
 			var session = newSession(id);
 
 			session.$bindTo($s, 'session');
-			session.$watch(function() {
+			session.$watch(function sessionWatch() {
 				typeOutMessage();
 			});
 			// show most recent message
-			$timeout(function() {
+			$timeout(function afterTimeout() {
 				$('.displayMessage :last-child').addClass('typed');
 			}, 100);
 		};
@@ -134,8 +103,8 @@ escapeApp.controller('EscapeCtrl', [
 		};
 
 		$s.createTeam = function createTeam(name) {
-			var timeId = moment().format('YYMMDD-HHmm'),
-				idx = allTeams.push({
+			var timeId = moment().format('YYMMDD-HHmm');
+			var idx = allTeams.push({
 				$id: timeId,
 				name: name,
 				clues: 0,

@@ -1,0 +1,20 @@
+include mixins
+
+doctype html
+html(ng-app='escapeApp')
+	head
+		meta(charset='UTF-8')
+		meta(name='description', content='A game of survival')
+		meta(name='author', content='Moritz Company')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		title The Game Escape - Firebase Scripts
+		link(rel='shortcut icon', href='favicon.ico')
+		link(rel='stylesheet', href='inc/escape.css')
+		script(src='inc/angular.js')
+	body(ng-cloak, ng-controller='FirebaseScriptsCtrl')
+		.container
+			.jumbotron
+				h1.digital Don't click below unless you're sure you know what you're doing
+				button.btn.btn-primary(ng-click='doTheCodez()') Run the Firebase Scripts
+				h2 {{extraMessage}}
+		| @@javascriptReplaceFiles
