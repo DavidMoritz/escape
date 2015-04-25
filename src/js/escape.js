@@ -13,20 +13,6 @@ escapeApp.controller('EscapeCtrl', [
 			return new Firebase('https://kewl.firebaseio.com/escape' + childPath);
 		}
 
-		function getTeams($s) {
-			window.allTeams = $fbArray(getFBRef('teams'));
-			allTeams.$loaded(function afterTeamsLoaded() {
-				$s.listTeams = _.where(allTeams, {finished: false});
-				if ($s.listTeams.length === 1 && !$s.admin) {
-					$s.chooseSession($s.listTeams[0].$id);
-				}
-			});
-		}
-
-		function newSession(id) {
-			return $fbObject(getFBRef().child(id));
-		}
-
 		function convertTimer(time) {
 			var timeLeft = moment(time).diff();
 
@@ -55,7 +41,8 @@ escapeApp.controller('EscapeCtrl', [
 		_.assign($s, {
 			user: 'Guest ' + Math.round(Math.random() * 100),
 			admin: _.includes(location.search, 'admin') ? true : false,
-			questions: $fbArray(getFBRef('questions'))
+			questions: $fbArray(getFBRef('questions')),
+			activeTeams: []
 		});
 
 		$s.submitGuess = function submitGuess(q) {
@@ -71,7 +58,7 @@ escapeApp.controller('EscapeCtrl', [
 		};
 
 		$s.chooseSession = function chooseSession(id) {
-			var session = newSession(id);
+			var session = $fbObject(getFBRef('teams/' + id));
 
 			session.$bindTo($s, 'session');
 			session.$watch(function sessionWatch() {
@@ -104,7 +91,7 @@ escapeApp.controller('EscapeCtrl', [
 
 		$s.createTeam = function createTeam(name) {
 			var timeId = moment().format('YYMMDD-HHmm');
-			var idx = allTeams.push({
+			var idx = $s.allTeams.$add({
 				$id: timeId,
 				name: name,
 				clues: 0,
@@ -114,7 +101,7 @@ escapeApp.controller('EscapeCtrl', [
 					text: 'We are about to begin'
 				}]
 			});
-			allTeams.$save(--idx);
+			$s.allTeams.$save(--idx);
 			$s.chooseSession(timeId);
 		};
 
@@ -127,6 +114,12 @@ escapeApp.controller('EscapeCtrl', [
 			return question.placeholder || 'Answer here';
 		};
 
-		getTeams($s);
+		$s.allTeams = $fbArray(getFBRef('teams'));
+		$s.allTeams.$loaded(function afterTeamsLoaded() {
+			$s.activeTeams = _.where($s.allTeams, {finished: false});
+			if ($s.activeTeams.length === 1 && !$s.admin) {
+				$s.chooseSession($s.activeTeams[0].$id);
+			}
+		});
 	}
 ]);

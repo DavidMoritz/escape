@@ -38,7 +38,7 @@ html(ng-app='escapeApp')
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='session') Show All Messages
 			ul.chatbox
 			.chooseTeam(ng-hide='session' class='nullable')
-				select.form-control(ng-model='sessionId' ng-options='team.$id as team.name for team in listTeams')
+				select.form-control(ng-model='sessionId' ng-options='team.$id as team.name for team in activeTeams')
 					option(value='' disabled selected) -- choose team --
 				button.btn.btn-default(ng-click='chooseSession(sessionId)') Choose Team
 			form(ng-submit='changeMessage(message)' ng-show='admin')

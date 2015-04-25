@@ -1,0 +1,87 @@
+{
+  "questions" : {
+    "-Jnl7RE739lMZXRlgaj0" : {
+      "answers" : [ "Red" ],
+      "guess" : "",
+      "placeholder" : "Mix magenta and yellow",
+      "text" : "What color is a fire truck?"
+    },
+    "-Jnl7REAQqzpYPxTOsqY" : {
+      "answers" : [ "Aaron Burr" ],
+      "guess" : "",
+      "placeholder" : "Drink Milk",
+      "text" : "Who shot Alexander Hamilton?"
+    },
+    "-Jnl7REClgaCAljfn8f2" : {
+      "answers" : [ "1.  Thomas Edison", "Thomas Edison", "Edison" ],
+      "guess" : "",
+      "text" : "How many men does it take to invent a light bulb?"
+    },
+    "-Jnl7REDZoCNGFycPSwU" : {
+      "answers" : [ "Colonel Buff'lo Bill" ],
+      "guess" : "",
+      "text" : "Who's got the show that gets the most applause?"
+    },
+    "-Jnl7REDZoCNGFycPSwV" : {
+      "answers" : [ "Money" ],
+      "guess" : "",
+      "text" : "What makes the world go around?"
+    },
+    "-Jnl7REEyHZKkk82FK3S" : {
+      "answers" : [ "Kryptonite" ],
+      "guess" : "",
+      "text" : "What is Superman's weakness?"
+    },
+    "-Jnl7REFsLDHBVRm0fLp" : {
+      "answers" : [ "Austin" ],
+      "guess" : "",
+      "text" : "What is the capital of Texas?"
+    }
+  },
+  "questions_old" : [ {
+    "answers" : [ "Red" ],
+    "guess" : "",
+    "placeholder" : "Mix magenta and yellow",
+    "text" : "What color is a fire truck?"
+  }, {
+    "answers" : [ "Aaron Burr" ],
+    "guess" : "",
+    "placeholder" : "Drink Milk",
+    "text" : "Who shot Alexander Hamilton?"
+  }, {
+    "answers" : [ "1.  Thomas Edison", "Thomas Edison", "Edison" ],
+    "guess" : "",
+    "text" : "How many men does it take to invent a light bulb?"
+  }, {
+    "answers" : [ "Colonel Buff'lo Bill" ],
+    "guess" : "",
+    "text" : "Who's got the show that gets the most applause?"
+  }, {
+    "answers" : [ "Money" ],
+    "guess" : "",
+    "text" : "What makes the world go around?"
+  }, {
+    "answers" : [ "Kryptonite" ],
+    "guess" : "",
+    "text" : "What is Superman's weakness?"
+  }, {
+    "answers" : [ "Austin" ],
+    "guess" : "",
+    "text" : "What is the capital of Texas?"
+  } ],
+  "teams" : {
+    "150418-1408" : {
+      "clues" : 0,
+      "finished" : false,
+      "name" : "SuperTeam",
+      "storedMessages" : [ {
+        "text" : "We are about to begin",
+        "time" : 1429391301319
+      }, {
+        "text" : "Here is the first message for SuperTeam!",
+        "time" : 1429391337020
+      } ],
+      "timeLeft" : "00:00"
+    }
+  }
+}
