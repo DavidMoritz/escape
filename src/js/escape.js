@@ -31,6 +31,8 @@ escapeApp.controller('EscapeCtrl', [
 			}
 		}
 
+		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
+
 		$interval(function everySecond() {
 			if ($s.session) {
 				$s.displayTime = convertTimer($s.session.timer);
@@ -90,19 +92,22 @@ escapeApp.controller('EscapeCtrl', [
 		};
 
 		$s.createTeam = function createTeam(name) {
-			var timeId = moment().format('YYMMDD-HHmm');
-			var idx = $s.allTeams.$add({
-				$id: timeId,
+			var newTeam = getFBRef('teams').push();
+			console.log('new team created with id: ' + newTeam.key());
+
+			newTeam.set({
+				createdDate: moment().format(timeFormat),
 				name: name,
 				clues: 0,
-				finished: false,
-				storedMessages: [{
-					time: Date.now(),
-					text: 'We are about to begin'
-				}]
+				finished: false
 			});
-			$s.allTeams.$save(--idx);
-			$s.chooseSession(timeId);
+
+			newTeam.child('storedMessages').push({
+				time: moment().format(timeFormat),
+				text: 'We are about to begin'
+			});
+
+			$s.chooseSession(newTeam.key());
 		};
 
 		$s.finish = function finishGame() {
