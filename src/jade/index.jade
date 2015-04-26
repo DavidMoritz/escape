@@ -28,7 +28,9 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 The Game Escape
 			.jumbotron
-				h1.ditital(ng-show='activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
+				h1.ditital
+					span(ng-hide='activeTeam') Choose Your Team
+					span(ng-show='activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
 					h3.digital(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
 				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
@@ -37,11 +39,12 @@ html(ng-app='escapeApp')
 				select.form-control(ng-model='teamId' ng-options='team.$id as team.name for team in getUnfinishedTeams()')
 					option(value='' disabled selected) -- choose team --
 				button.btn.btn-default(ng-click='chooseTeam(teamId)') Choose Team
-			h3(ng-show='activeTeam') Team: {{activeTeam.name}}
-			.row
-				+col(null, 6, 4)(ng-repeat='q in questions')
-					h4 Question \#{{$index + 1}}
-					p {{q.text}}
-					input.form-control(type='text' ng-model='q.guess' placeholder='{{getPlaceholder(q)}}')
-					button.btn.btn-primary(ng-click='submitGuess(q)') #[i.fa.fa-lightbulb-o] Submit
+			#game(ng-show='activeTeam')
+				h3 Team: {{activeTeam.name}}
+				.row
+					+col(null, 6, 4)(ng-repeat='q in questions')
+						h4 Question \#{{$index + 1}}
+						p {{q.text}}
+						input.form-control(type='text' ng-model='q.guess' placeholder='{{getPlaceholder(q)}}')
+						button.btn.btn-primary(ng-click='submitGuess(q)') #[i.fa.fa-lightbulb-o] Submit
 		| @@javascriptReplaceFiles

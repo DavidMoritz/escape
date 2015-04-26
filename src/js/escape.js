@@ -29,7 +29,6 @@ escapeApp.controller('EscapeCtrl', [
 		_.assign($s, {
 			questions: EF.getFBArray('questions'),
 			allTeams: [],
-			unfinishedTeams: [],
 			teamId: null
 		});
 
@@ -40,9 +39,9 @@ escapeApp.controller('EscapeCtrl', [
 			});
 
 			//	activate the chosen team
-			EF.getFB('teams/' + teamId).child('active').set(true);
-
-			$s.activeTeam = EF.getFBObject('teams/' + teamId);
+			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
+				$s.activeTeam.active = true;
+			});
 		};
 
 		$s.submitGuess = function submitGuess(q) {
@@ -65,10 +64,10 @@ escapeApp.controller('EscapeCtrl', [
 			return _.where($s.allTeams, {finished: false});
 		};
 
-		$s.allTeams = EF.getFBArray('teams');
+		$s.allTeams = EF.getFBArray('teams')
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
 			if ($s.getUnfinishedTeams().length === 1) {
-				$s.activeTeam = $s.getUnfinishedTeams()[0];
+				$s.chooseTeam($s.getUnfinishedTeams()[0].$id);
 			}
 		});
 	}

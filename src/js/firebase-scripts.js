@@ -20,40 +20,6 @@ escapeApp.controller('FirebaseScriptsCtrl', [
 		$s.doTheCodez = function doTheCodez() {
 			var fbRef = getFBRef();
 
-			// var questions = [
-			// 	{
-			// 		text: 'What color is a fire truck?',
-			// 		answers: ['Red'],
-			// 		guess: '',
-			// 		placeholder: 'Mix magenta and yellow'
-			// 	}, {
-			// 		text: 'Who shot Alexander Hamilton?',
-			// 		answers: ['Aaron Burr'],
-			// 		guess: '',
-			// 		placeholder: 'Drink Milk'
-			// 	}, {
-			// 		text: 'How many men does it take to invent a light bulb?',
-			// 		answers: ['1.  Thomas Edison', 'Thomas Edison', 'Edison'],
-			// 		guess: ''
-			// 	}, {
-			// 		text: 'Who\'s got the show that gets the most applause?',
-			// 		answers: ['Colonel Buff\'lo Bill'],
-			// 		guess: ''
-			// 	}, {
-			// 		text: 'What makes the world go around?',
-			// 		answers: ['Money'],
-			// 		guess: ''
-			// 	}, {
-			// 		text: 'What is Superman\'s weakness?',
-			// 		answers: ['Kryptonite'],
-			// 		guess: ''
-			// 	}, {
-			// 		text: 'What is the capital of Texas?',
-			// 		answers: ['Austin'],
-			// 		guess: ''
-			// 	}
-			// ];
-
 			//	CREATE QUESTIONS ARRAY
 			// _.forEach(questions, function eachQuestion(q) {
 			// 	var newQuestion = fbRef.child('questions').push();
@@ -105,37 +71,3 @@ escapeApp.controller('FirebaseScriptsCtrl', [
 		};
 	}
 ]);
-
-// questions: [
-// 	{
-// 		text: 'What color is a fire truck?',
-// 		answers: ['Red'],
-// 		guess: '',
-// 		placeholder: 'Mix magenta and yellow'
-// 	}, {
-// 		text: 'Who shot Alexander Hamilton?',
-// 		answers: ['Aaron Burr'],
-// 		guess: '',
-// 		placeholder: 'Drink Milk'
-// 	}, {
-// 		text: 'How many men does it take to invent a light bulb?',
-// 		answers: ['1.  Thomas Edison', 'Thomas Edison', 'Edison'],
-// 		guess: ''
-// 	}, {
-// 		text: 'Who\'s got the show that gets the most applause?',
-// 		answers: ['Colonel Buff\'lo Bill'],
-// 		guess: ''
-// 	}, {
-// 		text: 'What makes the world go around?',
-// 		answers: ['Money'],
-// 		guess: ''
-// 	}, {
-// 		text: 'What is Superman\'s weakness?',
-// 		answers: ['Kryptonite'],
-// 		guess: ''
-// 	}, {
-// 		text: 'What is the capital of Texas?',
-// 		answers: ['Austin'],
-// 		guess: ''
-// 	}
-// ];
