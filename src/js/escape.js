@@ -1,17 +1,9 @@
 escapeApp.controller('EscapeCtrl', [
 	'$scope',
 	'$interval',
-	'$timeout',
-	'$firebaseObject',
-	'$firebaseArray',
-	function EscapeCtrl($s, $interval, $timeout, $fbObject, $fbArray) {
+	'EscapeFactory',
+	function EscapeCtrl($s, $interval, EF) {
 		'use strict';
-
-		function getFBRef(childPath) {
-			childPath = childPath ? '/' + childPath : '';
-
-			return new Firebase('https://kewl.firebaseio.com/escape' + childPath);
-		}
 
 		function typeOutMessage() {
 			var $latestMessage = $('.displayMessage :last-child'),
@@ -35,14 +27,22 @@ escapeApp.controller('EscapeCtrl', [
 
 		//	initialize scoped variables
 		_.assign($s, {
-			questions: $fbArray(getFBRef('questions')),
+			questions: EF.getFBArray('questions'),
 			allTeams: [],
 			unfinishedTeams: [],
 			teamId: null
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
-			$s.activeTeam = _.find($s.allTeams, {$id: teamId});
+			//	turn all teams inactive
+			_.forEach($s.allTeams, function eachTeam(team) {
+				EF.getFB('teams/' + team.$id + '/active').set(false);
+			});
+
+			//	activate the chosen team
+			EF.getFB('teams/' + teamId).child('active').set(true);
+
+			$s.activeTeam = EF.getFBObject('teams/' + teamId);
 		};
 
 		$s.submitGuess = function submitGuess(q) {
@@ -61,11 +61,14 @@ escapeApp.controller('EscapeCtrl', [
 			return question.placeholder || 'Answer here';
 		};
 
-		$s.allTeams = $fbArray(getFBRef('teams'));
+		$s.getUnfinishedTeams = function getUnfinishedTeams() {
+			return _.where($s.allTeams, {finished: false});
+		};
+
+		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
-			$s.unfinishedTeams = _.where($s.allTeams, {finished: false});
-			if ($s.unfinishedTeams.length === 1) {
-				$s.activeTeam = $s.unfinishedTeams[0];
+			if ($s.getUnfinishedTeams().length === 1) {
+				$s.activeTeam = $s.getUnfinishedTeams()[0];
 			}
 		});
 	}

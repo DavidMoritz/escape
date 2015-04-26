@@ -1,60 +1,17 @@
 escapeApp.controller('AdminCtrl', [
 	'$scope',
-	'$firebaseObject',
-	'$firebaseArray',
-	function AdminCtrl($s, $fbObject, $fbArray) {
+	'EscapeFactory',
+	function AdminCtrl($s, EF) {
 		'use strict';
-
-		function getFBRef(childPath) {
-			childPath = childPath ? '/' + childPath : '';
-
-			return new Firebase('https://kewl.firebaseio.com/escape' + childPath);
-		}
-
-		function convertTimer(time) {
-			var timeLeft = moment(time).diff();
-
-			return moment(timeLeft).format('mm:ss');
-		}
-
-		function typeOutMessage() {
-			var $latestMessage = $('.displayMessage :last-child'),
-				text;
-
-			if (!$latestMessage.hasClass('typed')) {
-				text = $latestMessage.text();
-				$latestMessage.text('')
-					.addClass('typed')
-					.writeText(text);
-			}
-		}
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 
-		$interval(function everySecond() {
-			if ($s.session) {
-				$s.displayTime = convertTimer($s.session.timer);
-			}
-		}, 1000);
-
 		//	initialize scoped variables
 		_.assign($s, {
-			questions: $fbArray(getFBRef('questions')),
 			allTeams: [],
-			activeTeam: null
+			activeTeam: null,
+			newTeamName: ''
 		});
-
-		$s.submitGuess = function submitGuess(q) {
-			var lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
-				return ans.toLowerCase();
-			});
-
-			if (_.contains(lowerCaseAnswers, q.guess.toLowerCase())) {
-				alert('correct!');
-			} else {
-				alert('nope!  the correct answer is ' + q.answers[0]);
-			}
-		};
 
 		$s.restartTimer = function restartTimer() {
 			if(confirm('Are you sure?')) {
@@ -76,7 +33,7 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.createTeam = function createTeam(name) {
-			var newTeam = getFBRef('teams').push();
+			var newTeam = EF.getFBRef('teams').push();
 			console.log('new team created with id: ' + newTeam.key());
 
 			newTeam.set({
@@ -84,7 +41,8 @@ escapeApp.controller('AdminCtrl', [
 				name: name,
 				clues: 0,
 				active: false,
-				finished: false
+				finished: false,
+				timeRemaining: 60 * 60
 			});
 
 			newTeam.child('storedMessages').push({
@@ -95,15 +53,6 @@ escapeApp.controller('AdminCtrl', [
 			$s.chooseSession(newTeam.key());
 		};
 
-		$s.finish = function finishGame() {
-			$s.session.active = true;
-			$s.session.timeLeft = convertTimer($s.session.timer);
-		};
-
-		$s.getPlaceholder = function getPlaceholder(question) {
-			return question.placeholder || 'Answer here';
-		};
-
-		$s.allTeams = $fbArray(getFBRef('teams'));
+		$s.allTeams = EF.getFBArray('teams');
 	}
 ]);
