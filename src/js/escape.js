@@ -6,15 +6,19 @@ escapeApp.controller('EscapeCtrl', [
 		'use strict';
 
 		function typeOutMessage() {
-			var $latestMessage = $('.displayMessage :last-child'),
-				text;
+			var curMsgText = $s.curMsg;
+			$s.curMsg = '';
 
-			if (!$latestMessage.hasClass('typed')) {
-				text = $latestMessage.text();
-				$latestMessage.text('')
-					.addClass('typed')
-					.writeText(text);
-			}
+			var curMsgArray = curMsgText.split('');
+			var curPos = 0;
+
+			var typingInterval = $interval(function everyDeciSecond() {
+				if(curPos >= curMsgArray.length) {
+					return $interval.cancel(typingInterval);
+				}
+
+				$s.curMsg = $s.curMsg + curMsgArray[curPos++];
+			}, 40);
 		}
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -29,7 +33,8 @@ escapeApp.controller('EscapeCtrl', [
 		_.assign($s, {
 			questions: EF.getFBArray('questions'),
 			allTeams: [],
-			teamId: null
+			teamId: null,
+			curMsg: ''
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
@@ -41,6 +46,12 @@ escapeApp.controller('EscapeCtrl', [
 			//	activate the chosen team
 			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				$s.activeTeam.active = true;
+
+				$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
+					$s.curMsg = messages[_.keys(messages)[_.keys(messages).length - 1]].text;
+					console.log($s.curMsg);
+					typeOutMessage();
+				});
 			});
 		};
 
@@ -64,7 +75,7 @@ escapeApp.controller('EscapeCtrl', [
 			return _.where($s.allTeams, {finished: false});
 		};
 
-		$s.allTeams = EF.getFBArray('teams')
+		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
 			if ($s.getUnfinishedTeams().length === 1) {
 				$s.chooseTeam($s.getUnfinishedTeams()[0].$id);

@@ -13,17 +13,17 @@ body {
 }
 
 @font-face {
-	font-family: digital;
+	font-family: digitalFont;
 	src: url(../fonts/digital.ttf);
 }
 
 @font-face {
-	font-family: message;
+	font-family: messageFont;
 	src: url(../fonts/monospace.ttf);
 }
 
 .digital.digital {
-	font-family: digital, message, courier, monospace;
+	font-family: digitalFont, messageFont, courier, monospace;
 	color: @mk-Class-name;
 }
 
@@ -60,8 +60,8 @@ h1.digital {
 		&:last-child {
 			display: block;
 			min-height: 26px;
-			opacity: 0;
-			font-family: message, monospace;
+			// opacity: 0;
+			font-family: messageFont, monospace;
 			color: @mk-String;
 			&.typed {
 				opacity: 1;

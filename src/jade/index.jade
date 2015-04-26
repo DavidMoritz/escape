@@ -17,7 +17,7 @@ html(ng-app='escapeApp')
 			.modal-dialog
 				.modal-content
 					.modal-header
-						button.close(data-dismiss='modal' aria-label='Close')
+						button.close(data-dismiss='modal' aria-label='close')
 							span(aria-hidden='true') &times;
 						h4.modal-title All Messages
 					.modal-body
@@ -32,7 +32,7 @@ html(ng-app='escapeApp')
 					span(ng-hide='activeTeam') Choose Your Team
 					span(ng-show='activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
-					h3.digital(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
+					h3.digital(ng-if='curMsg') {{curMsg}}
 				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
 			.chooseTeam(ng-hide='activeTeam' class='nullable')

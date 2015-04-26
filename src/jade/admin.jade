@@ -14,23 +14,23 @@ html(ng-app='escapeApp')
 		script(src='inc/angular.js')
 	body(ng-cloak, ng-controller='AdminCtrl')
 		.container
-			header.hide
+			header
 				h1 The Game Escape - Admin
 			.jumbotron
-				h1.ditital(ng-show='activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
+				h1.ditital(ng-show='activeTeam && activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
 					h3.digital(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
-				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
+				button.btn.btn-primary(ng-click='restartTimer()') Restart Timer
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
-			.chooseTeam(ng-hide='activeTeam' class='nullable')
-				select.form-control(ng-model='teamId' ng-options='team.$id as team.name for team in _.filter(allTeams, {finished: false})')
+			.chooseTeam(ng-if='!activeTeam')
+				select.form-control(ng-model='teamId' ng-options='team.$id as team.name for team in getUnfinishedTeams()')
 					option(value='' disabled selected) -- choose team --
 				button.btn.btn-default(ng-click='chooseTeam(teamId)') Choose Team
-			form(ng-submit='changeMessage(message)')
-				textarea.form-control.changeMessage(type='text' ng-model='message')
+			form(ng-if='activeTeam' ng-submit='addNewMessage()')
+				textarea.form-control(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}')
 				input.form-control(type='submit' value='Add Message')
 			h3(ng-show='session') Team: {{session.name}}
-			form(ng-submit='createTeam(newTeamName)')
-				input.form-control(type='text' ng-model='newTeamName')
+			form(ng-submit='createTeam()')
+				input.form-control(type='text' ng-model='formFields.newTeamName')
 				input.form-control(type='submit' value='Create Team')
 		| @@javascriptReplaceFiles
