@@ -1,11 +1,13 @@
 escapeApp.controller('EscapeCtrl', [
 	'$scope',
+	'$timeout',
 	'$interval',
 	'EscapeFactory',
-	function EscapeCtrl($s, $interval, EF) {
+	function EscapeCtrl($s, $timeout, $interval, EF) {
 		'use strict';
 
 		function typeOutMessage() {
+			$s.curMsg.display = '';
 			var curMsgArray = $s.curMsg.text.split('');
 			var curPos = 0;
 
@@ -15,7 +17,6 @@ escapeApp.controller('EscapeCtrl', [
 				}
 
 				$s.curMsg.display = $s.curMsg.display + curMsgArray[curPos++];
-				console.log('interval ' + curPos);
 			}, 40);
 		}
 
@@ -50,8 +51,9 @@ escapeApp.controller('EscapeCtrl', [
 						text: messages[_.keys(messages)[_.keys(messages).length - 1]].text,
 						display: ''
 					};
+
 					typeOutMessage();
-				});
+				}, true);
 			});
 		};
 
