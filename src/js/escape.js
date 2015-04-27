@@ -6,18 +6,16 @@ escapeApp.controller('EscapeCtrl', [
 		'use strict';
 
 		function typeOutMessage() {
-			var curMsgText = $s.curMsg;
-			$s.curMsg = '';
-
-			var curMsgArray = curMsgText.split('');
+			var curMsgArray = $s.curMsg.text.split('');
 			var curPos = 0;
 
-			var typingInterval = $interval(function everyDeciSecond() {
+			var typingInterval = $interval(function typeGradually() {
 				if(curPos >= curMsgArray.length) {
 					return $interval.cancel(typingInterval);
 				}
 
-				$s.curMsg = $s.curMsg + curMsgArray[curPos++];
+				$s.curMsg.display = $s.curMsg.display + curMsgArray[curPos++];
+				console.log('interval ' + curPos);
 			}, 40);
 		}
 
@@ -48,8 +46,10 @@ escapeApp.controller('EscapeCtrl', [
 				$s.activeTeam.active = true;
 
 				$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
-					$s.curMsg = messages[_.keys(messages)[_.keys(messages).length - 1]].text;
-					console.log($s.curMsg);
+					$s.curMsg = {
+						text: messages[_.keys(messages)[_.keys(messages).length - 1]].text,
+						display: ''
+					};
 					typeOutMessage();
 				});
 			});
