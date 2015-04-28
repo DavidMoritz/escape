@@ -28,7 +28,7 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 The Game Escape
 			.jumbotron
-				h1.ditital
+				h1.digital
 					span(ng-hide='activeTeam') Choose Your Team
 					span(ng-show='activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage

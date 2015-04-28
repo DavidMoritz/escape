@@ -49,24 +49,26 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.createTeam = function createTeam() {
-			var newTeam = EF.getFBRef('teams').push();
-			console.log('new team created with id: ' + newTeam.key());
-
-			newTeam.set({
-				createdDate: moment().format(timeFormat),
+			var teams = EF.getFBArray('teams'),
+				currentTime = moment().format(timeFormat);
+				
+			teams.$add({
+				createdDate: currentTime,
 				name: $s.formFields.newTeamName,
 				clues: 0,
 				active: false,
 				finished: false,
 				timeRemaining: 60 * 60
-			});
+			}).then(function(newTeam) {
+				console.log('new team created with id: ' + newTeam.key());
 
-			newTeam.child('storedMessages').push({
-				time: moment().format(timeFormat),
-				text: 'We are about to begin'
-			});
+				newTeam.child('storedMessages').push({
+					time: currentTime,
+					text: 'We are about to begin'
+				});
 
-			$s.chooseTeam(newTeam.key());
+				$s.chooseTeam(newTeam.key());
+			});
 		};
 
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {
