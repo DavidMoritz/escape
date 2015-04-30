@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="escapeApp">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="A game of escape">
+    <meta name="author" content="Moritz Company">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Game Escape</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="inc/escape.css">
+    <script src="inc/angular.js"></script>
+  </head>
+  <body ng-cloak ng-controller="EscapeCtrl">
+    <div id="previousMessagesModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button data-dismiss="modal" aria-label="close" class="close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">All Messages</h4>
+          </div>
+          <div class="modal-body">
+            <p ng-repeat="message in activeTeam.storedMessages">{{message.text}}</p>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <header class="hide">
+        <h1>The Game Escape</h1>
+      </header>
+      <div class="jumbotron">
+        <h1 class="digital"><span ng-hide="activeTeam">Choose Your Team</span><span ng-show="activeTeam.timeRemaining">{{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}</span></h1>
+        <div class="displayMessage">
+          <h3 ng-if="curMsg" class="digital">{{curMsg.display}}</h3>
+        </div>
+        <button ng-click="restartTimer()" ng-show="admin" class="btn btn-primary">Restart Timer</button>
+        <button data-toggle="modal" data-target="#previousMessagesModal" ng-show="activeTeam" class="btn btn-info">Show All Messages</button>
+      </div>
+      <div ng-hide="activeTeam" class="chooseTeam nullable">
+        <select ng-model="teamId" ng-options="team.$id as team.name for team in getUnfinishedTeams()" class="form-control">
+          <option value="" disabled selected>-- choose team --</option>
+        </select>
+        <button ng-click="chooseTeam(teamId)" class="btn btn-default">Choose Team</button>
+      </div>
+      <div id="game" ng-show="activeTeam">
+        <h3>Team: {{activeTeam.name}}</h3>
+        <div class="row">
+          <section class="col-sm-6 col-md-4" ng-repeat="q in questions">
+            <h4>Question #{{$index + 1}}</h4>
+            <p>{{q.text}}</p>
+            <input type="text" ng-model="q.guess" placeholder="{{getPlaceholder(q)}}" class="form-control">
+            <button ng-click="submitGuess(q)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+          </section>
+        </div>
+      </div>
+    </div><script src="inc/lib.js"></script><script src="inc/escape.js"></script>
+  </body>
+</html>

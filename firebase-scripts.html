@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html ng-app="escapeApp">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="A game of survival">
+    <meta name="author" content="Moritz Company">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Game Escape - Firebase Scripts</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="inc/escape.css">
+    <script src="inc/angular.js"></script>
+  </head>
+  <body ng-cloak ng-controller="FirebaseScriptsCtrl">
+    <div class="container">
+      <div class="jumbotron">
+        <h1 class="digital">Don't click below unless you're sure you know what you're doing</h1>
+        <button ng-click="doTheCodez()" class="btn btn-primary">Run the Firebase Scripts</button>
+        <h2>{{extraMessage}}</h2>
+      </div>
+    </div><script src="inc/lib.js"></script><script src="inc/escape.js"></script>
+  </body>
+</html>
