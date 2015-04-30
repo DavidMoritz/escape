@@ -31,6 +31,10 @@ module.exports = function exportReplace(grunt) {
 					{
 						match: 'javascriptReplaceFiles',
 						replacement: '<script src="inc/lib.js"></script><script src="inc/escape.js"></script>'
+					},
+					{
+						match: 'javascriptPublicReplaceFiles',
+						replacement: '<script src="inc/lib.js"></script><script src="inc/public.js"></script>'
 					}
 				]
 			},

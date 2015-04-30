@@ -20,6 +20,13 @@ module.exports = function exportConcat(grunt) {
 				'<%= distPath %>escape.js': [
 					'src/js/app.js',
 					'src/services/*.js',
+					'!src/js/public.js',
+					'src/**/*.js'
+				],
+				'<%= distPath %>public.js': [
+					'src/js/app.js',
+					'src/services/*.js',
+					'!src/js/escape.js',
 					'src/**/*.js'
 				]
 			}
