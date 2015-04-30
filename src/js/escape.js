@@ -6,9 +6,13 @@ escapeApp.controller('EscapeCtrl', [
 	function EscapeCtrl($s, $timeout, $interval, EF) {
 		'use strict';
 
-		function typeOutMessage() {
-			$s.curMsg.display = '';
-			var curMsgArray = $s.curMsg.text.split('');
+		function typeOutMessage(indexPage) {
+			if(indexPage) {
+				$s.public.display = '';
+			} else {
+				$s.curMsg.display = '';
+			}
+			var curMsgArray = indexPage ? $s.public.text.split('') : $s.curMsg.text.split('');
 			var curPos = 0;
 
 			var typingInterval = $interval(function typeGradually() {
@@ -16,8 +20,34 @@ escapeApp.controller('EscapeCtrl', [
 					return $interval.cancel(typingInterval);
 				}
 
-				$s.curMsg.display = $s.curMsg.display + curMsgArray[curPos++];
+				if(indexPage) {
+					$s.public.display = $s.public.display + curMsgArray[curPos++];
+				} else {
+					$s.curMsg.display = $s.curMsg.display + curMsgArray[curPos++];
+				}
 			}, 40);
+		}
+
+		function publicFunctions() {
+			switch($s.public.timeRemaining % 40) {
+				case 20:
+					$s.public.text = 'Welcome to The Game Escape.';
+					typeOutMessage(true);
+					break;
+				case 10:
+					$s.public.text = 'Will your team get out in time?';
+					typeOutMessage(true);
+					break;
+				case 0:
+					$s.public.text = 'Sign up for June 19th or June 20th';
+					typeOutMessage(true);
+					break;
+				case 30:
+					$s.public.text = 'Hurry, before it\'s too late...';
+					typeOutMessage(true);
+					break;
+			}
+			$s.public.timeRemaining -= 1;
 		}
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -25,6 +55,8 @@ escapeApp.controller('EscapeCtrl', [
 		$interval(function everySecond() {
 			if ($s.activeTeam) {
 				$s.activeTeam.timeRemaining -= 1;
+			} else {
+				publicFunctions();
 			}
 		}, 1000);
 
@@ -33,7 +65,10 @@ escapeApp.controller('EscapeCtrl', [
 			questions: EF.getFBArray('questions'),
 			allTeams: [],
 			teamId: null,
-			curMsg: ''
+			curMsg: '',
+			public: {
+				timeRemaining: 45 * 60
+			}
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {

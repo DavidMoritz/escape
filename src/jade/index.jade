@@ -13,38 +13,15 @@ html(ng-app='escapeApp')
 		link(rel='stylesheet', href='inc/escape.css')
 		script(src='inc/angular.js')
 	body(ng-cloak, ng-controller='EscapeCtrl')
-		#previousMessagesModal.modal.fade
-			.modal-dialog
-				.modal-content
-					.modal-header
-						button.close(data-dismiss='modal' aria-label='close')
-							span(aria-hidden='true') &times;
-						h4.modal-title All Messages
-					.modal-body
-						p(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
-					.modal-footer
-						button.btn.btn-default(data-dismiss='modal') Close
 		.container
 			header.hide
 				h1 The Game Escape
 			.jumbotron
 				h1.digital
-					span(ng-hide='activeTeam') Choose Your Team
-					span(ng-show='activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
+					span {{moment(public.timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
-					h3.digital(ng-if='curMsg') {{curMsg.display}}
-				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
-				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
-			.chooseTeam(ng-hide='activeTeam' class='nullable')
-				select.form-control(ng-model='teamId' ng-options='team.$id as team.name for team in getUnfinishedTeams()')
-					option(value='' disabled selected) -- choose team --
-				button.btn.btn-default(ng-click='chooseTeam(teamId)') Choose Team
-			#game(ng-show='activeTeam')
-				h3 Team: {{activeTeam.name}}
-				.row
-					+col(null, 6, 4)(ng-repeat='q in questions')
-						h4 Question \#{{$index + 1}}
-						p {{q.text}}
-						input.form-control(type='text' ng-model='q.guess' placeholder='{{getPlaceholder(q)}}')
-						button.btn.btn-primary(ng-click='submitGuess(q)') #[i.fa.fa-lightbulb-o] Submit
+					h3.digital {{public.display}}
+			p The Game Escape is an interactive, cooperative, challenging experience that helps demonstrate teamwork and our various telents and strenghts when working in a group. Perfect as a team-building work activity, family experiment, or testing your friends; The Game Escape will stretch you mentally and emotionally. Success is not guaranteed. Will your team get out in time? You'd better move quickly, only have {{moment(public.timeRemaining * 1000).format('mm')}} minutes left.
+			a.btn.btn-success(href='player.html') Player?
+			a.btn.btn-warning(href='admin.html') Admin?
 		| @@javascriptReplaceFiles
