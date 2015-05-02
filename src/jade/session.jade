@@ -30,7 +30,7 @@ html(ng-app='escapeApp')
 				h1.digital
 					span(ng-hide='activeTeam') Loading
 						i.fa.fa-spinner.fa-pulse
-					span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
+					span(ng-show='timeRemaining') {{moment(timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
 				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
@@ -39,10 +39,14 @@ html(ng-app='escapeApp')
 				h3 Team: {{activeTeam.name}}
 				.row
 					+col(null, 6, 4)
-						h4 Question #25
-						label.sr-only Where did I stay?
-						input.form-control(type='text' ng-model='q25.guess.property' placeholder='Where did I stay?')
-						label.sr-only How much money did I have left?
-						input.form-control(type='text' ng-model='q25.guess.money' placeholder='How much money did I have left?')
-						button.btn.btn-primary(ng-click='submitGuessSpecial(q25)') #[i.fa.fa-lightbulb-o] Submit
+						h4 Question \#{{q.monopoly.id}}
+						div(ng-if='!q.monopoly.solved')
+							label.sr-only Where did I stay?
+							input.form-control(type='text' ng-model='q.monopoly.splitGuess.property' placeholder='Where did I stay?')
+							label.sr-only How much money did I have left?
+							input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
+							button.btn.btn-primary(ng-click='submitGuessSpecial(q.monopoly)') #[i.fa.fa-lightbulb-o] Submit
+						div(ng-if='q.monopoly.solved')
+							h3 #[i.fa.fa-check] SOLVED!
+							button.btn.btn-success(ng-click='revealNextClue(q.monopoly)') #[i.fa.fa-search] Next Clue
 		| @@javascriptReplaceFiles
