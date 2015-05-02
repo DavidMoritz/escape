@@ -17,7 +17,14 @@ escapeApp.factory('EscapeFactory', [
 
 			getFBObject: function getFBObject(childPath) {
 				return $fbObject(this.getFB(childPath));
-			}
+			},
+
+			setFB: function setFB(childPath, value) {
+				var fbValue = this.getFBObject(childPath);
+
+				fbValue.$value = value;
+				fbValue.$save();
+			},
 		};
 	}
 ]);

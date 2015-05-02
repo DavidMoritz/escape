@@ -9,11 +9,10 @@ escapeApp.controller('AdminCtrl', [
 
 		$interval(function everySecond() {
 			if ($s.activeTeam) {
-				$s.timeRemaining = (function convertTimer() {
-					var start = moment($s.activeTeam.timerStarted, timeFormat);
+				// convertTimer
+				var start = moment($s.activeTeam.timerStarted, timeFormat);
 
-					return $s.activeTeam.timeAllowed - moment().diff(start, 'seconds');
-				})();
+				$s.timeRemaining = $s.activeTeam.timeAllowed - moment().diff(start, 'seconds');
 			}
 		}, 1000);
 
@@ -30,15 +29,9 @@ escapeApp.controller('AdminCtrl', [
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
-			//	turn all teams inactive
-			_.forEach($s.allTeams, function eachTeam(team) {
-				EF.getFB('teams/' + team.$id + '/active').set(false);
-			});
-
 			//	activate the chosen team
-			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
-				$s.activeTeam.active = true;
-			});
+			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam');
+			EF.setFB('activeTeamId', teamId);
 		};
 
 		$s.restartTimer = function restartTimer() {
@@ -69,7 +62,6 @@ escapeApp.controller('AdminCtrl', [
 				createdDate: currentTime,
 				name: $s.formFields.newTeamName,
 				clues: 0,
-				active: false,
 				finished: false,
 				timeAllowed: EF.initialTimeAllowed
 			}).then(function(newTeam) {

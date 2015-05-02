@@ -24,11 +24,10 @@ escapeApp.controller('SessionCtrl', [
 
 		$interval(function everySecond() {
 			if ($s.activeTeam) {
-				$s.timeRemaining = (function convertTimer() {
-					var start = moment($s.activeTeam.timerStarted, timeFormat);
+				// convertTimer
+				var start = moment($s.activeTeam.timerStarted, timeFormat);
 
-					return $s.activeTeam.timeAllowed - moment().diff(start, 'seconds');
-				})();
+				$s.timeRemaining = $s.activeTeam.timeAllowed - moment().diff(start, 'seconds');
 			}
 		}, 1000);
 
@@ -70,13 +69,13 @@ escapeApp.controller('SessionCtrl', [
 			return question.placeholder || 'Answer here';
 		};
 
-		$s.getActiveTeam = function getActiveTeam() {
-			return _.findWhere($s.allTeams, {active: true});
-		};
-
 		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
-			$s.chooseTeam($s.getActiveTeam().$id);
+			var activeTeamIdObject = EF.getFBObject('activeTeamId');
+
+			activeTeamIdObject.$loaded().then(function afterIdLoaded() {
+				$s.chooseTeam(activeTeamIdObject.$value);
+			});
 		});
 	}
 ]);
