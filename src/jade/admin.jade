@@ -9,9 +9,9 @@ html(ng-app='escapeApp')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 		title The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
-		link(rel='stylesheet', href='inc/escape.css')
+		link(rel='stylesheet', href='inc/admin.css')
 		script(src='inc/angular.js')
-	body(ng-cloak, ng-controller='AdminCtrl')
+	body.admin(ng-cloak, ng-controller='AdminCtrl')
 		.container
 			header
 				h1 The Game Escape - Admin
@@ -32,4 +32,5 @@ html(ng-app='escapeApp')
 			form(ng-submit='createTeam()')
 				input.form-control(type='text' ng-model='formFields.newTeamName')
 				input.form-control(type='submit' value='Create Team')
+			iframe(src="session.html" width="100%" style="min-height:400px")
 		| @@javascriptReplaceFiles

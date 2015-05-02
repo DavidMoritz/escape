@@ -102,10 +102,10 @@ escapeApp.controller('SessionCtrl', [
 
 		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
-			var activeTeamIdObject = EF.getFBObject('activeTeamId');
-
-			activeTeamIdObject.$loaded().then(function afterIdLoaded() {
-				$s.chooseTeam(activeTeamIdObject.$value);
+			EF.getFBObject('activeTeamId').$bindTo($s, 'activeTeamIdObject').then(function afterIdLoaded() {
+				$s.$watch('activeTeamIdObject.$value', function onIdChange() {
+					$s.chooseTeam($s.activeTeamIdObject.$value);
+				});
 			});
 		});
 	}
