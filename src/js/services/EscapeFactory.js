@@ -8,7 +8,7 @@ escapeApp.factory('EscapeFactory', [
 			initialTimeAllowed: 60 * 60,
 
 			getFB: function getFB(childPath) {
-				return new Firebase('https://kewl.firebaseio.com/escape/' + (childPath || ''));
+				return new Firebase('https://escape.firebaseio.com/' + (childPath || ''));
 			},
 
 			getFBArray: function getFBArray(childPath) {

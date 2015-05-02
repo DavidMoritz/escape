@@ -37,18 +37,22 @@ escapeApp.controller('SessionCtrl', [
 			teamId: null,
 			curMsg: '',
 			timeRemaining: 0,
+			solvedQuestions: [],
 			q: {
 				monopoly: {
 					id: 25,
+					name: 'monopoly',
 					guess: '',
 					splitGuess: {
 						property: '',
 						money: ''
 					},
 					answers: ['Illinois10'],
-					solved: false,
 					attempts: [],
-					nextClue: 'Cerulean (light blue) lock: 12345'
+					nextClue: {
+						text: 'Cerulean lock: 12345',
+						visible: false
+					}
 				}
 			}
 		});
@@ -63,6 +67,9 @@ escapeApp.controller('SessionCtrl', [
 
 					typeOutMessage();
 				}, true);
+
+				//	set solvedQuestions
+				// EF.getFBObject('teams/' + $s.activeTeam.$id + '/solvedQuestions').$bindTo($s, 'activeTeam.solvedQuestions');
 			});
 		};
 
@@ -76,8 +83,11 @@ escapeApp.controller('SessionCtrl', [
 				time: moment().format(timeFormat)
 			});
 
-			if (_.contains(lowerCaseAnswers, q.guess.toLowerCase())) {
-				q.solved = true;
+			if (_.contains(lowerCaseAnswers, q.guess.toLowerCase())) {	//	correct!
+				if (_.isUndefined($s.activeTeam.solvedQuestions)) {
+					$s.activeTeam.solvedQuestions = {};
+				}
+				$s.activeTeam.solvedQuestions[q.name] = moment().format(timeFormat);
 			} else {
 				alert('Incorrect answer.  Try again!');
 			}
@@ -96,8 +106,12 @@ escapeApp.controller('SessionCtrl', [
 			}
 		};
 
-		$s.revealNextClue = function revealNextClue(q) {
-			alert(q.nextClue);
+		$s.isSolved = function isSolved(q) {
+			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), q.name);
+		};
+
+		$s.toggleNextClue = function toggleNextClue(q) {
+			q.nextClue.visible = !q.nextClue.visible;
 		};
 
 		$s.allTeams = EF.getFBArray('teams');

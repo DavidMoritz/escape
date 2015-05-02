@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 	// Note: all subtasks of the sass and autoprefixer tasks will run. This will generate a minified and unminified version of the css.
 	// If you run this task all of the example html files and generated documentation will reference the unminified version of Edge UI's css and js
 	grunt.registerTask('dev', [
-		'clean',
+		// 'clean',
 		'jade',
 		'less:dev',
 		'copy:dev',

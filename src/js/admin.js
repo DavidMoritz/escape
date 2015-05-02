@@ -57,7 +57,7 @@ escapeApp.controller('AdminCtrl', [
 		$s.createTeam = function createTeam() {
 			var teams = EF.getFBArray('teams'),
 				currentTime = moment().format(timeFormat);
-				
+
 			teams.$add({
 				createdDate: currentTime,
 				name: $s.formFields.newTeamName,

@@ -40,13 +40,14 @@ html(ng-app='escapeApp')
 				.row
 					+col(null, 6, 4)
 						h4 Question \#{{q.monopoly.id}}
-						div(ng-if='!q.monopoly.solved')
+						div(ng-if='!isSolved(q.monopoly)')
 							label.sr-only Where did I stay?
 							input.form-control(type='text' ng-model='q.monopoly.splitGuess.property' placeholder='Where did I stay?')
 							label.sr-only How much money did I have left?
 							input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.monopoly)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='q.monopoly.solved')
+						div(ng-if='isSolved(q.monopoly)')
 							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='revealNextClue(q.monopoly)') #[i.fa.fa-search] Next Clue
+							button.btn.btn-success(ng-click='toggleNextClue(q.monopoly)') #[i.fa.fa-search] Next Clue
+							p(ng-show='q.monopoly.nextClue.visible') {{q.monopoly.nextClue.text}}
 		| @@javascriptReplaceFiles
