@@ -16,7 +16,7 @@ html(ng-app='escapeApp')
 			header
 				h1 The Game Escape - Admin
 			.jumbotron
-				h1.digital(ng-show='activeTeam && activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
+				h1.digital(ng-show='activeTeam && activeTeam.timeRemaining') {{moment(timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
 					h3.digital(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
 				button.btn.btn-primary(ng-click='restartTimer()') Restart Timer

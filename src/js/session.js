@@ -24,7 +24,11 @@ escapeApp.controller('SessionCtrl', [
 
 		$interval(function everySecond() {
 			if ($s.activeTeam) {
-				$s.activeTeam.timeRemaining -= 1;
+				$s.timeRemaining = (function convertTimer() {
+					var start = moment($s.activeTeam.timerStarted, timeFormat);
+
+					return moment().diff(start).inSeconds();
+				})();
 			}
 		}, 1000);
 
@@ -33,7 +37,8 @@ escapeApp.controller('SessionCtrl', [
 			questions: EF.getFBArray('questions'),
 			allTeams: [],
 			teamId: null,
-			curMsg: ''
+			curMsg: '',
+			timeRemaining: 0
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {

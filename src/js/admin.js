@@ -14,7 +14,8 @@ escapeApp.controller('AdminCtrl', [
 				newTeamName: '',
 				newMessage: ''
 			},
-			teamId: null
+			teamId: null,
+			timeRemaining: 0
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
@@ -31,8 +32,9 @@ escapeApp.controller('AdminCtrl', [
 
 		$s.restartTimer = function restartTimer() {
 			if(confirm('Are you sure?')) {
-				$s.activeTeam.timeRemaining = EF.initialTimeAllowed;
-				$s.changeMessage('Timer restarted');
+				$s.timeRemaining = EF.initialTimeAllowed;
+				$s.activeTeam.timerStarted = moment().format(timeFormat);
+				$s.changeMessage('Timer started');
 			}
 		};
 

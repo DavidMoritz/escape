@@ -29,7 +29,7 @@ html(ng-app='escapeApp')
 			.jumbotron
 				h1.digital
 					span(ng-hide='activeTeam') Choose Your Team
-					span(ng-show='activeTeam.timeRemaining') {{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}
+					span(ng-show='timeRemaining') {{moment(timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
 				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
