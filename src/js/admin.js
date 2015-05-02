@@ -1,20 +1,10 @@
 escapeApp.controller('AdminCtrl', [
 	'$scope',
-	'$interval',
 	'EscapeFactory',
-	function AdminCtrl($s, $interval, EF) {
+	function AdminCtrl($s, EF) {
 		'use strict';
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
-
-		$interval(function everySecond() {
-			if ($s.activeTeam && $s.activeTeam.timerStarted) {
-				// convertTimer
-				var start = moment($s.activeTeam.timerStarted, timeFormat);
-
-				$s.timeRemaining = $s.activeTeam.timeAllowed - moment().diff(start, 'seconds');
-			}
-		}, 1000);
 
 		//	initialize scoped variables
 		_.assign($s, {

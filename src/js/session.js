@@ -7,17 +7,21 @@ escapeApp.controller('SessionCtrl', [
 		'use strict';
 
 		function typeOutMessage() {
-			$s.curMsg.display = '';
-			var curMsgArray = $s.curMsg.text.split('');
-			var curPos = 0;
+			if(!$s.currentlyTyping) {
+				$s.currentlyTyping = true;
+				$s.curMsg.display = '';
 
-			var typingInterval = $interval(function typeGradually() {
-				if(curPos >= curMsgArray.length) {
-					return $interval.cancel(typingInterval);
-				}
+				var curMsgArray = $s.curMsg.text.split('');
+				var curPos = 0;
+				var typingInterval = $interval(function typeGradually() {
+					if(curPos >= curMsgArray.length) {
+						$s.currentlyTyping = false;
+						return $interval.cancel(typingInterval);
+					}
 
-				$s.curMsg.display = $s.curMsg.display + curMsgArray[curPos++];
-			}, 40);
+					$s.curMsg.display = $s.curMsg.display + curMsgArray[curPos++];
+				}, 40);
+			}
 		}
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
