@@ -1,9 +1,9 @@
-escapeApp.controller('EscapeCtrl', [
+escapeApp.controller('SessionCtrl', [
 	'$scope',
 	'$timeout',
 	'$interval',
 	'EscapeFactory',
-	function EscapeCtrl($s, $timeout, $interval, EF) {
+	function SessionCtrl($s, $timeout, $interval, EF) {
 		'use strict';
 
 		function typeOutMessage() {
