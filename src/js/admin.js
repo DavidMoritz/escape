@@ -8,7 +8,7 @@ escapeApp.controller('AdminCtrl', [
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 
 		$interval(function everySecond() {
-			if ($s.activeTeam) {
+			if ($s.activeTeam && $s.activeTeam.timerStarted) {
 				// convertTimer
 				var start = moment($s.activeTeam.timerStarted, timeFormat);
 
