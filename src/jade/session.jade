@@ -28,7 +28,7 @@ html(ng-app='escapeApp')
 				h1 The Game Escape
 			.jumbotron
 				h1.digital
-					span(ng-hide='activeTeam') Loading 
+					span(ng-hide='activeTeam') Loading
 						i.fa.fa-spinner.fa-pulse
 					span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
@@ -38,9 +38,11 @@ html(ng-app='escapeApp')
 			#game(ng-show='activeTeam')
 				h3 Team: {{activeTeam.name}}
 				.row
-					+col(null, 6, 4)(ng-repeat='q in questions')
-						h4 Question \#{{$index + 1}}
-						p {{q.text}}
-						input.form-control(type='text' ng-model='q.guess' placeholder='{{getPlaceholder(q)}}')
-						button.btn.btn-primary(ng-click='submitGuess(q)') #[i.fa.fa-lightbulb-o] Submit
+					+col(null, 6, 4)
+						h4 Question #25
+						label.sr-only Where did I stay?
+						input.form-control(type='text' ng-model='q25.guess.property' placeholder='Where did I stay?')
+						label.sr-only How much money did I have left?
+						input.form-control(type='text' ng-model='q25.guess.money' placeholder='How much money did I have left?')
+						button.btn.btn-primary(ng-click='submitGuessSpecial(q25)') #[i.fa.fa-lightbulb-o] Submit
 		| @@javascriptReplaceFiles

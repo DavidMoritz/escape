@@ -33,11 +33,18 @@ escapeApp.controller('SessionCtrl', [
 
 		//	initialize scoped variables
 		_.assign($s, {
-			questions: EF.getFBArray('questions'),
 			allTeams: [],
 			teamId: null,
 			curMsg: '',
-			timeRemaining: 0
+			timeRemaining: 0,
+			q25: {
+				id: 25,
+				guess: {
+					property: '',
+					money: ''
+				},
+				answers: ['Illinois10']
+			}
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
@@ -53,15 +60,28 @@ escapeApp.controller('SessionCtrl', [
 			});
 		};
 
-		$s.submitGuess = function submitGuess(q) {
-			var lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
+		$s.submitGuess = function submitGuess(qNum) {
+			var lowerCaseAnswers = _.map($s[qNum].answers, function lowerCaseAnswers(ans) {
 				return ans.toLowerCase();
 			});
 
-			if (_.contains(lowerCaseAnswers, q.guess.toLowerCase())) {
+			if (_.contains(lowerCaseAnswers, $s[qNum].guess.toLowerCase())) {
 				alert('correct!');
 			} else {
-				alert('nope!  the correct answer is ' + q.answers[0]);
+				alert('nope!  the correct answer is ' + $s.answers[0]);
+			}
+		};
+
+		//	some guesses need to be massaged before submitting them
+		$s.submitGuessSpecial = function submitGuessSpecial(qNum) {
+			if (qNum.id === 25) {
+				var property = _.contains(qNum.guess.property, 'Illinois') ? 'Illinois' : qNum.guess.property;
+				var money = qNum.guess.money.replace(/\$/g, '').replace('.00', '');
+				qNum.guess = property + money;
+
+				$s.submitGuess(qNum);
+			} else {
+				console.log('error');
 			}
 		};
 
