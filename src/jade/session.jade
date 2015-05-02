@@ -28,16 +28,13 @@ html(ng-app='escapeApp')
 				h1 The Game Escape
 			.jumbotron
 				h1.digital
-					span(ng-hide='activeTeam') Choose Your Team
+					span(ng-hide='activeTeam') Loading 
+						i.fa.fa-spinner.fa-pulse
 					span(ng-show='timeRemaining') {{moment(timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
 				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
-			.chooseTeam(ng-hide='activeTeam' class='nullable')
-				select.form-control(ng-model='teamId' ng-options='team.$id as team.name for team in getUnfinishedTeams()')
-					option(value='' disabled selected) -- choose team --
-				button.btn.btn-default(ng-click='chooseTeam(teamId)') Choose Team
 			#game(ng-show='activeTeam')
 				h3 Team: {{activeTeam.name}}
 				.row

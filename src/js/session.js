@@ -27,7 +27,7 @@ escapeApp.controller('SessionCtrl', [
 				$s.timeRemaining = (function convertTimer() {
 					var start = moment($s.activeTeam.timerStarted, timeFormat);
 
-					return moment().diff(start).inSeconds();
+					return $s.activeTeam.timeAllowed - moment().diff(start, 'seconds');
 				})();
 			}
 		}, 1000);
@@ -42,15 +42,7 @@ escapeApp.controller('SessionCtrl', [
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
-			//	turn all teams inactive
-			_.forEach($s.allTeams, function eachTeam(team) {
-				EF.getFB('teams/' + team.$id + '/active').set(false);
-			});
-
-			//	activate the chosen team
 			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
-				$s.activeTeam.active = true;
-
 				$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
 					$s.curMsg = {
 						text: messages[_.keys(messages)[_.keys(messages).length - 1]].text,
@@ -78,15 +70,13 @@ escapeApp.controller('SessionCtrl', [
 			return question.placeholder || 'Answer here';
 		};
 
-		$s.getUnfinishedTeams = function getUnfinishedTeams() {
-			return _.where($s.allTeams, {finished: false});
+		$s.getActiveTeam = function getActiveTeam() {
+			return _.findWhere($s.allTeams, {active: true});
 		};
 
 		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
-			if ($s.getUnfinishedTeams().length === 1) {
-				$s.chooseTeam($s.getUnfinishedTeams()[0].$id);
-			}
+			$s.chooseTeam($s.getActiveTeam().$id);
 		});
 	}
 ]);

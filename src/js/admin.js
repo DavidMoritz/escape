@@ -1,10 +1,21 @@
 escapeApp.controller('AdminCtrl', [
 	'$scope',
+	'$interval',
 	'EscapeFactory',
-	function AdminCtrl($s, EF) {
+	function AdminCtrl($s, $interval, EF) {
 		'use strict';
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
+
+		$interval(function everySecond() {
+			if ($s.activeTeam) {
+				$s.timeRemaining = (function convertTimer() {
+					var start = moment($s.activeTeam.timerStarted, timeFormat);
+
+					return $s.activeTeam.timeAllowed - moment().diff(start, 'seconds');
+				})();
+			}
+		}, 1000);
 
 		//	initialize scoped variables
 		_.assign($s, {
@@ -34,7 +45,7 @@ escapeApp.controller('AdminCtrl', [
 			if(confirm('Are you sure?')) {
 				$s.timeRemaining = EF.initialTimeAllowed;
 				$s.activeTeam.timerStarted = moment().format(timeFormat);
-				$s.changeMessage('Timer started');
+				$s.addNewMessage('Timer started');
 			}
 		};
 
@@ -60,7 +71,7 @@ escapeApp.controller('AdminCtrl', [
 				clues: 0,
 				active: false,
 				finished: false,
-				timeRemaining: 60 * 60
+				timeAllowed: EF.initialTimeAllowed
 			}).then(function(newTeam) {
 				console.log('new team created with id: ' + newTeam.key());
 

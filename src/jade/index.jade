@@ -21,6 +21,6 @@ html(ng-app='escapeApp')
 				.displayMessage
 					h3.digital {{public.display}}
 			p The Game Escape is an interactive, cooperative, challenging experience that helps demonstrate teamwork and our various telents and strenghts when working in a group. Perfect as a team-building work activity, family experiment, or testing your friends; The Game Escape will stretch you mentally and emotionally. Success is not guaranteed. Will your team get out in time? You'd better move quickly, only have {{moment(public.timeRemaining * 1000).format('mm')}} minutes left.
-			a.btn.btn-success(href='player.html') Player?
+			a.btn.btn-success(href='session.html') Player?
 			a.btn.btn-warning(href='admin.html') Admin?
 		| @@javascriptPublicReplaceFiles
