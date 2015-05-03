@@ -10,10 +10,10 @@ escapeApp.factory('EscapeFactory', [
 
 			getFB: function getFB(childPath) {
 				if (!FB) {
-					FB = new Firebase('https://escape.firebaseio.com/')
+					FB = new Firebase('https://escape.firebaseio.com/');
 				}
 
-				return childPath ? FB.chile(childPath) : FB;
+				return childPath ? FB.child(childPath) : FB;
 			},
 
 			getFBArray: function getFBArray(childPath) {

@@ -141,11 +141,11 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 				keepJSONItemsOnTop: false,
 				width: 260,
 				height: null,
-				background: "#eee",
-				selectText: "",
+				background: '#eee',
+				selectText: '',
 				defaultSelectedIndex: null,
 				truncateDescription: true,
-				imagePosition: "left",
+				imagePosition: 'left',
 				showSelectedHTML: true,
 				clickOffToClose: true,
 				onSelected: function () { }
@@ -181,7 +181,7 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 			var methods = {
 				init: function init(options) {
 					//Preserve the original defaults by passing an empty object as the target
-					var options = $.extend({}, defaults, options);
+					options = $.extend({}, defaults, options);
 
 					//Apply on all selected elements
 					return this.each(function () {
@@ -205,9 +205,11 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 							});
 
 							//Update Plugin data merging both HTML select data and JSON data for the dropdown
-							if (options.keepJSONItemsOnTop)
+							if (options.keepJSONItemsOnTop) {
 								$.merge(options.data, ddSelect);
-							else options.data = $.merge(ddSelect, options.data);
+							} else {
+								options.data = $.merge(ddSelect, options.data);
+							}
 
 							//Replace HTML select with empty placeholder, keep the original
 							var original = obj, placeholder = $('<div id="' + obj.attr('id') + '"></div>');
@@ -218,8 +220,8 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 							obj.addClass('dd-container').append(ddSelectHtml).append(ddOptionsHtml);
 
 							//Get newly created ddOptions and ddSelect to manipulate
-							var ddSelect = obj.find('.dd-select'),
-								ddOptions = obj.find('.dd-options');
+							ddSelect = obj.find('.dd-select');
+							var ddOptions = obj.find('.dd-options');
 
 							//Set widths
 							ddOptions.css({ width: options.width });
@@ -227,12 +229,16 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 							obj.css({ width: options.width });
 
 							//Set height
-							if (options.height != null)
+							if (options.height !== null) {
 								ddOptions.css({ height: options.height, overflow: 'auto' });
+							}
 
 							//Add ddOptions to the container. Replace with template engine later.
-							$.each(options.data, function (index, item) {
-								if (item.selected) options.defaultSelectedIndex = index;
+							$.each(options.data, function eachData(index, item) {
+								if (item.selected) {
+									options.defaultSelectedIndex = index;
+								}
+
 								ddOptions.append('<li>' +
 									'<a class="dd-option">' +
 										(item.value ? ' <input class="dd-option-value" type="hidden" value="' + item.value + '" />' : '') +
@@ -250,17 +256,15 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 								selectedIndex: -1,
 								selectedItem: null,
 								selectedData: null
-							}
+							};
 							obj.data('ddslick', pluginData);
 
 							//Check if needs to show the select text, otherwise show selected or default selection
-							if (options.selectText.length > 0 && options.defaultSelectedIndex == null) {
+							if (options.selectText.length > 0 && options.defaultSelectedIndex === null) {
 								obj.find('.dd-selected').html(options.selectText);
 							}
 							else {
-								var index = (options.defaultSelectedIndex != null && options.defaultSelectedIndex >= 0 && options.defaultSelectedIndex < options.data.length)
-											? options.defaultSelectedIndex
-											: 0;
+								var index = (options.defaultSelectedIndex !== null && options.defaultSelectedIndex >= 0 && options.defaultSelectedIndex < options.data.length) ? options.defaultSelectedIndex : 0;
 								selectIndex(obj, index);
 							}
 
@@ -290,8 +294,9 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 				//Public method to select an option by its index
 				select: function select(options) {
 					return this.each(function () {
-						if (options.index)
+						if (options.index) {
 							selectIndex($(this), options.index);
+						}
 					});
 				},
 
@@ -302,8 +307,9 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 							pluginData = $this.data('ddslick');
 
 						//Check if plugin is initialized
-						if (pluginData)
+						if (pluginData) {
 							open($this);
+						}
 					});
 				},
 
@@ -314,8 +320,9 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 							pluginData = $this.data('ddslick');
 
 						//Check if plugin is initialized
-						if (pluginData)
+						if (pluginData) {
 							close($this);
+						}
 					});
 				},
 
@@ -332,7 +339,7 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 						}
 					});
 				}
-			}
+			};
 
 			//	JM: assign class of ddslick to element
 			el.addClass('ddslick');
