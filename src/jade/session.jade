@@ -48,6 +48,6 @@ html(ng-app='escapeApp')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.monopoly)') #[i.fa.fa-lightbulb-o] Submit
 						div(ng-if='isSolved(q.monopoly)')
 							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.monopoly)') #[i.fa.fa-search] Next Clue
+							button.btn.btn-success(ng-click='toggleNextClue(q.monopoly)' ng-class='{active: q.monopoly.nextClue.visible}') #[i.fa.fa-search] Next Clue
 							p(ng-show='q.monopoly.nextClue.visible') {{q.monopoly.nextClue.text}}
 		| @@javascriptReplaceFiles

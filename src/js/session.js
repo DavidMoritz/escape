@@ -40,7 +40,10 @@ escapeApp.controller('SessionCtrl', [
 		_.assign($s, {
 			allTeams: [],
 			teamId: null,
-			curMsg: '',
+			curMsg: {
+				text: '',
+				display: ''
+			},
 			timeRemaining: 0,
 			solvedQuestions: [],
 			q: {
@@ -122,15 +125,12 @@ escapeApp.controller('SessionCtrl', [
 
 		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
-			console.log('session: afterTeamsLoaded() called');
-			EF.getFBObject('activeTeam').$bindTo($s, 'activeTeamObject').then(function afterIdLoaded() {
-				console.log('session: afterIdLoaded() called');
-				$s.$watch('activeTeamObject.teamId', function onIdChange() {
-					console.log('session: onIdChange() called');
-					if($s.activeTeamObject.teamId != 'none') {
-						$s.chooseTeam($s.activeTeamObject.teamId);
-					}
-				});
+			EF.getFB('activeTeamId').on('value', function gotId(snap) {
+				$s.activeTeamId = snap.val();
+
+				if ($s.activeTeamId) {
+					$s.chooseTeam($s.activeTeamId);
+				}
 			});
 		});
 	}
