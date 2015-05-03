@@ -26,6 +26,7 @@ escapeApp.controller('SessionCtrl', [
 		}
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
+		var activeTeamFBObj;
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
@@ -70,7 +71,7 @@ escapeApp.controller('SessionCtrl', [
 						die1: '',
 						die2: ''
 					},
-					answers: ['3&4', '4&3'],
+					answers: ['6&4', '4&6'],
 					attempts: [],
 					nextClue: {
 						text: 'Orange lock: 34567',
@@ -81,8 +82,18 @@ escapeApp.controller('SessionCtrl', [
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
-			console.log('session: chooseTeam() called');
-			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
+			console.log('SESS> choosing Team: ' + teamId);
+
+			if (activeTeamFBObj) {
+				activeTeamFBObj.$destroy();
+				console.log('SESS> activeTeam is destroyed');
+				console.log($s.activeTeam);
+			}
+
+			console.log('SESS> choosing a team');
+			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
+			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
+				console.log('SESS> afterTeamLoaded');
 				$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
 					$s.curMsg = {
 						text: messages[_.keys(messages)[_.keys(messages).length - 1]].text,
@@ -140,6 +151,7 @@ escapeApp.controller('SessionCtrl', [
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
 			EF.getFB('activeTeamId').on('value', function gotId(snap) {
 				$s.activeTeamId = snap.val();
+				console.log('SESS> new team id: ' + $s.activeTeamId);
 
 				if ($s.activeTeamId) {
 					$s.chooseTeam($s.activeTeamId);

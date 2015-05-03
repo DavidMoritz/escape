@@ -5,11 +5,13 @@ escapeApp.controller('AdminCtrl', [
 		'use strict';
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
+		var activeTeamFBObj;
 
 		//	initialize scoped variables
 		_.assign($s, {
 			allTeams: [],
 			activeTeam: null,
+			activeTeamId: null,
 			formFields: {
 				newTeamName: '',
 				newMessage: ''
@@ -20,8 +22,16 @@ escapeApp.controller('AdminCtrl', [
 
 		$s.chooseTeam = function chooseTeam(teamId, newTeam) {
 			console.log('admin: chooseTeam() called');
+
+			if (activeTeamFBObj) {
+				activeTeamFBObj.$destroy();
+				console.log('SESS> activeTeam is destroyed');
+				console.log($s.activeTeam);
+			}
+
 			//	activate the chosen team
-			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function then() {
+			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
+			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function atThen() {
 				EF.setFB('activeTeamId', teamId);
 			});
 		};
@@ -48,24 +58,26 @@ escapeApp.controller('AdminCtrl', [
 
 		$s.createTeam = function createTeam() {
 			console.log('admin: createTeam() called');
-			var teams = EF.getFBArray('teams'),
-				currentTime = moment().format(timeFormat);
+			var teams = EF.getFBArray('teams');
+			teams.$loaded().then(function teamsLoaded() {
+				var currentTime = moment().format(timeFormat);
 
-			teams.$add({
-				createdDate: currentTime,
-				name: $s.formFields.newTeamName,
-				clues: 0,
-				finished: false,
-				timeAllowed: EF.initialTimeAllowed
-			}).then(function(newTeam) {
-				console.log('new team created with id: ' + newTeam.key());
+				teams.$add({
+					createdDate: currentTime,
+					name: $s.formFields.newTeamName,
+					clues: 0,
+					finished: false,
+					timeAllowed: EF.initialTimeAllowed
+				}).then(function(newTeam) {
+					console.log('new team created with id: ' + newTeam.key());
 
-				newTeam.child('storedMessages').push({
-					time: currentTime,
-					text: 'We are about to begin'
+					newTeam.child('storedMessages').push({
+						time: currentTime,
+						text: 'We are about to begin'
+					});
+
+					$s.chooseTeam(newTeam.key());
 				});
-
-				$s.chooseTeam(newTeam.key());
 			});
 		};
 

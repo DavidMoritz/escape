@@ -25,7 +25,9 @@ escapeApp.factory('EscapeFactory', [
 			},
 
 			setFB: function setFB(childPath, value) {
-				this.getFB(childPath).set(value);
+				var ref = this.getFB(childPath);
+				ref.set(value);
+				return false;
 			}
 		};
 	}
