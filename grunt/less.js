@@ -6,15 +6,10 @@ module.exports = function exportLess(grunt) {
 		dev: {
 			files: [{
 				'<%= distPath %>escape.css': [
-					'src/less/monokai-theme.less',
-					'lib/fontawesome/less/font-awesome.less',
-					'src/**/*.less',
-					'!src/less/admin.less'
+					'src/less/session.less'
 				]
 			},{
 				'<%= distPath %>admin.css': [
-					'lib/fontawesome/less/font-awesome.less',
-					'!src/less/escape.less',
 					'src/less/admin.less'
 				]
 			}]
@@ -26,15 +21,10 @@ module.exports = function exportLess(grunt) {
 			},
 			files: [{
 				'<%= distPath %>escape.css': [
-					'src/less/monokai-theme.less',
-					'lib/fontawesome/less/font-awesome.less',
-					'src/**/*.less',
-					'!src/less/admin.less'
+					'src/less/session.less'
 				]
 			},{
 				'<%= distPath %>admin.css': [
-					'lib/fontawesome/less/font-awesome.less',
-					'!src/less/escape.less',
 					'src/less/admin.less'
 				]
 			}]

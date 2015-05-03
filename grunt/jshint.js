@@ -7,7 +7,8 @@ module.exports = function exportJshint(grunt) {
 		all: [
 			'src/**/*.js',
 			'grunt/**/*.js',
-			'*.js'
+			'*.js',
+			'!src/js/services/escape-ddslick.js'
 		]
 	});
 
