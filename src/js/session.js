@@ -149,7 +149,6 @@ escapeApp.controller('SessionCtrl', [
 				q.coords.push(coord);
 			}
 			q.coords = _.sortBy(q.coords);
-			console.log(q.coords);
 		};
 
 		$timeout(function makeDropdownSlick() {	//	selects with images

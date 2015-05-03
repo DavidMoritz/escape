@@ -76,7 +76,7 @@ escapeApp.factory('EscapeFactory', [
 					}
 				},
 				battleship: {
-					id: 36,
+					id: 41,
 					name: 'battleship',
 					icon: 'ship',
 					guess: '',
