@@ -22,7 +22,7 @@ escapeApp.controller('AdminCtrl', [
 			console.log('admin: chooseTeam() called');
 			//	activate the chosen team
 			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function then() {
-				EF.getFB('activeTeamId').set(teamId);
+				EF.setFB('activeTeamId', teamId);
 			});
 		};
 
