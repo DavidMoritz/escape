@@ -61,6 +61,21 @@ escapeApp.controller('SessionCtrl', [
 						text: 'Cerulean lock: 12345',
 						visible: false
 					}
+				},
+				yahtzee: {
+					id: 17,
+					name: 'yahtzee',
+					guess: '',
+					splitGuess: {
+						die1: '',
+						die2: ''
+					},
+					answers: ['3&4', '4&3'],
+					attempts: [],
+					nextClue: {
+						text: 'Orange lock: 34567',
+						visible: false
+					}
 				}
 			}
 		});
@@ -76,9 +91,6 @@ escapeApp.controller('SessionCtrl', [
 
 					typeOutMessage();
 				}, true);
-
-				//	set solvedQuestions
-				// EF.getFBObject('teams/' + $s.activeTeam.$id + '/solvedQuestions').$bindTo($s, 'activeTeam.solvedQuestions');
 			});
 		};
 
@@ -103,16 +115,17 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		//	some guesses need to be massaged before submitting them
-		$s.submitGuessSpecial = function submitGuessSpecial(qNum) {
-			if (qNum.id === 25) {
-				var property = _.contains(qNum.splitGuess.property, 'Illinois') ? 'Illinois' : qNum.splitGuess.property;
-				var money = qNum.splitGuess.money.replace(/\$/g, '').replace('.00', '');
+		$s.submitGuessSpecial = function submitGuessSpecial(q) {
+			if (q.name === 'monopoly') {
+				var property = _.contains(q.splitGuess.property, 'Illinois') ? 'Illinois' : q.splitGuess.property;
+				var money = q.splitGuess.money.replace(/\$/g, '').replace('.00', '');
 
-				qNum.guess = property + money;
-				$s.submitGuess(qNum);
-			} else {
-				console.log('error');
+				q.guess = property + money;
+			} else if (q.name === 'yahtzee') {
+				q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
 			}
+
+			$s.submitGuess(q);
 		};
 
 		$s.isSolved = function isSolved(q) {
@@ -133,5 +146,23 @@ escapeApp.controller('SessionCtrl', [
 				}
 			});
 		});
+
+		$timeout(function makeDropdownSlick() {	//	selects with images
+			$('.ddslick').each(function eachSelect() {
+				$(this).ddslick({
+						onSelected: function onSelected(data) {
+							// console.log(data);
+							if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
+								$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
+							}
+							if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die2')) {
+								$s.q.yahtzee.splitGuess.die2 = data.selectedData.value;
+							}
+
+							$s.$apply();	//	alert the scope that it's been updated
+						}
+					});
+			});
+		}, 1500);
 	}
 ]);

@@ -50,4 +50,17 @@ html(ng-app='escapeApp')
 							h3 #[i.fa.fa-check] SOLVED!
 							button.btn.btn-success(ng-click='toggleNextClue(q.monopoly)' ng-class='{active: q.monopoly.nextClue.visible}') #[i.fa.fa-search] Next Clue
 							p(ng-show='q.monopoly.nextClue.visible') {{q.monopoly.nextClue.text}}
+					+col(null, 6, 4)(ng-show='isSolved(q.monopoly)')
+						h4 Question \#{{q.yahtzee.id}}
+						div(ng-if='!isSolved(q.yahtzee)')
+							label What did I roll?
+							select.form-control(escape-ddslick ng-model='q.yahtzee.splitGuess.die1')
+								option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"http://dobbelsteen.virtuworld.net/img/" + die + "c.gif"}}')
+							select.form-control(escape-ddslick ng-model='q.yahtzee.splitGuess.die2')
+								option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"http://dobbelsteen.virtuworld.net/img/" + die + "c.gif"}}')
+							button.btn.btn-primary(ng-click='submitGuessSpecial(q.yahtzee)') #[i.fa.fa-lightbulb-o] Submit
+						div(ng-if='isSolved(q.yahtzee)')
+							h3 #[i.fa.fa-check] SOLVED!
+							button.btn.btn-success(ng-click='toggleNextClue(q.yahtzee)' ng-class='{active: q.yahtzee.nextClue.visible}') #[i.fa.fa-search] Next Clue
+							p(ng-show='q.yahtzee.nextClue.visible') {{q.yahtzee.nextClue.text}}
 		| @@javascriptReplaceFiles
