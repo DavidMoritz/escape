@@ -31,10 +31,12 @@ html(ng-app='escapeApp')
 				input.form-control.addMessageInput(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}')
 				input.form-control(type='submit' ng-disabled='!formFields.newMessage' value='Add Message')
 			.row
-				.col-sm-6
-					h3 Team:
-					h3 {{activeTeam.name}}
-				.col-sm-6.controls
+				.col-xs-6(ng-show='activeTeam')
+					h3 Team: {{activeTeam.name}}
+					h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
+					h5 Clues: {{activeTeam.clues}}
+					h5 Time Allowed: {{activeTeam.timeAllowed / 60}} minutes
+				.col-xs-6.controls
 					h3 Controls:
 					button.btn.btn-primary.collapse.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") {{activeTeam ? "Change Teams" : "Choose Team"}}
 					button.btn.btn-success(ng-click='restartTimer()' ng-show='activeTeam && !activeTeam.timerStarted') Start Game

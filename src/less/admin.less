@@ -8,11 +8,15 @@
 		position: absolute;
 		bottom: 15px;
 		right: -35px;
+		@media(max-width: @screen-xs-max) {
+			bottom: 5px;
+			right: 0;
+		}
 	}
 	.controls {
 		.btn {
 			float: left;
-			margin-right: 10px;
+			margin: 0 10px 5px 0;
 		}
 		.btn:last-child {
 			float: none;
