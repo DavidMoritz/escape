@@ -7,6 +7,7 @@ escapeApp.controller('SessionCtrl', [
 		'use strict';
 
 		function typeOutMessage() {
+			console.log('session: typeOutMessage() called');
 			if(!$s.currentlyTyping) {
 				$s.currentlyTyping = true;
 				$s.curMsg.display = '';
@@ -62,6 +63,7 @@ escapeApp.controller('SessionCtrl', [
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
+			console.log('session: chooseTeam() called');
 			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
 					$s.curMsg = {
@@ -120,9 +122,14 @@ escapeApp.controller('SessionCtrl', [
 
 		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
-			EF.getFBObject('activeTeamId').$bindTo($s, 'activeTeamIdObject').then(function afterIdLoaded() {
-				$s.$watch('activeTeamIdObject.$value', function onIdChange() {
-					$s.chooseTeam($s.activeTeamIdObject.$value);
+			console.log('session: afterTeamsLoaded() called');
+			EF.getFBObject('activeTeam').$bindTo($s, 'activeTeamObject').then(function afterIdLoaded() {
+				console.log('session: afterIdLoaded() called');
+				$s.$watch('activeTeamObject.teamId', function onIdChange() {
+					console.log('session: onIdChange() called');
+					if($s.activeTeamObject.teamId != 'none') {
+						$s.chooseTeam($s.activeTeamObject.teamId);
+					}
 				});
 			});
 		});

@@ -18,10 +18,11 @@ escapeApp.controller('AdminCtrl', [
 			timeRemaining: 0
 		});
 
-		$s.chooseTeam = function chooseTeam(teamId) {
+		$s.chooseTeam = function chooseTeam(teamId, newTeam) {
+			console.log('admin: chooseTeam() called');
 			//	activate the chosen team
 			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam');
-			EF.setFB('activeTeamId', teamId);
+			EF.setFB('activeTeam', teamId);
 		};
 
 		$s.restartTimer = function restartTimer() {
@@ -45,6 +46,7 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.createTeam = function createTeam() {
+			console.log('admin: createTeam() called');
 			var teams = EF.getFBArray('teams'),
 				currentTime = moment().format(timeFormat);
 
@@ -71,10 +73,5 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.allTeams = EF.getFBArray('teams');
-		$s.allTeams.$loaded(function afterTeamsLoaded() {
-			if ($s.getUnfinishedTeams().length === 1) {
-				$s.chooseTeam($s.getUnfinishedTeams()[0].$id);
-			}
-		});
 	}
 ]);

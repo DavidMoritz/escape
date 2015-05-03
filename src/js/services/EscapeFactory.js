@@ -22,7 +22,7 @@ escapeApp.factory('EscapeFactory', [
 			setFB: function setFB(childPath, value) {
 				var fbValue = this.getFBObject(childPath);
 
-				fbValue.$value = value;
+				fbValue.teamId = value;
 				fbValue.$save();
 			},
 		};
