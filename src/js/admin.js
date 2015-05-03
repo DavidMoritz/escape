@@ -53,6 +53,8 @@ escapeApp.controller('AdminCtrl', [
 				text: $s.formFields.newMessage,
 				time: moment().format(timeFormat)
 			});
+			$s.formFields.newMessage = '';
+			$('.addMessageInput').focus();
 		};
 
 		$s.createTeam = function createTeam() {
