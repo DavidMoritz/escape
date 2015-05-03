@@ -7,22 +7,18 @@ escapeApp.controller('SessionCtrl', [
 		'use strict';
 
 		function typeOutMessage() {
-			console.log('session: typeOutMessage() called');
-			if(!$s.currentlyTyping) {
-				$s.currentlyTyping = true;
-				$s.curMsg.display = '';
+			console.log('SESS> typeOutMessage() called');
+			$s.curMsg.display = '';
 
-				var curMsgArray = $s.curMsg.text.split('');
-				var curPos = 0;
-				var typingInterval = $interval(function typeGradually() {
-					if(curPos >= curMsgArray.length) {
-						$s.currentlyTyping = false;
-						return $interval.cancel(typingInterval);
-					}
+			var curMsgArray = $s.curMsg.text.split('');
+			var curPos = 0;
+			var typingInterval = $interval(function typeGradually() {
+				if(curPos >= curMsgArray.length) {
+					return $interval.cancel(typingInterval);
+				}
 
-					$s.curMsg.display = $s.curMsg.display + curMsgArray[curPos++];
-				}, 40);
-			}
+				$s.curMsg.display = $s.curMsg.display + curMsgArray[curPos++];
+			}, 40);
 		}
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -88,20 +84,24 @@ escapeApp.controller('SessionCtrl', [
 				activeTeamFBObj.$destroy();
 				console.log('SESS> activeTeam is destroyed');
 				console.log($s.activeTeam);
+			} else {
+				var firstLoad = true;
 			}
 
 			console.log('SESS> choosing a team');
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				console.log('SESS> afterTeamLoaded');
-				$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
-					$s.curMsg = {
-						text: messages[_.keys(messages)[_.keys(messages).length - 1]].text,
-						display: ''
-					};
+				if(firstLoad) {
+					$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
+						$s.curMsg = {
+							text: messages[_.keys(messages)[_.keys(messages).length - 1]].text,
+							display: ''
+						};
 
-					typeOutMessage();
-				}, true);
+						typeOutMessage();
+					}, true);
+				}
 			});
 		};
 

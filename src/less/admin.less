@@ -1,3 +1,22 @@
 /***	Admin stylesheets ***/
-@import "admin-theme.less";
-@import "/lib/fontawesome/less/font-awesome.less";
+@import "admin-theme";
+@import "/lib/fontawesome/less/font-awesome";
+@import "common";
+
+.admin {
+	.top-corner {
+		position: absolute;
+		bottom: 15px;
+		right: -35px;
+	}
+	.controls {
+		.btn {
+			float: left;
+			margin-right: 10px;
+		}
+		.btn:last-child {
+			float: none;
+		}
+	}
+
+}

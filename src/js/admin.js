@@ -20,13 +20,12 @@ escapeApp.controller('AdminCtrl', [
 			timeRemaining: 0
 		});
 
-		$s.chooseTeam = function chooseTeam(teamId, newTeam) {
-			console.log('admin: chooseTeam() called');
+		$s.chooseTeam = function chooseTeam(teamId) {
+			console.log('ADMIN> chooseTeam id: ' + teamId);
 
 			if (activeTeamFBObj) {
 				activeTeamFBObj.$destroy();
-				console.log('SESS> activeTeam is destroyed');
-				console.log($s.activeTeam);
+				console.log('ADMIN> activeTeam is destroyed');
 			}
 
 			//	activate the chosen team
@@ -57,7 +56,7 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.createTeam = function createTeam() {
-			console.log('admin: createTeam() called');
+			console.log('ADMIN> createTeam() called');
 			var teams = EF.getFBArray('teams');
 			teams.$loaded().then(function teamsLoaded() {
 				var currentTime = moment().format(timeFormat);
