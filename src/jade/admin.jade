@@ -17,15 +17,18 @@ html(ng-app='escapeApp')
 				h1 The Game Escape - Admin
 				button.btn.btn-primary(ng-click='restartTimer()') Restart Timer
 			.jumbotron.chooseTeam(ng-if='!activeTeam')
-				select.form-control(ng-model='teamId' ng-options='team.$id as team.name for team in getUnfinishedTeams()')
-					option(value='' disabled selected) -- choose team --
-				button.btn.btn-success(ng-click='chooseTeam(teamId)') Choose Team
+				.row
+					.col-md-6
+						select.form-control(ng-model='teamId' ng-options='team.$id as team.name for team in getUnfinishedTeams()')
+							option(value='' disabled selected) -- choose team --
+						button.btn.btn-success(ng-click='chooseTeam(teamId)') Choose Team
+					.col-md-6
+						form(ng-submit='createTeam()')
+							input.form-control(type='text' ng-model='formFields.newTeamName')
+							button.btn.btn-success(type='submit' value='Create Team') Create Team
 			form(ng-if='activeTeam' ng-submit='addNewMessage()')
 				textarea.form-control(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}')
 				input.form-control(type='submit' value='Add Message')
 			h3(ng-show='session') Team: {{session.name}}
-			form(ng-submit='createTeam()')
-				input.form-control(type='text' ng-model='formFields.newTeamName')
-				input.form-control(type='submit' value='Create Team')
 			iframe(src="session.html" width="100%" style="min-height:400px")
 		| @@javascriptReplaceFiles
