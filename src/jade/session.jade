@@ -49,7 +49,7 @@ html(ng-app='escapeApp')
 						div(ng-if='isSolved(q.monopoly)')
 							h3 #[i.fa.fa-check] SOLVED!
 							button.btn.btn-success(ng-click='toggleNextClue(q.monopoly)' ng-class='{active: q.monopoly.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							p(ng-show='q.monopoly.nextClue.visible') {{q.monopoly.nextClue.text}}
+							p.lead(ng-show='q.monopoly.nextClue.visible') {{q.monopoly.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.monopoly)')
 						h4 Question \#{{q.yahtzee.id}}
 						div(ng-if='!isSolved(q.yahtzee)')
@@ -62,5 +62,15 @@ html(ng-app='escapeApp')
 						div(ng-if='isSolved(q.yahtzee)')
 							h3 #[i.fa.fa-check] SOLVED!
 							button.btn.btn-success(ng-click='toggleNextClue(q.yahtzee)' ng-class='{active: q.yahtzee.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							p(ng-show='q.yahtzee.nextClue.visible') {{q.yahtzee.nextClue.text}}
+							p.lead(ng-show='q.yahtzee.nextClue.visible') {{q.yahtzee.nextClue.text}}
+					+col(null, 6, 4)(ng-show='isSolved(q.yahtzee)')
+						h4 Question \#{{q.scrabble.id}}
+						div(ng-if='!isSolved(q.scrabble)')
+							label.sr-only What SCRABBLE word did I spell?
+							input.form-control(type='text' ng-model='q.scrabble.guess' placeholder='What SCRABBLE word did I spell?')
+							button.btn.btn-primary(ng-click='submitGuess(q.scrabble)') #[i.fa.fa-lightbulb-o] Submit
+						div(ng-if='isSolved(q.scrabble)')
+							h3 #[i.fa.fa-check] SOLVED!
+							button.btn.btn-success(ng-click='toggleNextClue(q.scrabble)' ng-class='{active: q.scrabble.nextClue.visible}') #[i.fa.fa-search] Next Clue
+							p.lead(ng-show='q.scrabble.nextClue.visible') {{q.scrabble.nextClue.text}}
 		| @@javascriptReplaceFiles

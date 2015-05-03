@@ -59,38 +59,7 @@ escapeApp.controller('SessionCtrl', [
 			},
 			timeRemaining: 0,
 			solvedQuestions: [],
-			q: {
-				monopoly: {
-					id: 25,
-					name: 'monopoly',
-					guess: '',
-					splitGuess: {
-						property: '',
-						money: ''
-					},
-					answers: ['Illinois10'],
-					attempts: [],
-					nextClue: {
-						text: 'Cerulean lock: 12345',
-						visible: false
-					}
-				},
-				yahtzee: {
-					id: 17,
-					name: 'yahtzee',
-					guess: '',
-					splitGuess: {
-						die1: '',
-						die2: ''
-					},
-					answers: ['6&4', '4&6'],
-					attempts: [],
-					nextClue: {
-						text: 'Orange lock: 34567',
-						visible: false
-					}
-				}
-			}
+			q: EF.questions
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
