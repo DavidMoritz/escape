@@ -89,6 +89,50 @@ escapeApp.factory('EscapeFactory', [
 						text: 'Black lock: 78901',
 						visible: true
 					}
+				},
+				clue: {
+					id: 88,
+					name: 'clue',
+					icon: 'key',
+					guess: '',
+					splitGuess: {
+						who: '',
+						what: '',
+						where: ''
+					},
+					suspects: [
+						'Mr. Green',
+						'Professor Plum',
+						'Colonel Mustard',
+						'Mrs. Peacock',
+						'Miss Scarlet',
+						'Mrs. White'
+					],
+					weapons: [
+						'Candlestick',
+						'Knife',
+						'Lead Pipe',
+						'Revolver',
+						'Rope',
+						'Wrench'
+					],
+					rooms: [
+						'Conservatory',
+						'Lounge',
+						'Kitchen',
+						'Library',
+						'Hall',
+						'Study',
+						'Ballroom',
+						'Dining Room',
+						'Billiard Room'
+					],
+					answers: ['Colonel Mustard&Wrench&Lounge'],
+					attempts: [],
+					nextClue: {
+						text: 'Orange lock: 34567',
+						visible: true
+					}
 				}
 			}
 		};

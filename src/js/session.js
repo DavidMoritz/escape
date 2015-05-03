@@ -113,6 +113,8 @@ escapeApp.controller('SessionCtrl', [
 				q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
 			} else if (q.name === 'battleship') {
 				q.guess = q.coords.join('&');
+			} else if (q.name === 'clue') {
+				q.guess = q.splitGuess.who + '&' + q.splitGuess.what + '&' + q.splitGuess.where;
 			}
 
 			$s.submitGuess(q);
@@ -154,18 +156,18 @@ escapeApp.controller('SessionCtrl', [
 		$timeout(function makeDropdownSlick() {	//	selects with images
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({
-						onSelected: function onSelected(data) {
-							// console.log(data);
-							if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
-								$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
-							}
-							if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die2')) {
-								$s.q.yahtzee.splitGuess.die2 = data.selectedData.value;
-							}
-
-							$s.$apply();	//	alert the scope that it's been updated
+					onSelected: function onSelected(data) {
+						// console.log(data);
+						if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
+							$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
 						}
-					});
+						if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die2')) {
+							$s.q.yahtzee.splitGuess.die2 = data.selectedData.value;
+						}
+
+						$s.$apply();	//	alert the scope that it's been updated
+					}
+				});
 			});
 		}, 1500);
 	}
