@@ -21,8 +21,10 @@ escapeApp.controller('AdminCtrl', [
 		$s.chooseTeam = function chooseTeam(teamId, newTeam) {
 			console.log('admin: chooseTeam() called');
 			//	activate the chosen team
-			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam');
-			EF.setFB('activeTeam', teamId);
+			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function then() {
+				EF.getFB('activeTeamId').set(teamId);
+			});
+			// EF.setFB('activeTeamId', teamId);
 		};
 
 		$s.restartTimer = function restartTimer() {

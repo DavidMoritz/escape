@@ -20,11 +20,8 @@ escapeApp.factory('EscapeFactory', [
 			},
 
 			setFB: function setFB(childPath, value) {
-				var fbValue = this.getFBObject(childPath);
-
-				fbValue.teamId = value;
-				fbValue.$save();
-			},
+				this.getFB(childPath).set(value);
+			}
 		};
 	}
 ]);
