@@ -34,6 +34,7 @@ escapeApp.factory('EscapeFactory', [
 				monopoly: {
 					id: 25,
 					name: 'monopoly',
+					icon: 'building-o',
 					guess: '',
 					splitGuess: {
 						property: '',
@@ -43,12 +44,13 @@ escapeApp.factory('EscapeFactory', [
 					attempts: [],
 					nextClue: {
 						text: 'Cerulean lock: 12345',
-						visible: false
+						visible: true
 					}
 				},
 				yahtzee: {
 					id: 17,
 					name: 'yahtzee',
+					icon: 'cubes',
 					guess: '',
 					splitGuess: {
 						die1: '',
@@ -58,18 +60,34 @@ escapeApp.factory('EscapeFactory', [
 					attempts: [],
 					nextClue: {
 						text: 'Orange lock: 34567',
-						visible: false
+						visible: true
 					}
 				},
 				scrabble: {
 					id: 36,
 					name: 'scrabble',
+					icon: 'th-large',
 					guess: '',
 					answers: ['watermelon'],
 					attempts: [],
 					nextClue: {
 						text: 'White lock: 56789',
-						visible: false
+						visible: true
+					}
+				},
+				battleship: {
+					id: 36,
+					name: 'battleship',
+					icon: 'ship',
+					guess: '',
+					coords: [],
+					columns: _.range(1, 11),
+					rows: 'abcdefghij'.split(''),
+					answers: ['b2&d2'],
+					attempts: [],
+					nextClue: {
+						text: 'Black lock: 78901',
+						visible: true
 					}
 				}
 			}

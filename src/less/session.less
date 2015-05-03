@@ -42,14 +42,20 @@ h1.digital {
 }
 
 .container {
-	.angularNotDone & {
-		display: none;
-	}
 	h2 {
 		color: black;
 		text-shadow: white 0 0 2px;
 	}
 	h3 {margin-top: 0;}
+	table.battleship {
+		th, td {text-align: center;}
+		th {color: #6af;}
+		td {
+			padding: 0 4px;
+
+			&.active {color: #c00;}
+		}
+	}
 }
 .displayMessage {
 	h3 {

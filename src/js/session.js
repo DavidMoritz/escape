@@ -111,6 +111,8 @@ escapeApp.controller('SessionCtrl', [
 				q.guess = property + money;
 			} else if (q.name === 'yahtzee') {
 				q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
+			} else if (q.name === 'battleship') {
+				q.guess = q.coords.join('&');
 			}
 
 			$s.submitGuess(q);
@@ -135,6 +137,20 @@ escapeApp.controller('SessionCtrl', [
 				}
 			});
 		});
+
+		$s.isCoordSelected = function isCoordSelected(q, coord) {
+			return _.contains(q.coords, coord);
+		};
+
+		$s.toggleCoordSelect = function toggleCoordSelect(q, coord) {
+			if ($s.isCoordSelected(q, coord)) {
+				_.pull(q.coords, coord);
+			} else {
+				q.coords.push(coord);
+			}
+			q.coords = _.sortBy(q.coords);
+			console.log(q.coords);
+		};
 
 		$timeout(function makeDropdownSlick() {	//	selects with images
 			$('.ddslick').each(function eachSelect() {
