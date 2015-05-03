@@ -24,7 +24,6 @@ escapeApp.controller('AdminCtrl', [
 			EF.getFBObject('teams/' + teamId).$bindTo($s, 'activeTeam').then(function then() {
 				EF.getFB('activeTeamId').set(teamId);
 			});
-			// EF.setFB('activeTeamId', teamId);
 		};
 
 		$s.restartTimer = function restartTimer() {

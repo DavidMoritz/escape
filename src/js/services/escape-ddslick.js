@@ -38,14 +38,14 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 				//If set to display to full html, add html
 				if (settings.showSelectedHTML) {
 					ddSelected.html(
-							(selectedData.imageSrc ? '<img class="dd-selected-image' + (settings.imagePosition == "right" ? ' dd-image-right' : '') + '" src="' + selectedData.imageSrc + '" />' : '') +
+							(selectedData.imageSrc ? '<img class="dd-selected-image' + (settings.imagePosition == 'right' ? ' dd-image-right' : '') + '" src="' + selectedData.imageSrc + '" />' : '') +
 							(selectedData.text ? '<label class="dd-selected-text">' + selectedData.text + '</label>' : '') +
 							(selectedData.description ? '<small class="dd-selected-description dd-desc' + (settings.truncateDescription ? ' dd-selected-description-truncated' : '') + '" >' + selectedData.description + '</small>' : '')
 						);
 
+				} else {	//Else only display text as selection
+					ddSelected.html(selectedData.text);
 				}
-				//Else only display text as selection
-				else ddSelected.html(selectedData.text);
 
 				//Updating selected option value
 				ddSelectedValue.val(selectedData.value);
@@ -236,7 +236,7 @@ escapeApp.directive('escapeDdslick', function escapeDdslick() {
 								ddOptions.append('<li>' +
 									'<a class="dd-option">' +
 										(item.value ? ' <input class="dd-option-value" type="hidden" value="' + item.value + '" />' : '') +
-										(item.imageSrc ? ' <img class="dd-option-image' + (options.imagePosition == "right" ? ' dd-image-right' : '') + '" src="' + item.imageSrc + '" />' : '') +
+										(item.imageSrc ? ' <img class="dd-option-image' + (options.imagePosition == 'right' ? ' dd-image-right' : '') + '" src="' + item.imageSrc + '" />' : '') +
 										(item.text ? ' <label class="dd-option-text">' + item.text + '</label>' : '') +
 										(item.description ? ' <small class="dd-option-description dd-desc">' + item.description + '</small>' : '') +
 									'</a>' +

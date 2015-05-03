@@ -3,12 +3,17 @@ escapeApp.factory('EscapeFactory', [
 	'$firebaseObject',
 	function EscapeFactory($fbArray, $fbObject) {
 		'use strict';
+		var FB = null;
 
 		return {
 			initialTimeAllowed: 60 * 60,
 
 			getFB: function getFB(childPath) {
-				return new Firebase('https://escape.firebaseio.com/' + (childPath || ''));
+				if (!FB) {
+					FB = new Firebase('https://escape.firebaseio.com/')
+				}
+
+				return childPath ? FB.chile(childPath) : FB;
 			},
 
 			getFBArray: function getFBArray(childPath) {
