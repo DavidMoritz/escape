@@ -1,7 +1,8 @@
 escapeApp.controller('AdminCtrl', [
 	'$scope',
+	'$timeout',
 	'EscapeFactory',
-	function AdminCtrl($s, EF) {
+	function AdminCtrl($s, $timeout, EF) {
 		'use strict';
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -43,8 +44,23 @@ escapeApp.controller('AdminCtrl', [
 			}
 		};
 
-		$s.addNewMessage = function addNewMessage() {
+		$s.finishGame = function finishGame() {
+			if(confirm('Finish Game?')) {
+				$s.activeTeam.finished = moment().format(timeFormat);
+				$s.addNewMessage('Congratulations!');
+			}
+		};
+
+		$s.addNewMessage = function addNewMessage(message) {
 			if (!$s.activeTeam) {
+				return false;
+			}
+			// delay message for direct sends
+			if(message) {
+				$timeout(function delayMessage() {
+					$s.formFields.newMessage = message;
+					$s.addNewMessage();
+				}, 500);
 				return false;
 			}
 

@@ -21,6 +21,19 @@ escapeApp.controller('SessionCtrl', [
 			}, 40);
 		}
 
+		function bindMessaging() {
+			$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
+				if(messages) {
+					$s.curMsg = {
+						text: messages[_.keys(messages)[_.keys(messages).length - 1]].text,
+						display: ''
+					};
+
+					typeOutMessage();
+				}
+			}, true);
+		}
+
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
 
@@ -28,8 +41,11 @@ escapeApp.controller('SessionCtrl', [
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
 				// convertTimer
 				var start = moment($s.activeTeam.timerStarted, timeFormat);
+				var current = $s.activeTeam.finished ? moment($s.activeTeam.finished, timeFormat) : moment();
 
-				$s.timeRemaining = $s.activeTeam.timeAllowed - moment().diff(start, 'seconds');
+				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(start, 'seconds');
+			} else {
+				$s.timeRemaining = 0;
 			}
 		}, 1000);
 
@@ -83,7 +99,6 @@ escapeApp.controller('SessionCtrl', [
 			if (activeTeamFBObj) {
 				activeTeamFBObj.$destroy();
 				console.log('SESS> activeTeam is destroyed');
-				console.log($s.activeTeam);
 			} else {
 				var firstLoad = true;
 			}
@@ -93,14 +108,7 @@ escapeApp.controller('SessionCtrl', [
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				console.log('SESS> afterTeamLoaded');
 				if(firstLoad) {
-					$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
-						$s.curMsg = {
-							text: messages[_.keys(messages)[_.keys(messages).length - 1]].text,
-							display: ''
-						};
-
-						typeOutMessage();
-					}, true);
+					bindMessaging();
 				}
 			});
 		};

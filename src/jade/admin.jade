@@ -22,11 +22,11 @@ html(ng-app='escapeApp')
 					.col-xs-6
 						select.form-control(ng-model='teamId' ng-options='team.$id as team.name for team in getUnfinishedTeams()')
 							option(value='' disabled selected) -- choose team --
-						button.btn.btn-success(ng-click='chooseTeam(teamId)' ng-disabled='formFields.newTeamName' data-target=".chooseTeamSection" data-toggle="collapse") Choose Team
+						button.btn.btn-primary(ng-click='chooseTeam(teamId)' ng-disabled='formFields.newTeamName' data-target=".chooseTeamSection" data-toggle="collapse") Choose Team
 					.col-xs-6
 						form(ng-submit='createTeam()')
-							input.form-control(type='text' ng-model='formFields.newTeamName')
-							button.btn.btn-success(type='submit' ng-disabled='!formFields.newTeamName' value='Create Team' data-target=".chooseTeamSection" data-toggle="collapse") Create Team
+							input.form-control(type='text' ng-model='formFields.newTeamName' placeholder='Create New Team')
+							button.btn.btn-success(type='submit' ng-disabled='!formFields.newTeamName' data-target=".chooseTeamSection" data-toggle="collapse") Create Team
 			form(ng-if='activeTeam' ng-submit='addNewMessage()')
 				input.form-control.addMessageInput(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}')
 				input.form-control(type='submit' ng-disabled='!formFields.newMessage' value='Add Message')
@@ -37,6 +37,8 @@ html(ng-app='escapeApp')
 				.col-sm-6.controls
 					h3 Controls:
 					button.btn.btn-primary.collapse.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") {{activeTeam ? "Change Teams" : "Choose Team"}}
-					button.btn.btn-primary(ng-click='restartTimer()' ng-show='activeTeam') Restart Timer
+					button.btn.btn-success(ng-click='restartTimer()' ng-show='activeTeam && !activeTeam.timerStarted') Start Game
+					button.btn.btn-warning(ng-click='restartTimer()' ng-show='activeTeam && activeTeam.timerStarted') Restart Timer
+					button.btn.btn-success(ng-click='finishGame()' ng-show='activeTeam && activeTeam.timerStarted && !activeTeam.finish') Finish
 			iframe(src="session.html" width="100%" style="min-height:400px")
 		| @@javascriptReplaceFiles
