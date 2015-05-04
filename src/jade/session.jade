@@ -101,10 +101,13 @@ html(ng-app='escapeApp')
 						div(ng-if='!isSolved(q.clue)')
 							label Who?
 							select.form-control(ng-model='q.clue.splitGuess.who' ng-options='who as who for who in q.clue.suspects')
+								option(value='' disabled ng-if='!q.clue.splitGuess.who') Suspect...
 							label With what?
 							select.form-control(ng-model='q.clue.splitGuess.what' ng-options='what as what for what in q.clue.weapons')
+								option(value='' disabled ng-if='!q.clue.splitGuess.what') Weapon...
 							label Where?
 							select.form-control(ng-model='q.clue.splitGuess.where' ng-options='where as where for where in q.clue.rooms')
+								option(value='' disabled ng-if='!q.clue.splitGuess.where') Room...
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.clue)') #[i.fa.fa-lightbulb-o] Submit
 						div(ng-if='isSolved(q.clue)')
 							h3 #[i.fa.fa-check] SOLVED!
