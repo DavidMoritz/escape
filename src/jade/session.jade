@@ -176,4 +176,21 @@ html(ng-app='escapeApp')
 							button.btn.btn-danger(ng-click='unsolve(q.texasHoldEm)') #[i.fa.fa-exclamation-triangle] Unsolve
 							.well(ng-show='q.texasHoldEm.nextClue.visible')
 								p.lead {{q.texasHoldEm.nextClue.text}}
+					+col(null, 6, 4)(ng-show='isSolved(q.connect4.prerequisite)')
+						h4 Question #[i.fa(class='{{"fa-" + q.connect4.icon}}')]
+							em(ng-show='isSolved(q.connect4)') ({{q.connect4.display || _.capitalize(q.connect4.name)}})
+						div(ng-if='!isSolved(q.connect4)')
+							label Which column should Red choose?
+							.btn-group.connect4
+								button.btn.btn-warning(ng-repeat='column in _.range(1, 8)',
+									ng-class='{active: q.connect4.guess === column.toString()}',
+									ng-click='toggleColumnSelect(q.connect4, column)') {{column}}
+							img.img-responsive(src='img/connect4.png' alt)
+							button.btn.btn-primary(ng-click='submitGuess(q.connect4)') #[i.fa.fa-lightbulb-o] Submit
+						div(ng-if='isSolved(q.connect4)')
+							h3 #[i.fa.fa-check] SOLVED!
+							button.btn.btn-success(ng-click='toggleNextClue(q.connect4)' ng-class='{active: q.connect4.nextClue.visible}') #[i.fa.fa-search] Next Clue
+							button.btn.btn-danger(ng-click='unsolve(q.connect4)') #[i.fa.fa-exclamation-triangle] Unsolve
+							.well(ng-show='q.connect4.nextClue.visible')
+								p.lead {{q.connect4.nextClue.text}}
 		| @@javascriptReplaceFiles

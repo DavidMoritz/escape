@@ -175,6 +175,10 @@ escapeApp.controller('SessionCtrl', [
 			q.coords = _.sortBy(q.coords);
 		};
 
+		$s.toggleColumnSelect = function toggleCoordSelect(q, col) {
+			q.guess = (q.guess === col.toString()) ? '' : col.toString();
+		};
+
 		$timeout(function makeDropdownSlick() {	//	selects with images
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({

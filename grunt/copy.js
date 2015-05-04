@@ -44,8 +44,8 @@ module.exports = function exportCopy(grunt) {
 				{
 					expand: true,
 					cwd: 'src/',
-					src: ['**/*.png'],
-					dest: '<%= distRoot %>/inc/'
+					src: ['img/*'],
+					dest: '<%= distRoot %>/'
 				},
 
 				// copy favicon

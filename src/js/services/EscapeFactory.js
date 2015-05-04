@@ -186,6 +186,24 @@ escapeApp.factory('EscapeFactory', [
 						text: 'Brown lock: 67890',
 						visible: true
 					}
+				},
+				connect4: {
+					id: 76,
+					name: 'connect4',
+					display: 'Connect 4',
+					prerequisite: 'texasHoldEm',
+					icon: 'table',
+					guess: '',
+					splitGuess: {
+						name1: '',
+						name2: ''
+					},
+					answers: ['4'],
+					attempts: [],
+					nextClue: {
+						text: 'Red lock: 89012',
+						visible: true
+					}
 				}
 			}
 		};
