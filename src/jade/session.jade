@@ -159,4 +159,21 @@ html(ng-app='escapeApp')
 							button.btn.btn-danger(ng-click='unsolve(q.chess)') #[i.fa.fa-exclamation-triangle] Unsolve
 							.well(ng-show='q.chess.nextClue.visible')
 								p.lead {{q.chess.nextClue.text}}
+					+col(null, 6, 4)(ng-show='isSolved(q.texasHoldEm.prerequisite)')
+						h4 Question #[i.fa(class='{{"fa-" + q.texasHoldEm.icon}}')]
+							em(ng-show='isSolved(q.texasHoldEm)') ({{q.texasHoldEm.display || _.capitalize(q.texasHoldEm.name)}})
+						div(ng-if='!isSolved(q.texasHoldEm)')
+							label Who is the Big Winner?
+							.row
+								+col(6)
+									input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.name1' placeholder='First Name')
+								+col(6)
+									input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.name2' placeholder='Last Name')
+							button.btn.btn-primary(ng-click='submitGuessSpecial(q.texasHoldEm)') #[i.fa.fa-lightbulb-o] Submit
+						div(ng-if='isSolved(q.texasHoldEm)')
+							h3 #[i.fa.fa-check] SOLVED!
+							button.btn.btn-success(ng-click='toggleNextClue(q.texasHoldEm)' ng-class='{active: q.texasHoldEm.nextClue.visible}') #[i.fa.fa-search] Next Clue
+							button.btn.btn-danger(ng-click='unsolve(q.texasHoldEm)') #[i.fa.fa-exclamation-triangle] Unsolve
+							.well(ng-show='q.texasHoldEm.nextClue.visible')
+								p.lead {{q.texasHoldEm.nextClue.text}}
 		| @@javascriptReplaceFiles

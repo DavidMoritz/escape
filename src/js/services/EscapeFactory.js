@@ -168,6 +168,24 @@ escapeApp.factory('EscapeFactory', [
 						text: 'Green lock: 45678',
 						visible: true
 					}
+				},
+				texasHoldEm: {
+					id: 92,
+					name: 'texasHoldEm',
+					display: 'Texas Hold \'Em',
+					prerequisite: null,
+					icon: 'beer',
+					guess: '',
+					splitGuess: {
+						name1: '',
+						name2: ''
+					},
+					answers: ['Daniel Craig', 'Craig Daniel'],
+					attempts: [],
+					nextClue: {
+						text: 'Brown lock: 67890',
+						visible: true
+					}
 				}
 			}
 		};

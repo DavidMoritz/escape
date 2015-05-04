@@ -104,19 +104,25 @@ escapeApp.controller('SessionCtrl', [
 
 		//	some guesses need to be massaged before submitting them
 		$s.submitGuessSpecial = function submitGuessSpecial(q) {
-			if (q.name === 'monopoly') {
-				var property = _.contains(q.splitGuess.property, 'Illinois') ? 'Illinois' : q.splitGuess.property;
-				var money = q.splitGuess.money.replace(/\$/g, '').replace('.00', '');
+			switch (q.name) {
+				case 'monopoly':
+					var property = _.contains(q.splitGuess.property, 'Illinois') ? 'Illinois' : q.splitGuess.property;
+					var money = q.splitGuess.money.replace(/\$/g, '').replace('.00', '');
 
-				q.guess = property + money;
-			} else if (q.name === 'yahtzee') {
-				q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
-			} else if (q.name === 'battleship') {
-				q.guess = q.coords.join('&');
-			} else if (q.name === 'clue') {
-				q.guess = q.splitGuess.who + '&' + q.splitGuess.what + '&' + q.splitGuess.where;
-			} else if (q.name === 'chess') {
-				q.guess = q.coords.join();
+					q.guess = property + money;
+					break;
+				case 'yahtzee':
+					q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
+					break;
+				case 'battleship':
+				case 'chess':
+					q.guess = q.coords.join('&');
+					break;
+				case 'clue':
+					q.guess = q.splitGuess.who + '&' + q.splitGuess.what + '&' + q.splitGuess.where;
+					break;
+				case 'texasHoldEm':
+					q.guess = q.splitGuess.name1 + ' ' + q.splitGuess.name2;
 			}
 
 			$s.submitGuess(q);

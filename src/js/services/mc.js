@@ -2,7 +2,7 @@
  * Moritz Company utility functions (for use anywhere) with mc.pluralize()
 **/
 
-module.exports = {
+var mc = {
 	pluralize: function pluralize(str) {
 		return str.replace(/y$/, 'ie') + 's';
 	},
