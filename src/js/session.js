@@ -114,7 +114,7 @@ escapeApp.controller('SessionCtrl', [
 				case 'yahtzee':
 					q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
 					break;
-				case 'battleship':
+				case 'battleship': // falls through
 				case 'chess':
 					q.guess = q.coords.join('&');
 					break;
