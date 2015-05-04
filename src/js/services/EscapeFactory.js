@@ -140,8 +140,9 @@ escapeApp.factory('EscapeFactory', [
 					}
 				},
 				guessWho: {
-					id: 36,
+					id: 63,
 					name: 'guessWho',
+					display: 'Guess Who?',
 					prerequisite: 'clue',
 					icon: 'users',
 					guess: '',
@@ -149,6 +150,22 @@ escapeApp.factory('EscapeFactory', [
 					attempts: [],
 					nextClue: {
 						text: 'Magenta lock: 23456',
+						visible: true
+					}
+				},
+				chess: {
+					id: 59,
+					name: 'chess',
+					prerequisite: 'guessWho',
+					icon: 'delicious',
+					guess: '',
+					coords: [],
+					columns: 'abcdefgh'.split('').reverse(),
+					rows: _.range(1, 9),
+					answers: ['h4'],
+					attempts: [],
+					nextClue: {
+						text: 'Green lock: 45678',
 						visible: true
 					}
 				}

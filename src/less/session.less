@@ -55,6 +55,26 @@ h1.digital {
 		th {color: #6af;}
 		td.active {color: #c00;}
 	}
+	table.chess {
+		th, td {
+			text-align: center;
+			width: 40px;
+			height: 40px;
+		}
+		th {color: #fff;}
+		tr {
+			&:nth-child(even) {
+				td:nth-child(even) {background-color: #4a4;}
+				td:nth-child(odd) {background-color: #ffc;}
+			}
+			&:nth-child(odd) {
+				td:nth-child(odd) {background-color: #4a4;}
+				td:nth-child(even) {background-color: #ffc;}
+			}
+		}
+		td.active {background-color: #c00 !important;}
+	}
+	h4 em {margin-left: 10px;}
 }
 .displayMessage {
 	h3 {

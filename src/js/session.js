@@ -115,6 +115,8 @@ escapeApp.controller('SessionCtrl', [
 				q.guess = q.coords.join('&');
 			} else if (q.name === 'clue') {
 				q.guess = q.splitGuess.who + '&' + q.splitGuess.what + '&' + q.splitGuess.where;
+			} else if (q.name === 'chess') {
+				q.guess = q.coords.join();
 			}
 
 			$s.submitGuess(q);
@@ -127,6 +129,11 @@ escapeApp.controller('SessionCtrl', [
 
 			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
 			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
+		};
+
+		$s.unsolve = function unsolve(puz) {
+			console.log('deleting ' + puz.name + ' from solved puzzles');
+			delete $s.activeTeam.solvedQuestions[puz.name];
 		};
 
 		$s.toggleNextClue = function toggleNextClue(q) {
@@ -150,6 +157,10 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.toggleCoordSelect = function toggleCoordSelect(q, coord) {
+			if (q.name === 'chess') {
+				q.coords = [];	//	reset array
+			}
+
 			if ($s.isCoordSelected(q, coord)) {
 				_.pull(q.coords, coord);
 			} else {
