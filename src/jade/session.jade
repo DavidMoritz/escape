@@ -38,7 +38,7 @@ html(ng-app='escapeApp')
 			#game(ng-show='activeTeam')
 				h3 Team: {{activeTeam.name}}
 				.row
-					+col(null, 6, 4)
+					+col(null, 6, 4)(ng-show='isSolved(q.monopoly.prerequisite)')
 						h4 Question #[i.fa(class='{{"fa-" + q.monopoly.icon}}')]
 						div(ng-if='!isSolved(q.monopoly)')
 							label.sr-only Where did I stay?
@@ -51,7 +51,7 @@ html(ng-app='escapeApp')
 							button.btn.btn-success(ng-click='toggleNextClue(q.monopoly)' ng-class='{active: q.monopoly.nextClue.visible}') #[i.fa.fa-search] Next Clue
 							.well(ng-show='q.monopoly.nextClue.visible')
 								p.lead {{q.monopoly.nextClue.text}}
-					+col(null, 6, 4)(ng-show='isSolved(q.monopoly)')
+					+col(null, 6, 4)(ng-show='isSolved(q.yahtzee.prerequisite)')
 						h4 Question #[i.fa(class='{{"fa-" + q.yahtzee.icon}}')]
 						div(ng-if='!isSolved(q.yahtzee)')
 							label What did I roll?
@@ -65,7 +65,7 @@ html(ng-app='escapeApp')
 							button.btn.btn-success(ng-click='toggleNextClue(q.yahtzee)' ng-class='{active: q.yahtzee.nextClue.visible}') #[i.fa.fa-search] Next Clue
 							.well(ng-show='q.yahtzee.nextClue.visible')
 								p.lead {{q.yahtzee.nextClue.text}}
-					+col(null, 6, 4)(ng-show='isSolved(q.yahtzee)')
+					+col(null, 6, 4)(ng-show='isSolved(q.scrabble.prerequisite)')
 						h4 Question #[i.fa(class='{{"fa-" + q.scrabble.icon}}')]
 						div(ng-if='!isSolved(q.scrabble)')
 							label.sr-only What SCRABBLE word did I spell?
@@ -76,7 +76,7 @@ html(ng-app='escapeApp')
 							button.btn.btn-success(ng-click='toggleNextClue(q.scrabble)' ng-class='{active: q.scrabble.nextClue.visible}') #[i.fa.fa-search] Next Clue
 							.well(ng-show='q.scrabble.nextClue.visible')
 								p.lead {{q.scrabble.nextClue.text}}
-					+col(null, 6, 4)
+					+col(null, 6, 4)(ng-show='isSolved(q.battleship.prerequisite)')
 						h4 Question #[i.fa(class='{{"fa-" + q.battleship.icon}}')]
 						div(ng-if='!isSolved(q.battleship)')
 							table.battleship
@@ -96,7 +96,7 @@ html(ng-app='escapeApp')
 							button.btn.btn-success(ng-click='toggleNextClue(q.battleship)' ng-class='{active: q.battleship.nextClue.visible}') #[i.fa.fa-search] Next Clue
 							.well(ng-show='q.battleship.nextClue.visible')
 								p.lead {{q.battleship.nextClue.text}}
-					+col(null, 6, 4)(ng-show='isSolved(q.battleship)')
+					+col(null, 6, 4)(ng-show='isSolved(q.clue.prerequisite)')
 						h4 Question #[i.fa(class='{{"fa-" + q.clue.icon}}')]
 						div(ng-if='!isSolved(q.clue)')
 							label Who?
@@ -114,4 +114,15 @@ html(ng-app='escapeApp')
 							button.btn.btn-success(ng-click='toggleNextClue(q.clue)' ng-class='{active: q.clue.nextClue.visible}') #[i.fa.fa-search] Next Clue
 							.well(ng-show='q.clue.nextClue.visible')
 								p.lead {{q.clue.nextClue.text}}
+					+col(null, 6, 4)(ng-show='isSolved(q.guessWho.prerequisite)')
+						h4 Question #[i.fa(class='{{"fa-" + q.guessWho.icon}}')]
+						div(ng-if='!isSolved(q.guessWho)')
+							label.sr-only Guess Who?
+							input.form-control(type='text' ng-model='q.guessWho.guess' placeholder='Guess Who?')
+							button.btn.btn-primary(ng-click='submitGuess(q.guessWho)') #[i.fa.fa-lightbulb-o] Submit
+						div(ng-if='isSolved(q.guessWho)')
+							h3 #[i.fa.fa-check] SOLVED!
+							button.btn.btn-success(ng-click='toggleNextClue(q.guessWho)' ng-class='{active: q.guessWho.nextClue.visible}') #[i.fa.fa-search] Next Clue
+							.well(ng-show='q.guessWho.nextClue.visible')
+								p.lead {{q.guessWho.nextClue.text}}
 		| @@javascriptReplaceFiles

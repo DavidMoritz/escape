@@ -34,6 +34,7 @@ escapeApp.factory('EscapeFactory', [
 				monopoly: {
 					id: 25,
 					name: 'monopoly',
+					prerequisite: null,
 					icon: 'building-o',
 					guess: '',
 					splitGuess: {
@@ -50,6 +51,7 @@ escapeApp.factory('EscapeFactory', [
 				yahtzee: {
 					id: 17,
 					name: 'yahtzee',
+					prerequisite: 'monopoly',
 					icon: 'cubes',
 					guess: '',
 					splitGuess: {
@@ -66,6 +68,7 @@ escapeApp.factory('EscapeFactory', [
 				scrabble: {
 					id: 36,
 					name: 'scrabble',
+					prerequisite: 'yahtzee',
 					icon: 'th-large',
 					guess: '',
 					answers: ['watermelon'],
@@ -78,6 +81,7 @@ escapeApp.factory('EscapeFactory', [
 				battleship: {
 					id: 41,
 					name: 'battleship',
+					prerequisite: null,
 					icon: 'ship',
 					guess: '',
 					coords: [],
@@ -93,6 +97,7 @@ escapeApp.factory('EscapeFactory', [
 				clue: {
 					id: 88,
 					name: 'clue',
+					prerequisite: 'battleship',
 					icon: 'key',
 					guess: '',
 					splitGuess: {
@@ -130,7 +135,20 @@ escapeApp.factory('EscapeFactory', [
 					answers: ['Colonel Mustard&Wrench&Lounge'],
 					attempts: [],
 					nextClue: {
-						text: 'Orange lock: 34567',
+						text: 'Yello lock: 90123',
+						visible: true
+					}
+				},
+				guessWho: {
+					id: 36,
+					name: 'guessWho',
+					prerequisite: 'clue',
+					icon: 'users',
+					guess: '',
+					answers: ['tom'],
+					attempts: [],
+					nextClue: {
+						text: 'Magenta lock: 23456',
 						visible: true
 					}
 				}

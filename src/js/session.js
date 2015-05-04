@@ -120,8 +120,13 @@ escapeApp.controller('SessionCtrl', [
 			$s.submitGuess(q);
 		};
 
-		$s.isSolved = function isSolved(q) {
-			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), q.name);
+		$s.isSolved = function isSolved(puz) {
+			if (!puz) {
+				return true;	//	no prerequisite
+			}
+
+			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
+			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
 		};
 
 		$s.toggleNextClue = function toggleNextClue(q) {
