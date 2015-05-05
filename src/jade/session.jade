@@ -38,6 +38,19 @@ html(ng-app='escapeApp')
 			#game(ng-show='activeTeam')
 				h3 Team: {{activeTeam.name}}
 				.row
+					+col(null, 6, 4)(ng-show='isSolved(q.operation.prerequisite)')
+						h4 Question #[i.fa(class='{{"fa-" + q.operation.icon}}')]
+							em(ng-show='isSolved(q.operation)') ({{q.operation.display || _.capitalize(q.operation.name)}})
+						div(ng-if='!isSolved(q.operation)')
+							label.sr-only What kind of Operation is this?
+							input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
+							button.btn.btn-primary(ng-click='submitGuess(q.operation)') #[i.fa.fa-lightbulb-o] Submit
+						div(ng-if='isSolved(q.operation)')
+							h3 #[i.fa.fa-check] SOLVED!
+							button.btn.btn-success(ng-click='toggleNextClue(q.operation)' ng-class='{active: q.operation.nextClue.visible}') #[i.fa.fa-search] Next Clue
+							button.btn.btn-danger(ng-click='unsolve(q.operation)') #[i.fa.fa-exclamation-triangle] Unsolve
+							.well(ng-show='q.operation.nextClue.visible')
+								p.lead {{q.operation.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.monopoly.prerequisite)')
 						h4 Question #[i.fa(class='{{"fa-" + q.monopoly.icon}}')]
 							em(ng-show='isSolved(q.monopoly)') ({{q.monopoly.display || _.capitalize(q.monopoly.name)}})
