@@ -7,7 +7,7 @@ html(ng-app='escapeApp')
 		meta(name='description', content='A game of escape')
 		meta(name='author', content='Moritz Company')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
-		title The Game Escape
+		title Control Panel - The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
 		link(rel='stylesheet', href='inc/escape.css')
 		script(src='inc/angular.js')
@@ -25,7 +25,7 @@ html(ng-app='escapeApp')
 						button.btn.btn-default(data-dismiss='modal') Close
 		.container
 			header.hide
-				h1 The Game Escape
+				h1 Control Panel - The Game Escape
 			.jumbotron
 				h1.digital
 					span(ng-hide='activeTeam') Loading
@@ -39,7 +39,8 @@ html(ng-app='escapeApp')
 				h3 Team: {{activeTeam.name}}
 				.row
 					+col(null, 6, 4)(ng-show='isSolved(q.operation.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.operation.icon}}')]
+						h4 Question
+							+circledIcon('{{q.operation.icon}}')
 							em(ng-show='isSolved(q.operation)') ({{q.operation.display || _.capitalize(q.operation.name)}})
 						div(ng-if='!isSolved(q.operation)')
 							label.sr-only What kind of Operation is this?
@@ -52,7 +53,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.operation.nextClue.visible')
 								p.lead {{q.operation.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.monopoly.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.monopoly.icon}}')]
+						h4 Question
+							+circledIcon('{{q.monopoly.icon}}')
 							em(ng-show='isSolved(q.monopoly)') ({{q.monopoly.display || _.capitalize(q.monopoly.name)}})
 						div(ng-if='!isSolved(q.monopoly)')
 							label.sr-only Where did I stay?
@@ -67,7 +69,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.monopoly.nextClue.visible')
 								p.lead {{q.monopoly.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.yahtzee.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.yahtzee.icon}}')]
+						h4 Question
+							+circledIcon('{{q.yahtzee.icon}}')
 							em(ng-show='isSolved(q.yahtzee)') ({{q.yahtzee.display || _.capitalize(q.yahtzee.name)}})
 						div(ng-if='!isSolved(q.yahtzee)')
 							label What did I roll?
@@ -83,7 +86,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.yahtzee.nextClue.visible')
 								p.lead {{q.yahtzee.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.scrabble.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.scrabble.icon}}')]
+						h4 Question
+							+circledIcon('{{q.scrabble.icon}}')
 							em(ng-show='isSolved(q.scrabble)') ({{q.scrabble.display || _.capitalize(q.scrabble.name)}})
 						div(ng-if='!isSolved(q.scrabble)')
 							label.sr-only What SCRABBLE word did I spell?
@@ -96,7 +100,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.scrabble.nextClue.visible')
 								p.lead {{q.scrabble.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.battleship.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.battleship.icon}}')]
+						h4 Question
+							+circledIcon('{{q.battleship.icon}}')
 							em(ng-show='isSolved(q.battleship)') ({{q.battleship.display || _.capitalize(q.battleship.name)}})
 						div(ng-if='!isSolved(q.battleship)')
 							table.battleship
@@ -118,7 +123,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.battleship.nextClue.visible')
 								p.lead {{q.battleship.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.clue.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.clue.icon}}')]
+						h4 Question
+							+circledIcon('{{q.clue.icon}}')
 							em(ng-show='isSolved(q.clue)') ({{q.clue.display || _.capitalize(q.clue.name)}})
 						div(ng-if='!isSolved(q.clue)')
 							label Who?
@@ -138,7 +144,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.clue.nextClue.visible')
 								p.lead {{q.clue.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.guessWho.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.guessWho.icon}}')]
+						h4 Question
+							+circledIcon('{{q.guessWho.icon}}')
 							em(ng-show='isSolved(q.guessWho)') ({{q.guessWho.display || _.capitalize(q.guessWho.name)}})
 						div(ng-if='!isSolved(q.guessWho)')
 							label.sr-only Guess Who?
@@ -151,7 +158,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.guessWho.nextClue.visible')
 								p.lead {{q.guessWho.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.chess.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.chess.icon}}')]
+						h4 Question
+							+circledIcon('{{q.chess.icon}}')
 							em(ng-show='isSolved(q.chess)') ({{q.chess.display || _.capitalize(q.chess.name)}})
 						div(ng-if='!isSolved(q.chess)')
 							table.chess
@@ -173,7 +181,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.chess.nextClue.visible')
 								p.lead {{q.chess.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.texasHoldEm.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.texasHoldEm.icon}}')]
+						h4 Question
+							+circledIcon('{{q.texasHoldEm.icon}}')
 							em(ng-show='isSolved(q.texasHoldEm)') ({{q.texasHoldEm.display || _.capitalize(q.texasHoldEm.name)}})
 						div(ng-if='!isSolved(q.texasHoldEm)')
 							label Who is the Big Winner?
@@ -190,7 +199,8 @@ html(ng-app='escapeApp')
 							.well(ng-show='q.texasHoldEm.nextClue.visible')
 								p.lead {{q.texasHoldEm.nextClue.text}}
 					+col(null, 6, 4)(ng-show='isSolved(q.connect4.prerequisite)')
-						h4 Question #[i.fa(class='{{"fa-" + q.connect4.icon}}')]
+						h4 Question
+							+circledIcon('{{q.connect4.icon}}')
 							em(ng-show='isSolved(q.connect4)') ({{q.connect4.display || _.capitalize(q.connect4.name)}})
 						div(ng-if='!isSolved(q.connect4)')
 							label Which column should Red choose?
