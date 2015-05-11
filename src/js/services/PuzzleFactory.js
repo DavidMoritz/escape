@@ -12,7 +12,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['risky'],
 				attempts: [],
 				nextClue: {
-					text: 'pink lock: ABCDE',
+					code: 'ABCDE',
 					visible: true
 				}
 			},
@@ -29,7 +29,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Illinois10'],
 				attempts: [],
 				nextClue: {
-					text: 'Cerulean lock: 12345',
+					code: '12345',
 					visible: true
 				}
 			},
@@ -46,7 +46,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['6&4', '4&6'],
 				attempts: [],
 				nextClue: {
-					text: 'Orange lock: 34567',
+					code: '34567',
 					visible: true
 				}
 			},
@@ -59,7 +59,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['watermelon'],
 				attempts: [],
 				nextClue: {
-					text: 'White lock: 56789',
+					code: '56789',
 					visible: true
 				}
 			},
@@ -75,7 +75,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['b2&d2'],
 				attempts: [],
 				nextClue: {
-					text: 'Black lock: 78901',
+					code: '78901',
 					visible: true
 				}
 			},
@@ -120,7 +120,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Colonel Mustard&Wrench&Lounge'],
 				attempts: [],
 				nextClue: {
-					text: 'Yello lock: 90123',
+					code: '90123',
 					visible: true
 				}
 			},
@@ -134,7 +134,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['tom'],
 				attempts: [],
 				nextClue: {
-					text: 'Magenta lock: 23456',
+					code: '23456',
 					visible: true
 				}
 			},
@@ -150,7 +150,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['h4'],
 				attempts: [],
 				nextClue: {
-					text: 'Green lock: 45678',
+					code: '45678',
 					visible: true
 				}
 			},
@@ -168,7 +168,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Daniel Craig', 'Craig Daniel'],
 				attempts: [],
 				nextClue: {
-					text: 'Brown lock: 67890',
+					code: '67890',
 					visible: true
 				}
 			},
@@ -186,7 +186,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['4'],
 				attempts: [],
 				nextClue: {
-					text: 'Red lock: 89012',
+					code: '89012',
 					visible: true
 				}
 			}

@@ -10,7 +10,19 @@ mixin col(xs, sm, md, lg)
 		if block
 			block
 
-mixin circledIcon(iconName)
+mixin circledIcon(icon)
 	span.fa-stack.fa-2x
 		i.fa.fa-stack-2x.fa-circle
-		i.fa.fa-stack-1x.fa-inverse(class='fa-#{iconName}')
+		i.fa.fa-stack-1x.fa-inverse(class='fa-{{#{icon}}}')
+
+mixin solvedSection(puzzleObj)
+	div(ng-if='isSolved(#{puzzleObj})')
+		h3 #[i.fa.fa-check] SOLVED!
+		button.btn.btn-success(ng-click='toggleNextClue(#{puzzleObj})' ng-class='{active: #{puzzleObj}.nextClue.visible}') #[i.fa.fa-search] Next Clue
+		button.btn.btn-danger(ng-click='unsolve(#{puzzleObj})') #[i.fa.fa-exclamation-triangle] Unsolve
+		.well(ng-show='#{puzzleObj}.nextClue.visible')
+			p.lead
+				span.fa-stack.fa-2x
+					i.fa.fa-stack-2x.fa-circle.text-primary
+					i.fa.fa-stack-1x.fa-inverse(class='fa-{{#{puzzleObj}.icon}}')
+				| Code: {{#{puzzleObj}.nextClue.code}}

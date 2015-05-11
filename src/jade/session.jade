@@ -40,21 +40,16 @@ html(ng-app='escapeApp')
 				.row
 					+col(null, 6, 4)(ng-show='isSolved(q.operation.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.operation.icon}}')
+							+circledIcon('q.operation.icon')
 							em(ng-show='isSolved(q.operation)') ({{q.operation.display || _.capitalize(q.operation.name)}})
 						div(ng-if='!isSolved(q.operation)')
 							label.sr-only What kind of Operation is this?
 							input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
 							button.btn.btn-primary(ng-click='submitGuess(q.operation)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.operation)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.operation)' ng-class='{active: q.operation.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.operation)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.operation.nextClue.visible')
-								p.lead {{q.operation.nextClue.text}}
+						+solvedSection('q.operation')
 					+col(null, 6, 4)(ng-show='isSolved(q.monopoly.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.monopoly.icon}}')
+							+circledIcon('q.monopoly.icon')
 							em(ng-show='isSolved(q.monopoly)') ({{q.monopoly.display || _.capitalize(q.monopoly.name)}})
 						div(ng-if='!isSolved(q.monopoly)')
 							label.sr-only Where did I stay?
@@ -62,15 +57,10 @@ html(ng-app='escapeApp')
 							label.sr-only How much money did I have left?
 							input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.monopoly)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.monopoly)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.monopoly)' ng-class='{active: q.monopoly.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.monopoly)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.monopoly.nextClue.visible')
-								p.lead {{q.monopoly.nextClue.text}}
+						+solvedSection('q.monopoly')
 					+col(null, 6, 4)(ng-show='isSolved(q.yahtzee.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.yahtzee.icon}}')
+							+circledIcon('q.yahtzee.icon')
 							em(ng-show='isSolved(q.yahtzee)') ({{q.yahtzee.display || _.capitalize(q.yahtzee.name)}})
 						div(ng-if='!isSolved(q.yahtzee)')
 							label What did I roll?
@@ -79,29 +69,19 @@ html(ng-app='escapeApp')
 							select.form-control(escape-ddslick ng-model='q.yahtzee.splitGuess.die2')
 								option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"http://dobbelsteen.virtuworld.net/img/" + die + "c.gif"}}')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.yahtzee)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.yahtzee)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.yahtzee)' ng-class='{active: q.yahtzee.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.yahtzee)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.yahtzee.nextClue.visible')
-								p.lead {{q.yahtzee.nextClue.text}}
+						+solvedSection('q.yahtzee')
 					+col(null, 6, 4)(ng-show='isSolved(q.scrabble.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.scrabble.icon}}')
+							+circledIcon('q.scrabble.icon')
 							em(ng-show='isSolved(q.scrabble)') ({{q.scrabble.display || _.capitalize(q.scrabble.name)}})
 						div(ng-if='!isSolved(q.scrabble)')
 							label.sr-only What SCRABBLE word did I spell?
 							input.form-control(type='text' ng-model='q.scrabble.guess' placeholder='What SCRABBLE word did I spell?')
 							button.btn.btn-primary(ng-click='submitGuess(q.scrabble)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.scrabble)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.scrabble)' ng-class='{active: q.scrabble.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.scrabble)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.scrabble.nextClue.visible')
-								p.lead {{q.scrabble.nextClue.text}}
+						+solvedSection('q.scrabble')
 					+col(null, 6, 4)(ng-show='isSolved(q.battleship.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.battleship.icon}}')
+							+circledIcon('q.battleship.icon')
 							em(ng-show='isSolved(q.battleship)') ({{q.battleship.display || _.capitalize(q.battleship.name)}})
 						div(ng-if='!isSolved(q.battleship)')
 							table.battleship
@@ -116,15 +96,10 @@ html(ng-app='escapeApp')
 											ng-class='{active: isCoordSelected(q.battleship, row + col)}',
 											ng-click='toggleCoordSelect(q.battleship, row + col)') #[i.fa.fa-circle]
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.battleship)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.battleship)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.battleship)' ng-class='{active: q.battleship.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.battleship)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.battleship.nextClue.visible')
-								p.lead {{q.battleship.nextClue.text}}
+						+solvedSection('q.battleship')
 					+col(null, 6, 4)(ng-show='isSolved(q.clue.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.clue.icon}}')
+							+circledIcon('q.clue.icon')
 							em(ng-show='isSolved(q.clue)') ({{q.clue.display || _.capitalize(q.clue.name)}})
 						div(ng-if='!isSolved(q.clue)')
 							label Who?
@@ -137,29 +112,19 @@ html(ng-app='escapeApp')
 							select.form-control(ng-model='q.clue.splitGuess.where' ng-options='where as where for where in q.clue.rooms')
 								option(value='' disabled ng-if='!q.clue.splitGuess.where') Room...
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.clue)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.clue)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.clue)' ng-class='{active: q.clue.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.clue)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.clue.nextClue.visible')
-								p.lead {{q.clue.nextClue.text}}
+						+solvedSection('q.clue')
 					+col(null, 6, 4)(ng-show='isSolved(q.guessWho.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.guessWho.icon}}')
+							+circledIcon('q.guessWho.icon')
 							em(ng-show='isSolved(q.guessWho)') ({{q.guessWho.display || _.capitalize(q.guessWho.name)}})
 						div(ng-if='!isSolved(q.guessWho)')
 							label.sr-only Guess Who?
 							input.form-control(type='text' ng-model='q.guessWho.guess' placeholder='Guess Who?')
 							button.btn.btn-primary(ng-click='submitGuess(q.guessWho)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.guessWho)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.guessWho)' ng-class='{active: q.guessWho.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.guessWho)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.guessWho.nextClue.visible')
-								p.lead {{q.guessWho.nextClue.text}}
+						+solvedSection('q.guessWho')
 					+col(null, 6, 4)(ng-show='isSolved(q.chess.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.chess.icon}}')
+							+circledIcon('q.chess.icon')
 							em(ng-show='isSolved(q.chess)') ({{q.chess.display || _.capitalize(q.chess.name)}})
 						div(ng-if='!isSolved(q.chess)')
 							table.chess
@@ -174,15 +139,10 @@ html(ng-app='escapeApp')
 										th
 										th(ng-repeat='col in q.chess.columns') {{col}}
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.chess)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.chess)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.chess)' ng-class='{active: q.chess.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.chess)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.chess.nextClue.visible')
-								p.lead {{q.chess.nextClue.text}}
+						+solvedSection('q.chess')
 					+col(null, 6, 4)(ng-show='isSolved(q.texasHoldEm.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.texasHoldEm.icon}}')
+							+circledIcon('q.texasHoldEm.icon')
 							em(ng-show='isSolved(q.texasHoldEm)') ({{q.texasHoldEm.display || _.capitalize(q.texasHoldEm.name)}})
 						div(ng-if='!isSolved(q.texasHoldEm)')
 							label Who is the Big Winner?
@@ -192,15 +152,10 @@ html(ng-app='escapeApp')
 								+col(6)
 									input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.name2' placeholder='Last Name')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.texasHoldEm)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.texasHoldEm)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.texasHoldEm)' ng-class='{active: q.texasHoldEm.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.texasHoldEm)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.texasHoldEm.nextClue.visible')
-								p.lead {{q.texasHoldEm.nextClue.text}}
+						+solvedSection('q.texasHoldEm')
 					+col(null, 6, 4)(ng-show='isSolved(q.connect4.prerequisite)')
 						h4 Question
-							+circledIcon('{{q.connect4.icon}}')
+							+circledIcon('q.connect4.icon')
 							em(ng-show='isSolved(q.connect4)') ({{q.connect4.display || _.capitalize(q.connect4.name)}})
 						div(ng-if='!isSolved(q.connect4)')
 							label Which column should Red choose?
@@ -210,10 +165,5 @@ html(ng-app='escapeApp')
 									ng-click='toggleColumnSelect(q.connect4, column)') {{column}}
 							img.img-responsive(src='img/connect4.png' alt)
 							button.btn.btn-primary(ng-click='submitGuess(q.connect4)') #[i.fa.fa-lightbulb-o] Submit
-						div(ng-if='isSolved(q.connect4)')
-							h3 #[i.fa.fa-check] SOLVED!
-							button.btn.btn-success(ng-click='toggleNextClue(q.connect4)' ng-class='{active: q.connect4.nextClue.visible}') #[i.fa.fa-search] Next Clue
-							button.btn.btn-danger(ng-click='unsolve(q.connect4)') #[i.fa.fa-exclamation-triangle] Unsolve
-							.well(ng-show='q.connect4.nextClue.visible')
-								p.lead {{q.connect4.nextClue.text}}
+						+solvedSection('q.connect4')
 		| @@javascriptReplaceFiles
