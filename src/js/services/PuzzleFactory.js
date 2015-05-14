@@ -191,7 +191,7 @@ escapeApp.factory('PuzzleFactory', [
 				name: 'fiveRoutes',
 				display: 'Five Routes',
 				prerequisite: 'connect4',
-				icon: 'table',
+				icon: 'random',
 				animals: [
 					'elephant',
 					'giraffe',
