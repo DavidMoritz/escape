@@ -179,14 +179,32 @@ escapeApp.factory('PuzzleFactory', [
 				prerequisite: 'texasHoldEm',
 				icon: 'table',
 				guess: '',
-				splitGuess: {
-					name1: '',
-					name2: ''
-				},
 				answers: ['4'],
 				attempts: [],
 				nextClue: {
 					code: '89012',
+					visible: true
+				}
+			},
+			fiveRoutes: {
+				id: 76,
+				name: 'fiveRoutes',
+				display: 'Five Routes',
+				prerequisite: 'connect4',
+				icon: 'table',
+				animals: [
+					'elephant',
+					'giraffe',
+					'gorilla',
+					'lion',
+					'zebra'
+				],
+				orderedAnimals: [],
+				guess: '',
+				answers: ['elephant-lion-zebra-gorilla-giraffe'],
+				attempts: [],
+				nextClue: {
+					code: '01234',
 					visible: true
 				}
 			}

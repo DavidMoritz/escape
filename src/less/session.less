@@ -97,5 +97,25 @@ h1.digital {
 	}
 }
 
+#five-routes {
+	.list-inline > li {
+		float: left;
+		padding: 0;
+
+		&:first-child {padding-left: 5px;}
+		.panel-heading {text-align: center;}
+		.panel-body {
+			text-align: center;
+			padding: 5px;
+			height: 45px;
+		}
+	}
+	img {
+		height: 35px;
+
+		&.invert-color {filter: invert(100%);}
+	}
+}
+
 footer.clear {margin-top: 90px;}
 a {cursor: pointer;}

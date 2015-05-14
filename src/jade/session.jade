@@ -166,4 +166,28 @@ html(ng-app='escapeApp')
 							img.img-responsive(src='img/connect4.png' alt)
 							button.btn.btn-primary(ng-click='submitGuess(q.connect4)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.connect4')
+					+col(null, 6, 4)(ng-show='isSolved(q.fiveRoutes.prerequisite)' id='{{_.kebabCase(q.fiveRoutes.name)}}')
+						h4 Question
+							+circledIcon('q.fiveRoutes.icon')
+							em(ng-show='isSolved(q.fiveRoutes)') ({{q.fiveRoutes.display || _.capitalize(q.fiveRoutes.name)}})
+						div(ng-if='!isSolved(q.fiveRoutes)')
+							label Put the animals in order from the shortest route to the longest route
+							ul.list-inline
+								li(ng-repeat='oAnimal in q.fiveRoutes.orderedAnimals')
+									.panel.panel-info
+										.panel-heading #[.panel-title {{$index + 1}}]
+										.panel-body
+											img.invert-color(ng-src='{{"img/five-routes-" + oAnimal + ".png"}}' alt='{{oAnimal}}')
+								li(ng-repeat='num in _.range(q.fiveRoutes.orderedAnimals.length, q.fiveRoutes.animals.length)')
+									.panel.panel-info
+										.panel-heading #[.panel-title {{num + 1}}]
+										.panel-body
+							.btn-group
+								button.btn.btn-default(
+									ng-repeat='animal in q.fiveRoutes.animals',
+									ng-click='toggleAnimalSelect(q.fiveRoutes, animal)',
+									ng-class='{active: _.includes(q.fiveRoutes.orderedAnimals, animal)}')
+									img(ng-src='{{"img/five-routes-" + animal + ".png"}}' alt='{{animal}}')
+							button.btn.btn-primary(ng-click='submitGuessSpecial(q.fiveRoutes)') #[i.fa.fa-lightbulb-o] Submit
+						+solvedSection('q.fiveRoutes')
 		| @@javascriptReplaceFiles

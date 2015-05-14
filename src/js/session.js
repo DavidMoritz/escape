@@ -123,6 +123,9 @@ escapeApp.controller('SessionCtrl', [
 					break;
 				case 'texasHoldEm':
 					q.guess = q.splitGuess.name1 + ' ' + q.splitGuess.name2;
+					break;
+				case 'fiveRoutes':
+					q.guess = q.orderedAnimals.join('-');
 			}
 
 			$s.submitGuess(q);
@@ -175,8 +178,16 @@ escapeApp.controller('SessionCtrl', [
 			q.coords = _.sortBy(q.coords);
 		};
 
-		$s.toggleColumnSelect = function toggleCoordSelect(q, col) {
+		$s.toggleColumnSelect = function toggleColumnSelect(q, col) {
 			q.guess = (q.guess === col.toString()) ? '' : col.toString();
+		};
+
+		$s.toggleAnimalSelect = function toggleAnimalSelect(q, animal) {
+			if (_.includes(q.orderedAnimals, animal)) {
+				_.pull(q.orderedAnimals, animal);
+			} else {
+				q.orderedAnimals.push(animal);
+			}
 		};
 
 		$timeout(function makeDropdownSlick() {	//	selects with images
