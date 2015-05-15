@@ -4,7 +4,6 @@ escapeApp.factory('PuzzleFactory', [
 
 		return {
 			operation: {
-				id: 14,
 				name: 'operation',
 				prerequisite: null,
 				icon: 'stethoscope',
@@ -12,12 +11,12 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['risky'],
 				attempts: [],
 				nextClue: {
-					code: 'ABCDE',
+					lockIcon: 'anchor',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			monopoly: {
-				id: 25,
 				name: 'monopoly',
 				prerequisite: 'operation',
 				icon: 'building-o',
@@ -29,12 +28,12 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Illinois10'],
 				attempts: [],
 				nextClue: {
-					code: '12345',
+					lockIcon: 'bomb',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			yahtzee: {
-				id: 17,
 				name: 'yahtzee',
 				prerequisite: 'monopoly',
 				icon: 'cubes',
@@ -46,12 +45,12 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['6&4', '4&6'],
 				attempts: [],
 				nextClue: {
-					code: '34567',
+					lockIcon: 'university',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			scrabble: {
-				id: 36,
 				name: 'scrabble',
 				prerequisite: 'yahtzee',
 				icon: 'th-large',
@@ -59,12 +58,12 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['watermelon'],
 				attempts: [],
 				nextClue: {
-					code: '56789',
+					lockIcon: 'birthday-cake',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			battleship: {
-				id: 41,
 				name: 'battleship',
 				prerequisite: null,
 				icon: 'ship',
@@ -75,12 +74,12 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['b2&d2'],
 				attempts: [],
 				nextClue: {
-					code: '78901',
+					lockIcon: 'gavel',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			clue: {
-				id: 88,
 				name: 'clue',
 				prerequisite: 'battleship',
 				icon: 'key',
@@ -120,12 +119,12 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Colonel Mustard&Wrench&Lounge'],
 				attempts: [],
 				nextClue: {
-					code: '90123',
+					lockIcon: 'globe',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			guessWho: {
-				id: 63,
 				name: 'guessWho',
 				display: 'Guess Who?',
 				prerequisite: 'clue',
@@ -134,12 +133,12 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['tom'],
 				attempts: [],
 				nextClue: {
-					code: '23456',
+					lockIcon: 'scissors',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			chess: {
-				id: 59,
 				name: 'chess',
 				prerequisite: 'guessWho',
 				icon: 'delicious',
@@ -150,12 +149,26 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['h4'],
 				attempts: [],
 				nextClue: {
-					code: '45678',
+					lockIcon: 'diamond',
+					code: '__-__-__',
 					visible: true
 				}
 			},
+			// crossword: {
+			// 	id: 80,
+			// 	name: 'crossword',
+			// 	prerequisite: 'chess',
+			// 	icon: 'newspaper-o',
+			// 	guess: '',
+			// 	answers: ['drmcnordtsieooluon'],
+			// 	attempts: [],
+			// 	nextClue: {
+			// 		lockIcon: 'rocket',
+			// 		code: '__-__-__',
+			// 		visible: true
+			// 	}
+			// },
 			texasHoldEm: {
-				id: 92,
 				name: 'texasHoldEm',
 				display: 'Texas Hold \'Em',
 				prerequisite: null,
@@ -168,28 +181,27 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Daniel Craig', 'Craig Daniel'],
 				attempts: [],
 				nextClue: {
-					code: '67890',
+					lockIcon: 'tachometer',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			connect4: {
-				id: 76,
 				name: 'connect4',
-				display: 'Connect 4',
+				display: 'Connect Four',
 				prerequisite: 'texasHoldEm',
 				icon: 'table',
 				guess: '',
 				answers: ['4'],
 				attempts: [],
 				nextClue: {
-					code: '89012',
+					lockIcon: 'tree',
+					code: '__-__-__',
 					visible: true
 				}
 			},
 			fiveRoutes: {
-				id: 76,
 				name: 'fiveRoutes',
-				display: 'Five Routes',
 				prerequisite: 'connect4',
 				icon: 'random',
 				animals: [
@@ -204,9 +216,36 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['elephant-lion-zebra-gorilla-giraffe'],
 				attempts: [],
 				nextClue: {
-					code: '01234',
+					lockIcon: 'motorcycle',
+					code: '__-__-__',
 					visible: true
 				}
+			// },
+			// wordFind: {
+			// 	name: 'wordFind',
+			// 	prerequisite: 'fiveRoutes',
+			// 	icon: 'arrows-alt',
+			// 	guess: '',
+			// 	answers: ['milton bradley'],
+			// 	attempts: [],
+			// 	nextClue: {
+			// 		lockIcon: 'paw',
+			// 		code: '__-__-__',
+			// 		visible: true
+			// 	}
+			// },
+			// taboo: {
+			// 	name: 'taboo',
+			// 	prerequisite: 'wordFind',
+			// 	icon: 'ban',
+			// 	guess: '',
+			// 	answers: ['fly'],
+			// 	attempts: [],
+			// 	nextClue: {
+			// 		lockIcon: 'ticket',
+			// 		code: '__-__-__',
+			// 		visible: true
+			// 	}
 			}
 		};
 	}
