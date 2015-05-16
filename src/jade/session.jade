@@ -140,7 +140,7 @@ html(ng-app='escapeApp')
 										th(ng-repeat='col in q.chess.columns') {{col}}
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.chess)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.chess')
-					+col(null)(ng-show='isSolved(q.crossword.prerequisite)' id='{{_.kebabCase(q.crossword.name)}}')
+					+col(null, null, 6)(ng-show='isSolved(q.crossword.prerequisite)' id='{{_.kebabCase(q.crossword.name)}}')
 						h4 Question
 							+squaredIcon('q.crossword.icon')
 							em(ng-show='isSolved(q.crossword)') ({{q.crossword.display || _.capitalize(q.crossword.name)}})

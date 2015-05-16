@@ -117,7 +117,7 @@ h1.digital {
 	}
 }
 
-.big-mono-font {
+._big-mono-font {
 	text-transform: uppercase;
 	font-family: monospace;
 	font-weight: bold;
@@ -125,21 +125,21 @@ h1.digital {
 }
 
 #crossword input {
-	.big-mono-font;
+	._big-mono-font;
 
-	letter-spacing: 19px;
-	background-color: #FFF;
+	letter-spacing: 11px;
+	background-color: #fff;
 	color: #000;
 	background-image: url(../img/crossword-square.png);
-	background-size: 32px;
+	background-size: 24px;
 	background-position: 1px;
-	padding-left: 7px;
-	padding-right: 0;
-	width: 588px;
+	width: 443px;
+	height: 28px;
+	padding: 0 0 0 5px;
 }
 
 #word-find {
-	input {.big-mono-font;}
+	input {._big-mono-font;}
 	section {
 		&:first-of-type input {background: rgba(255, 0, 0, 0.5);}
 		&:nth-of-type(2) input {background: rgba(0, 0, 255, 0.5);}
