@@ -174,8 +174,8 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'beer',
 				guess: '',
 				splitGuess: {
-					name1: '',
-					name2: ''
+					word1: '',
+					word2: ''
 				},
 				answers: ['Daniel Craig', 'Craig Daniel'],
 				attempts: [],
@@ -219,19 +219,23 @@ escapeApp.factory('PuzzleFactory', [
 					code: '__-__-__',
 					visible: true
 				}
-			// },
-			// wordFind: {
-			// 	name: 'wordFind',
-			// 	prerequisite: 'fiveRoutes',
-			// 	icon: 'arrows-alt',
-			// 	guess: '',
-			// 	answers: ['milton bradley'],
-			// 	attempts: [],
-			// 	nextClue: {
-			// 		lockIcon: 'paw',
-			// 		code: '__-__-__',
-			// 		visible: true
-			// 	}
+			},
+			wordFind: {
+				name: 'wordFind',
+				prerequisite: 'fiveRoutes',
+				icon: 'arrows-alt',
+				guess: '',
+				splitGuess: {
+					word1: '',
+					word2: ''
+				},
+				answers: ['milton bradley'],
+				attempts: [],
+				nextClue: {
+					lockIcon: 'paw',
+					code: '__-__-__',
+					visible: true
+				}
 			// },
 			// taboo: {
 			// 	name: 'taboo',

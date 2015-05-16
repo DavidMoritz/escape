@@ -117,20 +117,33 @@ h1.digital {
 	}
 }
 
-#crossword input {
+.big-mono-font {
 	text-transform: uppercase;
 	font-family: monospace;
 	font-weight: bold;
+	font-size: 22px;
+}
+
+#crossword input {
+	.big-mono-font;
+
 	letter-spacing: 19px;
 	background-color: #FFF;
 	color: #000;
 	background-image: url(../img/crossword-square.png);
 	background-size: 32px;
 	background-position: 1px;
-	font-size: 22px;
 	padding-left: 7px;
 	padding-right: 0;
 	width: 588px;
+}
+
+#word-find {
+	input {.big-mono-font;}
+	section {
+		&:first-of-type input {background: rgba(255, 0, 0, 0.5);}
+		&:nth-of-type(2) input {background: rgba(0, 0, 255, 0.5);}
+	}
 }
 
 footer.clear {margin-top: 90px;}

@@ -121,8 +121,9 @@ escapeApp.controller('SessionCtrl', [
 				case 'clue':
 					q.guess = q.splitGuess.who + '&' + q.splitGuess.what + '&' + q.splitGuess.where;
 					break;
-				case 'texasHoldEm':
-					q.guess = q.splitGuess.name1 + ' ' + q.splitGuess.name2;
+				case 'texasHoldEm': // falls through
+				case 'wordFind':
+					q.guess = q.splitGuess.word1 + ' ' + q.splitGuess.word2;
 					break;
 				case 'fiveRoutes':
 					q.guess = q.orderedAnimals.join('-');

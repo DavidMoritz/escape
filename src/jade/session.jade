@@ -157,9 +157,9 @@ html(ng-app='escapeApp')
 							label Who is the Big Winner?
 							.row
 								+col(6)
-									input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.name1' placeholder='First Name')
+									input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word1' placeholder='First Name')
 								+col(6)
-									input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.name2' placeholder='Last Name')
+									input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2' placeholder='Last Name')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.texasHoldEm)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.texasHoldEm')
 					+col(null, 6, 4)(ng-show='isSolved(q.connect4.prerequisite)' id='{{_.kebabCase(q.connect4.name)}}')
@@ -199,4 +199,18 @@ html(ng-app='escapeApp')
 									img(ng-src='{{"img/five-routes-" + animal + ".png"}}' alt='{{animal}}')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.fiveRoutes)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.fiveRoutes')
+					+col(null, 6, 4)(ng-show='isSolved(q.wordFind.prerequisite)' id='{{_.kebabCase(q.wordFind.name)}}')
+						h4 Question
+							+squaredIcon('q.wordFind.icon')
+							em(ng-show='isSolved(q.wordFind)') ({{q.wordFind.display || _.capitalize(q.wordFind.name)}})
+						div(ng-if='!isSolved(q.wordFind)')
+							h5 Answer the Word Find riddle below...
+							label "Not European":
+							.row
+								+col(6)
+									input.form-control(type='text' ng-model='q.wordFind.splitGuess.word1' maxlength='{{q.wordFind.answers[0].split(\' \')[0].length}}')
+								+col(6)
+									input.form-control(type='text' ng-model='q.wordFind.splitGuess.word2' maxlength='{{q.wordFind.answers[0].split(\' \')[1].length}}')
+							button.btn.btn-primary(ng-click='submitGuessSpecial(q.wordFind)') #[i.fa.fa-lightbulb-o] Submit
+						+solvedSection('q.wordFind')
 		| @@javascriptReplaceFiles
