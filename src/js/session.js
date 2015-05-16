@@ -126,6 +126,16 @@ escapeApp.controller('SessionCtrl', [
 					break;
 				case 'fiveRoutes':
 					q.guess = q.orderedAnimals.join('-');
+					break;
+				case 'crossword':
+					var correctAnswer = q.answers[0];
+					var correctlyGuessedLettersCount = 0;
+					_.forEach(q.guess.split(''), function eachLetter(letter, index) {
+						correctlyGuessedLettersCount += (letter === correctAnswer[index]) ? 1 : 0;
+					});
+					if (correctlyGuessedLettersCount >= correctAnswer.length - 1) {
+						q.guess = correctAnswer;
+					}
 			}
 
 			$s.submitGuess(q);

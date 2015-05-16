@@ -130,7 +130,7 @@ escapeApp.factory('PuzzleFactory', [
 				prerequisite: 'clue',
 				icon: 'users',
 				guess: '',
-				answers: ['tom'],
+				answers: ['alex'],
 				attempts: [],
 				nextClue: {
 					lockIcon: 'scissors',
@@ -154,20 +154,19 @@ escapeApp.factory('PuzzleFactory', [
 					visible: true
 				}
 			},
-			// crossword: {
-			// 	id: 80,
-			// 	name: 'crossword',
-			// 	prerequisite: 'chess',
-			// 	icon: 'newspaper-o',
-			// 	guess: '',
-			// 	answers: ['drmcnordtsieooluon'],
-			// 	attempts: [],
-			// 	nextClue: {
-			// 		lockIcon: 'rocket',
-			// 		code: '__-__-__',
-			// 		visible: true
-			// 	}
-			// },
+			crossword: {
+				name: 'crossword',
+				prerequisite: 'chess',
+				icon: 'newspaper-o',
+				guess: '',
+				answers: ['drmcnordtsieooluon'],
+				attempts: [],
+				nextClue: {
+					lockIcon: 'rocket',
+					code: '__-__-__',
+					visible: true
+				}
+			},
 			texasHoldEm: {
 				name: 'texasHoldEm',
 				display: 'Texas Hold \'Em',

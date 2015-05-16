@@ -38,18 +38,18 @@ html(ng-app='escapeApp')
 			#game(ng-show='activeTeam')
 				h3 Team: {{activeTeam.name}}
 				.row
-					+col(null, 6, 4)(ng-show='isSolved(q.operation.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.operation.prerequisite)' id='{{_.kebabCase(q.operation.name)}}')
 						h4 Question
-							+circledIcon('q.operation.icon')
+							+squaredIcon('q.operation.icon')
 							em(ng-show='isSolved(q.operation)') ({{q.operation.display || _.capitalize(q.operation.name)}})
 						div(ng-if='!isSolved(q.operation)')
 							label.sr-only What kind of Operation is this?
 							input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
 							button.btn.btn-primary(ng-click='submitGuess(q.operation)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.operation')
-					+col(null, 6, 4)(ng-show='isSolved(q.monopoly.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.monopoly.prerequisite)' id='{{_.kebabCase(q.monopoly.name)}}')
 						h4 Question
-							+circledIcon('q.monopoly.icon')
+							+squaredIcon('q.monopoly.icon')
 							em(ng-show='isSolved(q.monopoly)') ({{q.monopoly.display || _.capitalize(q.monopoly.name)}})
 						div(ng-if='!isSolved(q.monopoly)')
 							label.sr-only Where did I stay?
@@ -58,9 +58,9 @@ html(ng-app='escapeApp')
 							input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.monopoly)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.monopoly')
-					+col(null, 6, 4)(ng-show='isSolved(q.yahtzee.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.yahtzee.prerequisite)' id='{{_.kebabCase(q.yahtzee.name)}}')
 						h4 Question
-							+circledIcon('q.yahtzee.icon')
+							+squaredIcon('q.yahtzee.icon')
 							em(ng-show='isSolved(q.yahtzee)') ({{q.yahtzee.display || _.capitalize(q.yahtzee.name)}})
 						div(ng-if='!isSolved(q.yahtzee)')
 							label What did I roll?
@@ -70,18 +70,18 @@ html(ng-app='escapeApp')
 								option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"http://dobbelsteen.virtuworld.net/img/" + die + "c.gif"}}')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.yahtzee)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.yahtzee')
-					+col(null, 6, 4)(ng-show='isSolved(q.scrabble.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.scrabble.prerequisite)' id='{{_.kebabCase(q.scrabble.name)}}')
 						h4 Question
-							+circledIcon('q.scrabble.icon')
+							+squaredIcon('q.scrabble.icon')
 							em(ng-show='isSolved(q.scrabble)') ({{q.scrabble.display || _.capitalize(q.scrabble.name)}})
 						div(ng-if='!isSolved(q.scrabble)')
 							label.sr-only What SCRABBLE word did I spell?
 							input.form-control(type='text' ng-model='q.scrabble.guess' placeholder='What SCRABBLE word did I spell?')
 							button.btn.btn-primary(ng-click='submitGuess(q.scrabble)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.scrabble')
-					+col(null, 6, 4)(ng-show='isSolved(q.battleship.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.battleship.prerequisite)' id='{{_.kebabCase(q.battleship.name)}}')
 						h4 Question
-							+circledIcon('q.battleship.icon')
+							+squaredIcon('q.battleship.icon')
 							em(ng-show='isSolved(q.battleship)') ({{q.battleship.display || _.capitalize(q.battleship.name)}})
 						div(ng-if='!isSolved(q.battleship)')
 							table.battleship
@@ -97,9 +97,9 @@ html(ng-app='escapeApp')
 											ng-click='toggleCoordSelect(q.battleship, row + col)') #[i.fa.fa-circle]
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.battleship)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.battleship')
-					+col(null, 6, 4)(ng-show='isSolved(q.clue.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.clue.prerequisite)' id='{{_.kebabCase(q.clue.name)}}')
 						h4 Question
-							+circledIcon('q.clue.icon')
+							+squaredIcon('q.clue.icon')
 							em(ng-show='isSolved(q.clue)') ({{q.clue.display || _.capitalize(q.clue.name)}})
 						div(ng-if='!isSolved(q.clue)')
 							label Who?
@@ -113,18 +113,18 @@ html(ng-app='escapeApp')
 								option(value='' disabled ng-if='!q.clue.splitGuess.where') Room...
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.clue)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.clue')
-					+col(null, 6, 4)(ng-show='isSolved(q.guessWho.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.guessWho.prerequisite)' id='{{_.kebabCase(q.guessWho.name)}}')
 						h4 Question
-							+circledIcon('q.guessWho.icon')
+							+squaredIcon('q.guessWho.icon')
 							em(ng-show='isSolved(q.guessWho)') ({{q.guessWho.display || _.capitalize(q.guessWho.name)}})
 						div(ng-if='!isSolved(q.guessWho)')
 							label.sr-only Guess Who?
 							input.form-control(type='text' ng-model='q.guessWho.guess' placeholder='Guess Who?')
 							button.btn.btn-primary(ng-click='submitGuess(q.guessWho)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.guessWho')
-					+col(null, 6, 4)(ng-show='isSolved(q.chess.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.chess.prerequisite)' id='{{_.kebabCase(q.chess.name)}}')
 						h4 Question
-							+circledIcon('q.chess.icon')
+							+squaredIcon('q.chess.icon')
 							em(ng-show='isSolved(q.chess)') ({{q.chess.display || _.capitalize(q.chess.name)}})
 						div(ng-if='!isSolved(q.chess)')
 							table.chess
@@ -140,9 +140,18 @@ html(ng-app='escapeApp')
 										th(ng-repeat='col in q.chess.columns') {{col}}
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.chess)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.chess')
-					+col(null, 6, 4)(ng-show='isSolved(q.texasHoldEm.prerequisite)')
+					+col(null)(ng-show='isSolved(q.crossword.prerequisite)' id='{{_.kebabCase(q.crossword.name)}}')
 						h4 Question
-							+circledIcon('q.texasHoldEm.icon')
+							+squaredIcon('q.crossword.icon')
+							em(ng-show='isSolved(q.crossword)') ({{q.crossword.display || _.capitalize(q.crossword.name)}})
+						div(ng-if='!isSolved(q.crossword)')
+							label What is the {{q.crossword.answers[0].length}}-character secret code in the crossword (#8 Down)?
+							input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
+							button.btn.btn-primary(ng-click='submitGuessSpecial(q.crossword)') #[i.fa.fa-lightbulb-o] Submit
+						+solvedSection('q.crossword')
+					+col(null, 6, 4)(ng-show='isSolved(q.texasHoldEm.prerequisite)' id='{{_.kebabCase(q.texasHoldEm.name)}}')
+						h4 Question
+							+squaredIcon('q.texasHoldEm.icon')
 							em(ng-show='isSolved(q.texasHoldEm)') ({{q.texasHoldEm.display || _.capitalize(q.texasHoldEm.name)}})
 						div(ng-if='!isSolved(q.texasHoldEm)')
 							label Who is the Big Winner?
@@ -153,9 +162,9 @@ html(ng-app='escapeApp')
 									input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.name2' placeholder='Last Name')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.texasHoldEm)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.texasHoldEm')
-					+col(null, 6, 4)(ng-show='isSolved(q.connect4.prerequisite)')
+					+col(null, 6, 4)(ng-show='isSolved(q.connect4.prerequisite)' id='{{_.kebabCase(q.connect4.name)}}')
 						h4 Question
-							+circledIcon('q.connect4.icon')
+							+squaredIcon('q.connect4.icon')
 							em(ng-show='isSolved(q.connect4)') ({{q.connect4.display || _.capitalize(q.connect4.name)}})
 						div(ng-if='!isSolved(q.connect4)')
 							label Which column should Red choose?
@@ -168,7 +177,7 @@ html(ng-app='escapeApp')
 						+solvedSection('q.connect4')
 					+col(null, 6, 4)(ng-show='isSolved(q.fiveRoutes.prerequisite)' id='{{_.kebabCase(q.fiveRoutes.name)}}')
 						h4 Question
-							+circledIcon('q.fiveRoutes.icon')
+							+squaredIcon('q.fiveRoutes.icon')
 							em(ng-show='isSolved(q.fiveRoutes)') ({{q.fiveRoutes.display || _.capitalize(q.fiveRoutes.name)}})
 						div(ng-if='!isSolved(q.fiveRoutes)')
 							label Put the animals in order from the shortest route to the longest route
