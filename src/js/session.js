@@ -53,8 +53,8 @@ escapeApp.controller('SessionCtrl', [
 					// play *beep
 					console.log('beep');
 
-					$('.numericKeypad').keypad('close');
 					if (key == '#') {
+						$('.numericKeypad').keypad('close');
 						$('#jigsawSubmit').trigger('click');
 					}
 				}
