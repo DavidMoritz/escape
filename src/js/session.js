@@ -36,13 +36,14 @@ escapeApp.controller('SessionCtrl', [
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
+
 		$(function onReady() {
 			$('.numericKeypad').keypad({
-				separator: '|', 
+				separator: '|',
 				layout: [
-					'7|8|9', 
-					'4|5|6', 
-					'1|2|3', 
+					'7|8|9',
+					'4|5|6',
+					'1|2|3',
 					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
 				],
 				showAnim: '',
@@ -60,14 +61,21 @@ escapeApp.controller('SessionCtrl', [
 				}
 			});
 		});
+		var lockoutPeriod = 45;	//	seconds to lock people out
 
 		$interval(function everySecond() {
-			if ($s.activeTeam && $s.activeTeam.timerStarted) {
-				// convertTimer
-				var start = moment($s.activeTeam.timerStarted, timeFormat);
+			if ($s.activeTeam && $s.activeTeam.timerStarted) {				// convertTimer
+				var gameStart = moment($s.activeTeam.timerStarted);
 				var current = $s.activeTeam.finished ? moment($s.activeTeam.finished, timeFormat) : moment();
 
-				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(start, 'seconds');
+				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
+
+				//	check for lockout time
+				if ($s.lockout.active) {
+					var lockoutStart = moment($s.activeTeam.lockoutStarted);
+
+					$s.lockout.secondsRemaining = $s.activeTeam.lockoutPeriod - current.diff(lockoutStart, 'seconds');
+				}
 			} else {
 				$s.timeRemaining = 0;
 			}
@@ -83,7 +91,11 @@ escapeApp.controller('SessionCtrl', [
 			},
 			timeRemaining: 0,
 			solvedQuestions: [],
-			q: EF.questions
+			q: EF.questions,
+			lockout: {
+				active: false,
+				secondsRemaining: 0
+			}
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {

@@ -84,7 +84,9 @@ escapeApp.controller('AdminCtrl', [
 					name: $s.formFields.newTeamName,
 					clues: 0,
 					finished: false,
-					timeAllowed: EF.initialTimeAllowed
+					timeAllowed: EF.initialTimeAllowed,
+					lockoutPeriod: EF.defaultLockoutPeriod,
+					lockoutStartTime: null
 				}).then(function(newTeam) {
 					console.log('new team created with id: ' + newTeam.key());
 
