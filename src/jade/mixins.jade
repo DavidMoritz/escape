@@ -13,7 +13,7 @@ mixin col(xs, sm, md, lg)
 mixin squaredIcon(icon)
 	span.fa-stack.fa-2x
 		i.fa.fa-stack-2x.fa-square
-		i.fa.fa-stack-1x.fa-inverse(class='fa-{{#{icon}}}')
+		i.fa.fa-stack-1x.text-white(class='fa-{{#{icon}}}')
 
 mixin solvedSection(puzzleObj)
 	div(ng-if='isSolved(#{puzzleObj})')
@@ -23,6 +23,6 @@ mixin solvedSection(puzzleObj)
 		.well(ng-show='#{puzzleObj}.nextClue.visible')
 			p.lead
 				span.fa-stack.fa-2x
-					i.fa.fa-stack-2x.fa-circle.text-primary
+					i.fa.fa-stack-2x.fa-circle.text-white
 					i.fa.fa-stack-1x.fa-inverse(class='fa-{{#{puzzleObj}.nextClue.lockIcon}}')
 				| Code: {{#{puzzleObj}.nextClue.code}}

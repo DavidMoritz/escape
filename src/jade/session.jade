@@ -177,7 +177,7 @@ html(ng-app='escapeApp')
 									ng-click='toggleColumnSelect(q.connect4, column)') {{column}}
 							//img.img-responsive(src='img/connect4.png' alt)
 							iframe.connect4game.collapse(src="html/connect4.html" width="354px" height="354px" scrolling="no")
-							button.btn.btn-primary(ng-click='submitGuess(q.connect4)') #[i.fa.fa-lightbulb-o] Submit
+							//button.btn.btn-primary(ng-click='submitGuess(q.connect4)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.connect4')
 					+col(null, 6, 4)(ng-show='isSolved(q.fiveRoutes.prerequisite)' id='{{_.kebabCase(q.fiveRoutes.name)}}')
 						h4 Question
