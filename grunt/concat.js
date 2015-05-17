@@ -18,6 +18,7 @@ module.exports = function exportConcat(grunt) {
 					'lib/moment/moment.js'
 				],
 				'<%= distPath %>escape.js': [
+					'src/services/mc.js',
 					'src/js/app.js',
 					'src/services/*.js',
 					'!src/js/public.js',

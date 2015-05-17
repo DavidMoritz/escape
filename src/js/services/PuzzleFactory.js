@@ -236,19 +236,19 @@ escapeApp.factory('PuzzleFactory', [
 					code: '__-__-__',
 					visible: true
 				}
-			// },
-			// taboo: {
-			// 	name: 'taboo',
-			// 	prerequisite: 'wordFind',
-			// 	icon: 'ban',
-			// 	guess: '',
-			// 	answers: ['fly'],
-			// 	attempts: [],
-			// 	nextClue: {
-			// 		lockIcon: 'ticket',
-			// 		code: '__-__-__',
-			// 		visible: true
-			// 	}
+			},
+			taboo: {
+				name: 'taboo',
+				prerequisite: 'wordFind',
+				icon: 'ban',
+				guess: '',
+				answers: ['fly'],
+				attempts: [],
+				nextClue: {
+					lockIcon: 'ticket',
+					code: '__-__-__',
+					visible: true
+				}
 			}
 		};
 	}

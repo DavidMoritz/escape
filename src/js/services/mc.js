@@ -8,7 +8,7 @@ var mc = {
 	},
 
 	camelToTitle: function camelToTitle(str) {	//	convert camelCaseString to Title Case String
-		return _.capitalize(str.replace(/([A-Z])/g, ' $1'));
+		return _.capitalize(str.replace(/([A-Z])/g, ' $1')).trim();
 	},
 
 	randomDigits: function randomDigits(min, max) {

@@ -41,7 +41,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.operation.prerequisite)' id='{{_.kebabCase(q.operation.name)}}')
 						h4 Question
 							+squaredIcon('q.operation.icon')
-							em(ng-show='isSolved(q.operation)') ({{q.operation.display || _.capitalize(q.operation.name)}})
+							em(ng-show='isSolved(q.operation)') ({{q.operation.display || mc.camelToTitle(q.operation.name)}})
 						div(ng-if='!isSolved(q.operation)')
 							label.sr-only What kind of Operation is this?
 							input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
@@ -50,7 +50,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.monopoly.prerequisite)' id='{{_.kebabCase(q.monopoly.name)}}')
 						h4 Question
 							+squaredIcon('q.monopoly.icon')
-							em(ng-show='isSolved(q.monopoly)') ({{q.monopoly.display || _.capitalize(q.monopoly.name)}})
+							em(ng-show='isSolved(q.monopoly)') ({{q.monopoly.display || mc.camelToTitle(q.monopoly.name)}})
 						div(ng-if='!isSolved(q.monopoly)')
 							label.sr-only Where did I stay?
 							input.form-control(type='text' ng-model='q.monopoly.splitGuess.property' placeholder='Where did I stay?')
@@ -61,7 +61,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.yahtzee.prerequisite)' id='{{_.kebabCase(q.yahtzee.name)}}')
 						h4 Question
 							+squaredIcon('q.yahtzee.icon')
-							em(ng-show='isSolved(q.yahtzee)') ({{q.yahtzee.display || _.capitalize(q.yahtzee.name)}})
+							em(ng-show='isSolved(q.yahtzee)') ({{q.yahtzee.display || mc.camelToTitle(q.yahtzee.name)}})
 						div(ng-if='!isSolved(q.yahtzee)')
 							label What did I roll?
 							select.form-control(escape-ddslick ng-model='q.yahtzee.splitGuess.die1')
@@ -73,7 +73,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.scrabble.prerequisite)' id='{{_.kebabCase(q.scrabble.name)}}')
 						h4 Question
 							+squaredIcon('q.scrabble.icon')
-							em(ng-show='isSolved(q.scrabble)') ({{q.scrabble.display || _.capitalize(q.scrabble.name)}})
+							em(ng-show='isSolved(q.scrabble)') ({{q.scrabble.display || mc.camelToTitle(q.scrabble.name)}})
 						div(ng-if='!isSolved(q.scrabble)')
 							label.sr-only What SCRABBLE word did I spell?
 							input.form-control(type='text' ng-model='q.scrabble.guess' placeholder='What SCRABBLE word did I spell?')
@@ -82,7 +82,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.battleship.prerequisite)' id='{{_.kebabCase(q.battleship.name)}}')
 						h4 Question
 							+squaredIcon('q.battleship.icon')
-							em(ng-show='isSolved(q.battleship)') ({{q.battleship.display || _.capitalize(q.battleship.name)}})
+							em(ng-show='isSolved(q.battleship)') ({{q.battleship.display || mc.camelToTitle(q.battleship.name)}})
 						div(ng-if='!isSolved(q.battleship)')
 							table.battleship
 								thead
@@ -100,7 +100,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.clue.prerequisite)' id='{{_.kebabCase(q.clue.name)}}')
 						h4 Question
 							+squaredIcon('q.clue.icon')
-							em(ng-show='isSolved(q.clue)') ({{q.clue.display || _.capitalize(q.clue.name)}})
+							em(ng-show='isSolved(q.clue)') ({{q.clue.display || mc.camelToTitle(q.clue.name)}})
 						div(ng-if='!isSolved(q.clue)')
 							label Who?
 							select.form-control(ng-model='q.clue.splitGuess.who' ng-options='who as who for who in q.clue.suspects')
@@ -116,7 +116,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.guessWho.prerequisite)' id='{{_.kebabCase(q.guessWho.name)}}')
 						h4 Question
 							+squaredIcon('q.guessWho.icon')
-							em(ng-show='isSolved(q.guessWho)') ({{q.guessWho.display || _.capitalize(q.guessWho.name)}})
+							em(ng-show='isSolved(q.guessWho)') ({{q.guessWho.display || mc.camelToTitle(q.guessWho.name)}})
 						div(ng-if='!isSolved(q.guessWho)')
 							label.sr-only Guess Who?
 							input.form-control(type='text' ng-model='q.guessWho.guess' placeholder='Guess Who?')
@@ -125,7 +125,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.chess.prerequisite)' id='{{_.kebabCase(q.chess.name)}}')
 						h4 Question
 							+squaredIcon('q.chess.icon')
-							em(ng-show='isSolved(q.chess)') ({{q.chess.display || _.capitalize(q.chess.name)}})
+							em(ng-show='isSolved(q.chess)') ({{q.chess.display || mc.camelToTitle(q.chess.name)}})
 						div(ng-if='!isSolved(q.chess)')
 							table.chess
 								tbody
@@ -143,7 +143,7 @@ html(ng-app='escapeApp')
 					+col(null, null, 6)(ng-show='isSolved(q.crossword.prerequisite)' id='{{_.kebabCase(q.crossword.name)}}')
 						h4 Question
 							+squaredIcon('q.crossword.icon')
-							em(ng-show='isSolved(q.crossword)') ({{q.crossword.display || _.capitalize(q.crossword.name)}})
+							em(ng-show='isSolved(q.crossword)') ({{q.crossword.display || mc.camelToTitle(q.crossword.name)}})
 						div(ng-if='!isSolved(q.crossword)')
 							label What is the {{q.crossword.answers[0].length}}-character secret code in the crossword (#8 Down)?
 							input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
@@ -152,7 +152,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.texasHoldEm.prerequisite)' id='{{_.kebabCase(q.texasHoldEm.name)}}')
 						h4 Question
 							+squaredIcon('q.texasHoldEm.icon')
-							em(ng-show='isSolved(q.texasHoldEm)') ({{q.texasHoldEm.display || _.capitalize(q.texasHoldEm.name)}})
+							em(ng-show='isSolved(q.texasHoldEm)') ({{q.texasHoldEm.display || mc.camelToTitle(q.texasHoldEm.name)}})
 						div(ng-if='!isSolved(q.texasHoldEm)')
 							label Who is the Big Winner?
 							.row
@@ -165,7 +165,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.connect4.prerequisite)' id='{{_.kebabCase(q.connect4.name)}}')
 						h4 Question
 							+squaredIcon('q.connect4.icon')
-							em(ng-show='isSolved(q.connect4)') ({{q.connect4.display || _.capitalize(q.connect4.name)}})
+							em(ng-show='isSolved(q.connect4)') ({{q.connect4.display || mc.camelToTitle(q.connect4.name)}})
 						div(ng-if='!isSolved(q.connect4)')
 							label Which column should Red choose?
 							.btn-group.connect4
@@ -178,7 +178,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.fiveRoutes.prerequisite)' id='{{_.kebabCase(q.fiveRoutes.name)}}')
 						h4 Question
 							+squaredIcon('q.fiveRoutes.icon')
-							em(ng-show='isSolved(q.fiveRoutes)') ({{q.fiveRoutes.display || _.capitalize(q.fiveRoutes.name)}})
+							em(ng-show='isSolved(q.fiveRoutes)') ({{q.fiveRoutes.display || mc.camelToTitle(q.fiveRoutes.name)}})
 						div(ng-if='!isSolved(q.fiveRoutes)')
 							label Put the animals in order from the shortest route to the longest route
 							ul.list-inline
@@ -202,7 +202,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 4)(ng-show='isSolved(q.wordFind.prerequisite)' id='{{_.kebabCase(q.wordFind.name)}}')
 						h4 Question
 							+squaredIcon('q.wordFind.icon')
-							em(ng-show='isSolved(q.wordFind)') ({{q.wordFind.display || _.capitalize(q.wordFind.name)}})
+							em(ng-show='isSolved(q.wordFind)') ({{q.wordFind.display || mc.camelToTitle(q.wordFind.name)}})
 						div(ng-if='!isSolved(q.wordFind)')
 							h5 Answer the Word Find riddle below...
 							label "Not European":
@@ -213,4 +213,13 @@ html(ng-app='escapeApp')
 									input.form-control(type='text' ng-model='q.wordFind.splitGuess.word2' maxlength='{{q.wordFind.answers[0].split(\' \')[1].length}}')
 							button.btn.btn-primary(ng-click='submitGuessSpecial(q.wordFind)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.wordFind')
+					+col(null, 6, 4)(ng-show='isSolved(q.taboo.prerequisite)' id='{{_.kebabCase(q.taboo.name)}}')
+						h4 Question
+							+squaredIcon('q.taboo.icon')
+							em(ng-show='isSolved(q.taboo)') ({{q.taboo.display || mc.camelToTitle(q.taboo.name)}})
+						div(ng-if='!isSolved(q.taboo)')
+							label.sr-only Which word is Taboo?
+							input.form-control(type='text' ng-model='q.taboo.guess' placeholder='Which word is Taboo?')
+							button.btn.btn-primary(ng-click='submitGuess(q.taboo)') #[i.fa.fa-lightbulb-o] Submit
+						+solvedSection('q.taboo')
 		| @@javascriptReplaceFiles
