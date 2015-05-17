@@ -10,6 +10,7 @@
     "angular": "latest",
     "firebase": "latest",
     "angularfire": "latest",
-    "moment": "latest"
+    "moment": "latest",
+    "keypad": "https://github.com/kbwood/keypad.git"
   }
 }

@@ -15,7 +15,9 @@ module.exports = function exportConcat(grunt) {
 					'lib/lodash/lodash.js',
 					'lib/firebase/firebase.js',
 					'lib/angularfire/dist/angularfire.js',
-					'lib/moment/moment.js'
+					'lib/moment/moment.js',
+					'lib/keypad/jquery.plugin.min.js',
+					'lib/keypad/jquery.keypad.min.js'
 				],
 				'<%= distPath %>escape.js': [
 					'src/services/mc.js',

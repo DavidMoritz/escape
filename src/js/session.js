@@ -36,6 +36,28 @@ escapeApp.controller('SessionCtrl', [
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
+		$(function onReady() {
+			$('.numericKeypad').keypad({
+				separator: '|', 
+				layout: [
+					'7|8|9', 
+					'4|5|6', 
+					'1|2|3', 
+					$.keypad.CLEAR + '|0|#'
+				],
+				showAnim: '',
+				clearText: 'X',
+				keypadClass: 'midnightKeypad',
+				keypadOnly: true,
+				onKeypress: function(key, value, inst) {
+					// play *beep
+					console.log('beep');
+					if (key == '#') {
+						$('#jigsawSubmit').trigger('click');
+					}
+				}
+			});
+		});
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
