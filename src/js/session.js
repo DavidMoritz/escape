@@ -43,7 +43,7 @@ escapeApp.controller('SessionCtrl', [
 					'7|8|9', 
 					'4|5|6', 
 					'1|2|3', 
-					$.keypad.CLEAR + '|0|#'
+					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
 				],
 				showAnim: '',
 				clearText: 'X',
