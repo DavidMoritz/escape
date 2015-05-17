@@ -48,10 +48,12 @@ escapeApp.controller('SessionCtrl', [
 				showAnim: '',
 				clearText: 'X',
 				keypadClass: 'midnightKeypad',
-				keypadOnly: true,
+				keypadOnly: false,
 				onKeypress: function(key, value, inst) {
 					// play *beep
 					console.log('beep');
+
+					$('.numericKeypad').keypad('close');
 					if (key == '#') {
 						$('#jigsawSubmit').trigger('click');
 					}
@@ -105,10 +107,12 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.submitGuess = function submitGuess(q) {
-			var lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
-				return ans.toLowerCase();
-			});
+			var $el = $('[name=' + q.name + ']'),
+				lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
+					return ans.toLowerCase();
+				});
 
+			q.guess = q.guess || $el.val();
 			q.attempts.push({
 				guess: q.guess,
 				time: moment().format(timeFormat)

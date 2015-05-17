@@ -41,7 +41,7 @@ escapeApp.factory('PuzzleFactory', [
 					die1: '',
 					die2: ''
 				},
-				answers: ['6&4', '4&6'],
+				answers: ['5&5'],
 				attempts: [],
 				nextClue: {
 					lockIcon: 'university',

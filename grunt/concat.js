@@ -17,7 +17,11 @@ module.exports = function exportConcat(grunt) {
 					'lib/angularfire/dist/angularfire.js',
 					'lib/moment/moment.js',
 					'lib/keypad/jquery.plugin.min.js',
-					'lib/keypad/jquery.keypad.min.js'
+					'lib/keypad/jquery.keypad.min.js',
+					'lib/ng-keyboard/src/ngDraggable/ngDraggable.js',
+					'lib/ng-keyboard/src/ngKeypad/ngKey.js',
+					'lib/ng-keyboard/src/ngKeypad/ngKeypad.js',
+					'lib/ng-keyboard/src/ngKeypad/ngKeypadInput.js'
 				],
 				'<%= distPath %>escape.js': [
 					'src/services/mc.js',

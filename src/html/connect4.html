@@ -172,7 +172,8 @@ function dropIt(whichCol, auto) {
 				//placeTop(whichRow);
 			}
 			if(auto == "player" && newMove) {
-				newMove = "alert";
+				if(whichCol == 3) newMove = "alert";
+				else newMove = false;
 			}
 		}
 	}
@@ -823,67 +824,67 @@ function drawnextframe() {
 			  							<td> 
 											<table cellspacing="0" cellpadding="0" border="0" bgcolor="#FFFF99">
 				  								<tr> 
-													<td><a href="javascript:void dropIt(0)" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(1)" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(2)" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(0, 'player')" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(1, 'player')" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(2, 'player')" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
 													<td><a href="javascript:void dropIt(3, 'player')" onMouseOver="placeTop(3); setMsg(''); return true" onMouseOut="unPlaceTop(3)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(4)" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(5)" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(6)" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(4, 'player')" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(5, 'player')" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(6, 'player')" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4clearness.gif" height="50" width="50" /></a></td>
 												</tr>
 				  								<tr> 
-													<td><a href="javascript:void dropIt(0)" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(1)" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(2)" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(0, 'player')" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(1, 'player')" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(2, 'player')" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 													<td><a href="javascript:void dropIt(3, 'player')" onMouseOver="placeTop(3); setMsg(''); return true" onMouseOut="unPlaceTop(3)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(4)" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(5)" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(6)" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(4, 'player')" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(5, 'player')" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(6, 'player')" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 												</tr>
 				  								<tr> 
-													<td><a href="javascript:void dropIt(0)" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(1)" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(2)" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(0, 'player')" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(1, 'player')" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(2, 'player')" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 													<td><a href="javascript:void dropIt(3, 'player')" onMouseOver="placeTop(3); setMsg(''); return true" onMouseOut="unPlaceTop(3)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(4)" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(5)" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(6)" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(4, 'player')" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(5, 'player')" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(6, 'player')" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 												</tr>
 				  								<tr> 
-													<td><a href="javascript:void dropIt(0)" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(1)" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(2)" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(0, 'player')" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(1, 'player')" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(2, 'player')" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 													<td><a href="javascript:void dropIt(3, 'player')" onMouseOver="placeTop(3); setMsg(''); return true" onMouseOut="unPlaceTop(3)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(4)" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(5)" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(6)" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(4, 'player')" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(5, 'player')" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(6, 'player')" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 												</tr>
 				  								<tr> 
-													<td><a href="javascript:void dropIt(0)" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(1)" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(2)" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(0, 'player')" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(1, 'player')" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(2, 'player')" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 													<td><a href="javascript:void dropIt(3, 'player')" onMouseOver="placeTop(3); setMsg(''); return true" onMouseOut="unPlaceTop(3)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(4)" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(5)" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(6)" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(4, 'player')" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(5, 'player')" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(6, 'player')" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 												</tr>
 				  								<tr> 
-													<td><a href="javascript:void dropIt(0)" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(1)" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(2)" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(0, 'player')" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(1, 'player')" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(2, 'player')" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 													<td><a href="javascript:void dropIt(3, 'player')" onMouseOver="placeTop(3); setMsg(''); return true" onMouseOut="unPlaceTop(3)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(4)" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(5)" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(6)" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(4, 'player')" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(5, 'player')" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(6, 'player')" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 												</tr>
 				  								<tr> 
-													<td><a href="javascript:void dropIt(0)" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(1)" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(2)" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(0, 'player')" onMouseOver="placeTop(0); setMsg(''); return true" onMouseOut="unPlaceTop(0)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(1, 'player')" onMouseOver="placeTop(1); setMsg(''); return true" onMouseOut="unPlaceTop(1)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(2, 'player')" onMouseOver="placeTop(2); setMsg(''); return true" onMouseOut="unPlaceTop(2)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 													<td><a href="javascript:void dropIt(3, 'player')" onMouseOver="placeTop(3); setMsg(''); return true" onMouseOut="unPlaceTop(3)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(4)" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(5)" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
-													<td><a href="javascript:void dropIt(6)" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(4, 'player')" onMouseOver="placeTop(4); setMsg(''); return true" onMouseOut="unPlaceTop(4)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(5, 'player')" onMouseOver="placeTop(5); setMsg(''); return true" onMouseOut="unPlaceTop(5)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
+													<td><a href="javascript:void dropIt(6, 'player')" onMouseOver="placeTop(6); setMsg(''); return true" onMouseOut="unPlaceTop(6)"><img style="margin-bottom:-4px" border="0" src="images/c4fillempty.gif" height="50" width="50" /></a></td>
 												</tr>
 											</table>
 										</td>
