@@ -5,7 +5,6 @@ escapeApp.factory('PuzzleFactory', [
 		return {
 			operation: {
 				name: 'operation',
-				prerequisite: null,
 				icon: 'stethoscope',
 				guess: '',
 				answers: ['risky'],
@@ -65,7 +64,6 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			battleship: {
 				name: 'battleship',
-				prerequisite: null,
 				icon: 'ship',
 				guess: '',
 				coords: [],
@@ -82,7 +80,7 @@ escapeApp.factory('PuzzleFactory', [
 			clue: {
 				name: 'clue',
 				prerequisite: 'battleship',
-				icon: 'key',
+				icon: 'search',
 				guess: '',
 				splitGuess: {
 					who: '',
@@ -170,7 +168,6 @@ escapeApp.factory('PuzzleFactory', [
 			texasHoldEm: {
 				name: 'texasHoldEm',
 				display: 'Texas Hold \'Em',
-				prerequisite: null,
 				icon: 'beer',
 				guess: '',
 				splitGuess: {
@@ -249,6 +246,13 @@ escapeApp.factory('PuzzleFactory', [
 					code: '__-__-__',
 					visible: true
 				}
+			},
+			jigsaw: {
+				name: 'jigsaw',
+				icon: 'puzzle-piece',
+				guess: '',
+				answers: ['12345'],
+				attempts: []
 			}
 		};
 	}

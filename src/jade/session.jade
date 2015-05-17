@@ -222,4 +222,15 @@ html(ng-app='escapeApp')
 							input.form-control(type='text' ng-model='q.taboo.guess' placeholder='Which word is Taboo?')
 							button.btn.btn-primary(ng-click='submitGuess(q.taboo)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.taboo')
+				hr
+				.row
+					+col(null)(ng-show='isSolved(q.jigsaw.prerequisite)' id='{{_.kebabCase(q.jigsaw.name)}}')
+						h4 Question
+							+squaredIcon('q.jigsaw.icon')
+						div(ng-if='!isSolved(q.jigsaw)')
+							label Enter the 5-digit Numeric code to escape the room...
+							input.form-control(type='text' ng-model='q.jigsaw.guess' placeholder='XXXXX' maxlength='5')
+							button.btn.btn-primary(ng-click='submitGuess(q.jigsaw)') #[i.fa.fa-lightbulb-o] Submit
+						div(ng-if='isSolved(q.jigsaw)')
+							h3 #[i.fa.fa-check] YOU WIN!  YOU'VE ESCAPED THE ROOM!
 		| @@javascriptReplaceFiles
