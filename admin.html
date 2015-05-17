@@ -7,37 +7,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Game Escape</title>
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="inc/escape.css">
+    <link rel="stylesheet" href="inc/admin.css">
     <script src="inc/angular.js"></script>
   </head>
-  <body ng-cloak ng-controller="AdminCtrl">
+  <body ng-cloak ng-controller="AdminCtrl" class="admin">
     <div class="container">
       <header>
         <h1>The Game Escape - Admin</h1>
       </header>
-      <div class="jumbotron">
-        <h1 ng-show="activeTeam &amp;&amp; activeTeam.timeRemaining" class="digital">{{moment(activeTeam.timeRemaining * 1000).format('mm:ss')}}</h1>
-        <div class="displayMessage">
-          <h3 ng-repeat="message in activeTeam.storedMessages" class="digital">{{message.text}}</h3>
+      <div class="jumbotron collapse in chooseTeamSection">
+        <div class="pos-rel"><i data-target=".chooseTeamSection" data-toggle="collapse" class="fa fa-close top-corner pointer"></i></div>
+        <div class="row clear-fix">
+          <section class="col-xs-6">
+            <select ng-model="teamId" ng-options="team.$id as team.name for team in getUnfinishedTeams()" class="form-control">
+              <option value="" disabled selected>-- choose team --</option>
+            </select>
+            <button ng-click="chooseTeam(teamId)" ng-disabled="formFields.newTeamName" data-target=".chooseTeamSection" data-toggle="collapse" class="btn btn-primary">Choose Team</button>
+          </section>
+          <section class="col-xs-6">
+            <form ng-submit="createTeam()">
+              <input type="text" ng-model="formFields.newTeamName" placeholder="Create New Team" class="form-control">
+              <button type="submit" ng-disabled="!formFields.newTeamName" data-target=".chooseTeamSection" data-toggle="collapse" class="btn btn-success">Create Team</button>
+            </form>
+          </section>
         </div>
-        <button ng-click="restartTimer()" class="btn btn-primary">Restart Timer</button>
-        <button data-toggle="modal" data-target="#previousMessagesModal" ng-show="activeTeam" class="btn btn-info">Show All Messages</button>
-      </div>
-      <div ng-if="!activeTeam" class="chooseTeam">
-        <select ng-model="teamId" ng-options="team.$id as team.name for team in getUnfinishedTeams()" class="form-control">
-          <option value="" disabled selected>-- choose team --</option>
-        </select>
-        <button ng-click="chooseTeam(teamId)" class="btn btn-default">Choose Team</button>
       </div>
       <form ng-if="activeTeam" ng-submit="addNewMessage()">
-        <textarea type="text" ng-model="formFields.newMessage" placeholder="Send a Message to {{activeTeam.name}}" class="form-control"></textarea>
-        <input type="submit" value="Add Message" class="form-control">
+        <input type="text" ng-model="formFields.newMessage" placeholder="Send a Message to {{activeTeam.name}}" class="form-control addMessageInput">
+        <input type="submit" ng-disabled="!formFields.newMessage" value="Add Message" class="form-control">
       </form>
-      <h3 ng-show="session">Team: {{session.name}}</h3>
-      <form ng-submit="createTeam()">
-        <input type="text" ng-model="formFields.newTeamName" class="form-control">
-        <input type="submit" value="Create Team" class="form-control">
-      </form>
+      <div class="row">
+        <section class="col-sm-6" ng-show="activeTeam">
+          <h3>Team: {{activeTeam.name}}</h3>
+          <h5>Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}</h5>
+          <h5>Clues: {{activeTeam.clues}}</h5>
+          <h5>Time Allowed: {{activeTeam.timeAllowed / 60}} minutes</h5>
+        </section>
+        <section class="col-sm-6 controls">
+          <h3>Controls:</h3>
+          <button data-target=".chooseTeamSection" data-toggle="collapse" class="btn btn-primary collapse chooseTeamSection">{{activeTeam ? "Change Teams" : "Choose Team"}}</button>
+          <button ng-click="restartTimer()" ng-show="activeTeam &amp;&amp; !activeTeam.timerStarted" class="btn btn-success">Start Game</button>
+          <button ng-click="restartTimer()" ng-show="activeTeam &amp;&amp; activeTeam.timerStarted" class="btn btn-warning">Restart Timer</button>
+          <button ng-click="finishGame()" ng-show="activeTeam &amp;&amp; activeTeam.timerStarted &amp;&amp; !activeTeam.finish" class="btn btn-success">Finish</button>
+        </section>
+      </div>
+      <iframe src="session.html" width="100%"></iframe>
     </div><script src="inc/lib.js"></script><script src="inc/escape.js"></script>
   </body>
 </html>

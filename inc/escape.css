@@ -1,4 +1,4 @@
-/* Import the Base Bootstrap Files *//*! normalize.css v3.0.2 | MIT License | git.io/normalize */html {
+/***	Session stylesheets ***//* Import the Base Bootstrap Files *//*! normalize.css v3.0.2 | MIT License | git.io/normalize */html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -5456,7 +5456,11 @@ td.success a {
   content: "\f239";
 }.fa-medium:before {
   content: "\f23a";
-}/***	War stylesheet ***//*html5 display rule (for older browsers to display these html5 tags as block level elements)*/address,
+}/***** Common CSS ******/.pos-rel {
+  position: relative;
+}.pointer {
+  cursor: pointer;
+}/*html5 display rule (for older browsers to display these html5 tags as block level elements)*/address,
 article,
 aside,
 canvas,
@@ -5482,9 +5486,29 @@ summary {
 }@font-face {
   font-family: messageFont;
   src: url(../fonts/monospace.ttf);
+}.hidecollapsing.collapsing {
+  display: none;
 }.digital.digital {
   font-family: digitalFont, messageFont, courier, monospace;
   color: #a6e22e;
+}.midnightKeypad.keypad-popup {
+  background: #10085a;
+}.midnightKeypad .keypad-key,
+.midnightKeypad .keypad-special {
+  width: 38px;
+  height: 38px;
+  padding: 5px;
+  background: url(../img/midnight.gif) no-repeat;
+  border: none;
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: bold;
+}.midnightKeypad .keypad-key-down {
+  padding: 7px 3px 3px 7px;
+  background: url(../img/midnight.gif) no-repeat -38px 0px;
+}.midnightKeypad .keypad-space {
+  width: 38px;
+  height: 8px;
 }h1.digital {
   text-align: center;
 }h1.digital span {
@@ -5495,13 +5519,50 @@ summary {
   display: inline-block;
   float: left;
   margin-right: 20px;
-}.angularNotDone .container {
-  display: none;
+}.text-white {
+  color: #f8f8f0;
+}.text-warning {
+  color: #e6db74;
+}.container .fa-inverse {
+  color: #272822;
 }.container h2 {
-  color: black;
-  text-shadow: white 0 0 2px;
+  color: #080800;
+  text-shadow: #f8f8f0 0 0 2px;
 }.container h3 {
   margin-top: 0;
+}.container table.battleship th,
+.container table.battleship td {
+  text-align: center;
+  padding: 2px 7px 3px;
+}.container table.battleship th {
+  color: #6af;
+}.container table.battleship td.active {
+  color: #c00;
+}.container table.chess th,
+.container table.chess td {
+  text-align: center;
+  width: 40px;
+  height: 40px;
+}.container table.chess th {
+  color: #fff;
+}.container table.chess tr:nth-child(even) td:nth-child(even) {
+  background-color: #4a4;
+}.container table.chess tr:nth-child(even) td:nth-child(odd) {
+  background-color: #ffc;
+}.container table.chess tr:nth-child(odd) td:nth-child(odd) {
+  background-color: #4a4;
+}.container table.chess tr:nth-child(odd) td:nth-child(even) {
+  background-color: #ffc;
+}.container table.chess td.active {
+  background-color: #c00 !important;
+}.container .btn-group.connect4 {
+  width: 100%;
+}.container .btn-group.connect4 .btn {
+  width: 14.4%;
+}.container h4 em {
+  margin-left: 10px;
+}.container .well {
+  background-color: #272822;
 }.displayMessage h3 {
   display: none;
 }.displayMessage h3:last-child {
@@ -5511,28 +5572,53 @@ summary {
   color: #e6db74;
 }.displayMessage h3:last-child.typed {
   opacity: 1;
-}/* STYLE CLASSES (ALL PAGES) */.hide {
-  display: none;
-}.center {
-  text-align: center;
-}.clear {
-  clear: both;
-}.hidden {
-  display: none;
-}.left {
+}#five-routes .list-inline > li {
   float: left;
-}.right {
-  float: right;
-}.enlarge {
-  cursor: pointer;
-}.overlarge {
-  display: none;
-  position: absolute;
-}.hider {
-  float: right;
-  clear: right;
-}.hider:hover {
-  cursor: pointer;
+  padding: 0;
+}#five-routes .list-inline > li:first-child {
+  padding-left: 5px;
+}#five-routes .list-inline > li .panel-heading {
+  text-align: center;
+}#five-routes .list-inline > li .panel-body {
+  text-align: center;
+  padding: 5px;
+  height: 45px;
+}#five-routes img {
+  height: 35px;
+}#five-routes img.invert-color {
+  filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="table" tableValues="1 0" /><feFuncG type="table" tableValues="1 0" /><feFuncB type="table" tableValues="1 0" /></feComponentTransfer></filter></svg>#filter');
+  -webkit-filter: invert(100%);
+          filter: invert(100%);
+}._big-mono-font {
+  text-transform: uppercase;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 22px;
+}#crossword input {
+  text-transform: uppercase;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: 11px;
+  background-color: #fff;
+  color: #000;
+  background-image: url(../img/crossword-square.png);
+  background-size: 24px;
+  background-position: 1px;
+  width: 443px;
+  height: 28px;
+  padding: 0 0 0 5px;
+  border-width: 2px 1px;
+  border-color: #1b1d1e;
+}#word-find input {
+  text-transform: uppercase;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 22px;
+}#word-find section:first-of-type input {
+  background: rgba(255, 0, 0, 0.5);
+}#word-find section:nth-of-type(2) input {
+  background: rgba(0, 0, 255, 0.5);
 }footer.clear {
   margin-top: 90px;
 }a {
@@ -6030,9 +6116,11 @@ summary {
   }
   .navbar-left {
     float: left !important;
+    float: left;
   }
   .navbar-right {
     float: right !important;
+    float: right;
     margin-right: -15px;
   }
   .navbar-right ~ .navbar-right {

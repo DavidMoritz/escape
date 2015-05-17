@@ -1,6 +1,6 @@
 /*!
  * The Game Escape - v0.2.0 
- * Build Date: 2015.04.30 
+ * Build Date: 2015.05.17 
  * Docs: http://moritzcompany.com 
  * Coded @ Moritz Company 
  */ 
@@ -11540,7 +11540,7 @@ if (typeof jQuery === 'undefined') {
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '3.7.0';
+  var VERSION = '3.8.0';
 
   /** Used to compose bitmasks for wrapper metadata. */
   var BIND_FLAG = 1,
@@ -11615,7 +11615,7 @@ if (typeof jQuery === 'undefined') {
       reInterpolate = /<%=([\s\S]+?)%>/g;
 
   /** Used to match property names within property paths. */
-  var reIsDeepProp = /\.|\[(?:[^[\]]+|(["'])(?:(?!\1)[^\n\\]|\\.)*?)\1\]/,
+  var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
       reIsPlainProp = /^\w*$/,
       rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
 
@@ -11806,8 +11806,6 @@ if (typeof jQuery === 'undefined') {
    * restricted `window` object, otherwise the `window` object is used.
    */
   var root = freeGlobal || ((freeWindow !== (this && this.window)) && freeWindow) || freeSelf || this;
-
-  /*--------------------------------------------------------------------------*/
 
   /**
    * The base implementation of `compareAscending` which compares values and
@@ -12179,8 +12177,6 @@ if (typeof jQuery === 'undefined') {
     return htmlUnescapes[chr];
   }
 
-  /*--------------------------------------------------------------------------*/
-
   /**
    * Create a new pristine `lodash` function using the given `context` object.
    *
@@ -12276,7 +12272,7 @@ if (typeof jQuery === 'undefined') {
         getOwnPropertySymbols = isNative(getOwnPropertySymbols = Object.getOwnPropertySymbols) && getOwnPropertySymbols,
         getPrototypeOf = isNative(getPrototypeOf = Object.getPrototypeOf) && getPrototypeOf,
         push = arrayProto.push,
-        preventExtensions = isNative(Object.preventExtensions = Object.preventExtensions) && preventExtensions,
+        preventExtensions = isNative(preventExtensions = Object.preventExtensions) && preventExtensions,
         propertyIsEnumerable = objectProto.propertyIsEnumerable,
         Set = isNative(Set = context.Set) && Set,
         setTimeout = context.setTimeout,
@@ -12304,12 +12300,19 @@ if (typeof jQuery === 'undefined') {
       //
       // Use `Object.preventExtensions` on a plain object instead of simply using
       // `Object('x')` because Chrome and IE fail to throw an error when attempting
-      // to assign values to readonly indexes of strings in strict mode.
-      var object = { '1': 0 },
-          func = preventExtensions && isNative(func = Object.assign) && func;
-
-      try { func(preventExtensions(object), 'xo'); } catch(e) {}
-      return !object[1] && func;
+      // to assign values to readonly indexes of strings.
+      var func = preventExtensions && isNative(func = Object.assign) && func;
+      try {
+        if (func) {
+          var object = preventExtensions({ '1': 0 });
+          object[0] = 1;
+        }
+      } catch(e) {
+        // Only attempt in strict mode.
+        try { func(object, 'xo'); } catch(e) {}
+        return !object[1] && func;
+      }
+      return false;
     }());
 
     /* Native method references for those with the same name as other `lodash` methods. */
@@ -12330,7 +12333,7 @@ if (typeof jQuery === 'undefined') {
 
     /** Used as references for the maximum length and index of an array. */
     var MAX_ARRAY_LENGTH = Math.pow(2, 32) - 1,
-        MAX_ARRAY_INDEX =  MAX_ARRAY_LENGTH - 1,
+        MAX_ARRAY_INDEX = MAX_ARRAY_LENGTH - 1,
         HALF_MAX_ARRAY_LENGTH = MAX_ARRAY_LENGTH >>> 1;
 
     /** Used as the size, in bytes, of each `Float64Array` element. */
@@ -12347,8 +12350,6 @@ if (typeof jQuery === 'undefined') {
 
     /** Used to lookup unminified function names. */
     var realNames = {};
-
-    /*------------------------------------------------------------------------*/
 
     /**
      * Creates a `lodash` object which wraps `value` to enable implicit chaining.
@@ -12489,6 +12490,7 @@ if (typeof jQuery === 'undefined') {
 
     (function(x) {
       var Ctor = function() { this.x = x; },
+          args = arguments,
           object = { '0': x, 'length': x },
           props = [];
 
@@ -12538,7 +12540,7 @@ if (typeof jQuery === 'undefined') {
        * @type boolean
        */
       try {
-        support.nonEnumArgs = !propertyIsEnumerable.call(arguments, 1);
+        support.nonEnumArgs = !propertyIsEnumerable.call(args, 1);
       } catch(e) {
         support.nonEnumArgs = true;
       }
@@ -12604,8 +12606,6 @@ if (typeof jQuery === 'undefined') {
         '_': lodash
       }
     };
-
-    /*------------------------------------------------------------------------*/
 
     /**
      * Creates a lazy wrapper object which wraps `value` to enable lazy evaluation.
@@ -12735,8 +12735,6 @@ if (typeof jQuery === 'undefined') {
       return result;
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      * Creates a cache object to store key/value pairs.
      *
@@ -12805,8 +12803,6 @@ if (typeof jQuery === 'undefined') {
       return this;
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      *
      * Creates a cache object to store unique values.
@@ -12855,8 +12851,6 @@ if (typeof jQuery === 'undefined') {
         data.hash[value] = true;
       }
     }
-
-    /*------------------------------------------------------------------------*/
 
     /**
      * Copies the values of `source` to `array`.
@@ -13201,8 +13195,9 @@ if (typeof jQuery === 'undefined') {
      */
     function baseAt(collection, props) {
       var index = -1,
-          length = collection.length,
-          isArr = isLength(length),
+          isNil = collection == null,
+          isArr = !isNil && isArrayLike(collection),
+          length = isArr && collection.length,
           propsLength = props.length,
           result = Array(propsLength);
 
@@ -13211,7 +13206,7 @@ if (typeof jQuery === 'undefined') {
         if (isArr) {
           result[index] = isIndex(key, length) ? collection[key] : undefined;
         } else {
-          result[index] = collection[key];
+          result[index] = isNil ? undefined : collection[key];
         }
       }
       return result;
@@ -13538,8 +13533,8 @@ if (typeof jQuery === 'undefined') {
      *
      * @private
      * @param {Array} array The array to flatten.
-     * @param {boolean} isDeep Specify a deep flatten.
-     * @param {boolean} isStrict Restrict flattening to arrays and `arguments` objects.
+     * @param {boolean} [isDeep] Specify a deep flatten.
+     * @param {boolean} [isStrict] Restrict flattening to arrays-like objects.
      * @returns {Array} Returns the new flattened array.
      */
     function baseFlatten(array, isDeep, isStrict) {
@@ -13550,8 +13545,8 @@ if (typeof jQuery === 'undefined') {
 
       while (++index < length) {
         var value = array[index];
-
-        if (isObjectLike(value) && isLength(value.length) && (isArray(value) || isArguments(value))) {
+        if (isObjectLike(value) && isArrayLike(value) &&
+            (isStrict || isArray(value) || isArguments(value))) {
           if (isDeep) {
             // Recursively flatten arrays (susceptible to call stack limits).
             value = baseFlatten(value, isDeep, isStrict);
@@ -13559,7 +13554,6 @@ if (typeof jQuery === 'undefined') {
           var valIndex = -1,
               valLength = value.length;
 
-          result.length += valLength;
           while (++valIndex < valLength) {
             result[++resIndex] = value[valIndex];
           }
@@ -13680,9 +13674,9 @@ if (typeof jQuery === 'undefined') {
           length = path.length;
 
       while (object != null && ++index < length) {
-        var result = object = object[path[index]];
+        object = object[path[index]];
       }
-      return result;
+      return (index && index == length) ? object : undefined;
     }
 
     /**
@@ -13701,8 +13695,7 @@ if (typeof jQuery === 'undefined') {
     function baseIsEqual(value, other, customizer, isLoose, stackA, stackB) {
       // Exit early for identical values.
       if (value === other) {
-        // Treat `+0` vs. `-0` as not equal.
-        return value !== 0 || (1 / value == 1 / other);
+        return true;
       }
       var valType = typeof value,
           othType = typeof other;
@@ -13851,8 +13844,7 @@ if (typeof jQuery === 'undefined') {
      */
     function baseMap(collection, iteratee) {
       var index = -1,
-          length = getLength(collection),
-          result = isLength(length) ? Array(length) : [];
+          result = isArrayLike(collection) ? Array(collection.length) : [];
 
       baseEach(collection, function(value, key, collection) {
         result[++index] = iteratee(value, key, collection);
@@ -13951,7 +13943,7 @@ if (typeof jQuery === 'undefined') {
       if (!isObject(object)) {
         return object;
       }
-      var isSrcArr = isLength(source.length) && (isArray(source) || isTypedArray(source));
+      var isSrcArr = isArrayLike(source) && (isArray(source) || isTypedArray(source));
       if (!isSrcArr) {
         var props = keys(source);
         push.apply(props, getSymbols(source));
@@ -14014,10 +14006,10 @@ if (typeof jQuery === 'undefined') {
 
       if (isCommon) {
         result = srcValue;
-        if (isLength(srcValue.length) && (isArray(srcValue) || isTypedArray(srcValue))) {
+        if (isArrayLike(srcValue) && (isArray(srcValue) || isTypedArray(srcValue))) {
           result = isArray(value)
             ? value
-            : (getLength(value) ? arrayCopy(value) : []);
+            : (isArrayLike(value) ? arrayCopy(value) : []);
         }
         else if (isPlainObject(srcValue) || isArguments(srcValue)) {
           result = isArguments(value)
@@ -14079,7 +14071,7 @@ if (typeof jQuery === 'undefined') {
      * @returns {Array} Returns `array`.
      */
     function basePullAt(array, indexes) {
-      var length = indexes.length;
+      var length = array ? indexes.length : 0;
       while (length--) {
         var index = parseFloat(indexes[length]);
         if (index != previous && isIndex(index)) {
@@ -14565,12 +14557,12 @@ if (typeof jQuery === 'undefined') {
       while (++argsIndex < argsLength) {
         result[argsIndex] = args[argsIndex];
       }
-      var pad = argsIndex;
+      var offset = argsIndex;
       while (++rightIndex < rightLength) {
-        result[pad + rightIndex] = partials[rightIndex];
+        result[offset + rightIndex] = partials[rightIndex];
       }
       while (++holdersIndex < holdersLength) {
-        result[pad + holders[holdersIndex]] = args[argsIndex++];
+        result[offset + holders[holdersIndex]] = args[argsIndex++];
       }
       return result;
     }
@@ -14838,7 +14830,7 @@ if (typeof jQuery === 'undefined') {
           return index > -1 ? collection[index] : undefined;
         }
         return baseFind(collection, predicate, eachFunc);
-      }
+      };
     }
 
     /**
@@ -14904,7 +14896,7 @@ if (typeof jQuery === 'undefined') {
           funcName = getFuncName(func);
 
           var data = funcName == 'wrapper' ? getData(func) : null;
-          if (data && isLaziable(data[0])) {
+          if (data && isLaziable(data[0]) && data[1] == (ARY_FLAG | CURRY_FLAG | PARTIAL_FLAG | REARG_FLAG) && !data[4].length && data[9] == 1) {
             wrapper = wrapper[getFuncName(data[0])].apply(wrapper, data[3]);
           } else {
             wrapper = (func.length == 1 && isLaziable(func)) ? wrapper[funcName]() : wrapper.thru(func);
@@ -14975,6 +14967,28 @@ if (typeof jQuery === 'undefined') {
     }
 
     /**
+     * Creates a function for `_.mapKeys` or `_.mapValues`.
+     *
+     * @private
+     * @param {boolean} [isMapKeys] Specify mapping keys instead of values.
+     * @returns {Function} Returns the new map function.
+     */
+    function createObjectMapper(isMapKeys) {
+      return function(object, iteratee, thisArg) {
+        var result = {};
+        iteratee = getCallback(iteratee, thisArg, 3);
+
+        baseForOwn(object, function(value, key, object) {
+          var mapped = iteratee(value, key, object);
+          key = isMapKeys ? mapped : key;
+          value = isMapKeys ? value : mapped;
+          result[key] = value;
+        });
+        return result;
+      };
+    }
+
+    /**
      * Creates a function for `_.padLeft` or `_.padRight`.
      *
      * @private
@@ -14984,7 +14998,7 @@ if (typeof jQuery === 'undefined') {
     function createPadDir(fromRight) {
       return function(string, length, chars) {
         string = baseToString(string);
-        return string && ((fromRight ? string : '') + createPadding(string, length, chars) + (fromRight ? '' : string));
+        return (fromRight ? string : '') + createPadding(string, length, chars) + (fromRight ? '' : string);
       };
     }
 
@@ -15330,8 +15344,7 @@ if (typeof jQuery === 'undefined') {
           // Treat `NaN` vs. `NaN` as equal.
           return (object != +object)
             ? other != +other
-            // But, treat `-0` vs. `+0` as not equal.
-            : (object == 0 ? ((1 / object) == (1 / other)) : object == +other);
+            : object == +other;
 
         case regexpTag:
         case stringTag:
@@ -15511,7 +15524,7 @@ if (typeof jQuery === 'undefined') {
      * Gets the "length" property value of `object`.
      *
      * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-     * in Safari on iOS 8.1 ARM64.
+     * that affects Safari on at least iOS 8.1-8.3 ARM64.
      *
      * @private
      * @param {Object} object The object to query.
@@ -15651,6 +15664,17 @@ if (typeof jQuery === 'undefined') {
     }
 
     /**
+     * Checks if `value` is array-like.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+     */
+    function isArrayLike(value) {
+      return value != null && isLength(getLength(value));
+    }
+
+    /**
      * Checks if `value` is a valid array-like index.
      *
      * @private
@@ -15678,13 +15702,9 @@ if (typeof jQuery === 'undefined') {
         return false;
       }
       var type = typeof index;
-      if (type == 'number') {
-        var length = getLength(object),
-            prereq = isLength(length) && isIndex(index, length);
-      } else {
-        prereq = type == 'string' && index in object;
-      }
-      if (prereq) {
+      if (type == 'number'
+          ? (isArrayLike(object) && isIndex(index, object.length))
+          : (type == 'string' && index in object)) {
         var other = object[index];
         return value === value ? (value === other) : (other !== other);
       }
@@ -15745,7 +15765,7 @@ if (typeof jQuery === 'undefined') {
      *  equality comparisons, else `false`.
      */
     function isStrictComparable(value) {
-      return value === value && (value === 0 ? ((1 / value) > 0) : !isObject(value));
+      return value === value && !isObject(value);
     }
 
     /**
@@ -15819,7 +15839,7 @@ if (typeof jQuery === 'undefined') {
     }
 
     /**
-     * A specialized version of `_.pick` that picks `object` properties specified
+     * A specialized version of `_.pick` which picks `object` properties specified
      * by `props`.
      *
      * @private
@@ -15844,7 +15864,7 @@ if (typeof jQuery === 'undefined') {
     }
 
     /**
-     * A specialized version of `_.pick` that picks `object` properties `predicate`
+     * A specialized version of `_.pick` which picks `object` properties `predicate`
      * returns truthy for.
      *
      * @private
@@ -15989,7 +16009,7 @@ if (typeof jQuery === 'undefined') {
       if (value == null) {
         return [];
       }
-      if (!isLength(getLength(value))) {
+      if (!isArrayLike(value)) {
         return values(value);
       }
       return isObject(value) ? value : Object(value);
@@ -16036,8 +16056,6 @@ if (typeof jQuery === 'undefined') {
         ? wrapper.clone()
         : new LodashWrapper(wrapper.__wrapped__, wrapper.__chain__, arrayCopy(wrapper.__actions__));
     }
-
-    /*------------------------------------------------------------------------*/
 
     /**
      * Creates an array of elements split into groups the length of `size`.
@@ -16107,11 +16125,8 @@ if (typeof jQuery === 'undefined') {
 
     /**
      * Creates an array excluding all values of the provided arrays using
-     * `SameValueZero` for equality comparisons.
-     *
-     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * comparisons are like strict equality comparisons, e.g. `===`, except that
-     * `NaN` matches `NaN`.
+     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * for equality comparisons.
      *
      * @static
      * @memberOf _
@@ -16125,7 +16140,7 @@ if (typeof jQuery === 'undefined') {
      * // => [1, 3]
      */
     var difference = restParam(function(array, values) {
-      return (isArray(array) || isArguments(array))
+      return isArrayLike(array)
         ? baseDifference(array, baseFlatten(values, false, true))
         : [];
     });
@@ -16520,13 +16535,10 @@ if (typeof jQuery === 'undefined') {
 
     /**
      * Gets the index at which the first occurrence of `value` is found in `array`
-     * using `SameValueZero` for equality comparisons. If `fromIndex` is negative,
-     * it is used as the offset from the end of `array`. If `array` is sorted
-     * providing `true` for `fromIndex` performs a faster binary search.
-     *
-     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * comparisons are like strict equality comparisons, e.g. `===`, except that
-     * `NaN` matches `NaN`.
+     * using [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * for equality comparisons. If `fromIndex` is negative, it is used as the offset
+     * from the end of `array`. If `array` is sorted providing `true` for `fromIndex`
+     * performs a faster binary search.
      *
      * @static
      * @memberOf _
@@ -16586,12 +16598,9 @@ if (typeof jQuery === 'undefined') {
     }
 
     /**
-     * Creates an array of unique values in all provided arrays using `SameValueZero`
+     * Creates an array of unique values in all provided arrays using
+     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
      * for equality comparisons.
-     *
-     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * comparisons are like strict equality comparisons, e.g. `===`, except that
-     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -16613,7 +16622,7 @@ if (typeof jQuery === 'undefined') {
 
       while (++argsIndex < argsLength) {
         var value = arguments[argsIndex];
-        if (isArray(value) || isArguments(value)) {
+        if (isArrayLike(value)) {
           args.push(value);
           caches.push((isCommon && value.length >= 120) ? createCache(argsIndex && value) : null);
         }
@@ -16718,14 +16727,11 @@ if (typeof jQuery === 'undefined') {
     }
 
     /**
-     * Removes all provided values from `array` using `SameValueZero` for equality
-     * comparisons.
+     * Removes all provided values from `array` using
+     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * for equality comparisons.
      *
-     * **Notes:**
-     *  - Unlike `_.without`, this method mutates `array`
-     *  - [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     *    comparisons are like strict equality comparisons, e.g. `===`, except
-     *    that `NaN` matches `NaN`
+     * **Note:** Unlike `_.without`, this method mutates `array`.
      *
      * @static
      * @memberOf _
@@ -16789,7 +16795,6 @@ if (typeof jQuery === 'undefined') {
      * // => [10, 20]
      */
     var pullAt = restParam(function(array, indexes) {
-      array || (array = []);
       indexes = baseFlatten(indexes);
 
       var result = baseAt(array, indexes);
@@ -17156,11 +17161,8 @@ if (typeof jQuery === 'undefined') {
 
     /**
      * Creates an array of unique values, in order, of the provided arrays using
-     * `SameValueZero` for equality comparisons.
-     *
-     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * comparisons are like strict equality comparisons, e.g. `===`, except that
-     * `NaN` matches `NaN`.
+     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * for equality comparisons.
      *
      * @static
      * @memberOf _
@@ -17177,8 +17179,9 @@ if (typeof jQuery === 'undefined') {
     });
 
     /**
-     * Creates a duplicate-free version of an array, using `SameValueZero` for
-     * equality comparisons, in which only the first occurence of each element
+     * Creates a duplicate-free version of an array, using
+     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * for equality comparisons, in which only the first occurence of each element
      * is kept. Providing `true` for `isSorted` performs a faster search algorithm
      * for sorted arrays. If an iteratee function is provided it is invoked for
      * each element in the array to generate the criterion by which uniqueness
@@ -17195,10 +17198,6 @@ if (typeof jQuery === 'undefined') {
      * If an object is provided for `iteratee` the created `_.matches` style
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
-     *
-     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * comparisons are like strict equality comparisons, e.g. `===`, except that
-     * `NaN` matches `NaN`.
      *
      * @static
      * @memberOf _
@@ -17249,7 +17248,7 @@ if (typeof jQuery === 'undefined') {
 
     /**
      * This method is like `_.zip` except that it accepts an array of grouped
-     * elements and creates an array regrouping the elements to their pre-`_.zip`
+     * elements and creates an array regrouping the elements to their pre-zip
      * configuration.
      *
      * @static
@@ -17266,10 +17265,19 @@ if (typeof jQuery === 'undefined') {
      * // => [['fred', 'barney'], [30, 40], [true, false]]
      */
     function unzip(array) {
+      if (!(array && array.length)) {
+        return [];
+      }
       var index = -1,
-          length = (array && array.length && arrayMax(arrayMap(array, getLength))) >>> 0,
-          result = Array(length);
+          length = 0;
 
+      array = arrayFilter(array, function(group) {
+        if (isArrayLike(group)) {
+          length = nativeMax(group.length, length);
+          return true;
+        }
+      });
+      var result = Array(length);
       while (++index < length) {
         result[index] = arrayMap(array, baseProperty(index));
       }
@@ -17277,12 +17285,44 @@ if (typeof jQuery === 'undefined') {
     }
 
     /**
-     * Creates an array excluding all provided values using `SameValueZero` for
-     * equality comparisons.
+     * This method is like `_.unzip` except that it accepts an iteratee to specify
+     * how regrouped values should be combined. The `iteratee` is bound to `thisArg`
+     * and invoked with four arguments: (accumulator, value, index, group).
      *
-     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * comparisons are like strict equality comparisons, e.g. `===`, except that
-     * `NaN` matches `NaN`.
+     * @static
+     * @memberOf _
+     * @category Array
+     * @param {Array} array The array of grouped elements to process.
+     * @param {Function} [iteratee] The function to combine regrouped values.
+     * @param {*} [thisArg] The `this` binding of `iteratee`.
+     * @returns {Array} Returns the new array of regrouped elements.
+     * @example
+     *
+     * var zipped = _.zip([1, 2], [10, 20], [100, 200]);
+     * // => [[1, 10, 100], [2, 20, 200]]
+     *
+     * _.unzipWith(zipped, _.add);
+     * // => [3, 30, 300]
+     */
+    function unzipWith(array, iteratee, thisArg) {
+      var length = array ? array.length : 0;
+      if (!length) {
+        return [];
+      }
+      var result = unzip(array);
+      if (iteratee == null) {
+        return result;
+      }
+      iteratee = bindCallback(iteratee, thisArg, 4);
+      return arrayMap(result, function(group) {
+        return arrayReduce(group, iteratee, undefined, true);
+      });
+    }
+
+    /**
+     * Creates an array excluding all provided values using
+     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * for equality comparisons.
      *
      * @static
      * @memberOf _
@@ -17296,7 +17336,7 @@ if (typeof jQuery === 'undefined') {
      * // => [3]
      */
     var without = restParam(function(array, values) {
-      return (isArray(array) || isArguments(array))
+      return isArrayLike(array)
         ? baseDifference(array, values)
         : [];
     });
@@ -17321,7 +17361,7 @@ if (typeof jQuery === 'undefined') {
 
       while (++index < length) {
         var array = arguments[index];
-        if (isArray(array) || isArguments(array)) {
+        if (isArrayLike(array)) {
           var result = result
             ? baseDifference(result, array).concat(baseDifference(array, result))
             : array;
@@ -17387,7 +17427,37 @@ if (typeof jQuery === 'undefined') {
       return result;
     }
 
-    /*------------------------------------------------------------------------*/
+    /**
+     * This method is like `_.zip` except that it accepts an iteratee to specify
+     * how grouped values should be combined. The `iteratee` is bound to `thisArg`
+     * and invoked with four arguments: (accumulator, value, index, group).
+     *
+     * @static
+     * @memberOf _
+     * @category Array
+     * @param {...Array} [arrays] The arrays to process.
+     * @param {Function} [iteratee] The function to combine grouped values.
+     * @param {*} [thisArg] The `this` binding of `iteratee`.
+     * @returns {Array} Returns the new array of grouped elements.
+     * @example
+     *
+     * _.zipWith([1, 2], [10, 20], [100, 200], _.add);
+     * // => [111, 222]
+     */
+    var zipWith = restParam(function(arrays) {
+      var length = arrays.length,
+          iteratee = arrays[length - 2],
+          thisArg = arrays[length - 1];
+
+      if (length > 2 && typeof iteratee == 'function') {
+        length -= 2;
+      } else {
+        iteratee = (length > 1 && typeof thisArg == 'function') ? (--length, thisArg) : undefined;
+        thisArg = undefined;
+      }
+      arrays.length = length;
+      return unzipWith(arrays, iteratee, thisArg);
+    });
 
     /**
      * Creates a `lodash` object that wraps `value` with explicit method
@@ -17639,8 +17709,6 @@ if (typeof jQuery === 'undefined') {
       return baseWrapperValue(this.__wrapped__, this.__actions__);
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      * Creates an array of elements corresponding to the given keys, or indexes,
      * of `collection`. Keys may be specified as individual arguments or as arrays
@@ -17662,10 +17730,6 @@ if (typeof jQuery === 'undefined') {
      * // => ['barney', 'pebbles']
      */
     var at = restParam(function(collection, props) {
-      var length = collection ? getLength(collection) : 0;
-      if (isLength(length)) {
-        collection = toIterable(collection);
-      }
       return baseAt(collection, baseFlatten(props));
     });
 
@@ -18038,13 +18102,10 @@ if (typeof jQuery === 'undefined') {
     });
 
     /**
-     * Checks if `value` is in `collection` using `SameValueZero` for equality
-     * comparisons. If `fromIndex` is negative, it is used as the offset from
-     * the end of `collection`.
-     *
-     * **Note:** [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-     * comparisons are like strict equality comparisons, e.g. `===`, except that
-     * `NaN` matches `NaN`.
+     * Checks if `value` is in `collection` using
+     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * for equality comparisons. If `fromIndex` is negative, it is used as the offset
+     * from the end of `collection`.
      *
      * @static
      * @memberOf _
@@ -18164,8 +18225,7 @@ if (typeof jQuery === 'undefined') {
       var index = -1,
           isFunc = typeof path == 'function',
           isProp = isKey(path),
-          length = getLength(collection),
-          result = isLength(length) ? Array(length) : [];
+          result = isArrayLike(collection) ? Array(collection.length) : [];
 
       baseEach(collection, function(value) {
         var func = isFunc ? path : (isProp && value != null && value[path]);
@@ -18194,10 +18254,11 @@ if (typeof jQuery === 'undefined') {
      * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
      *
      * The guarded methods are:
-     * `ary`, `callback`, `chunk`, `clone`, `create`, `curry`, `curryRight`, `drop`,
-     * `dropRight`, `every`, `fill`, `flatten`, `invert`, `max`, `min`, `parseInt`,
-     * `slice`, `sortBy`, `take`, `takeRight`, `template`, `trim`, `trimLeft`,
-     * `trimRight`, `trunc`, `random`, `range`, `sample`, `some`, `uniq`, and `words`
+     * `ary`, `callback`, `chunk`, `clone`, `create`, `curry`, `curryRight`,
+     * `drop`, `dropRight`, `every`, `fill`, `flatten`, `invert`, `max`, `min`,
+     * `parseInt`, `slice`, `sortBy`, `take`, `takeRight`, `template`, `trim`,
+     * `trimLeft`, `trimRight`, `trunc`, `random`, `range`, `sample`, `some`,
+     * `sum`, `uniq`, and `words`
      *
      * @static
      * @memberOf _
@@ -18385,22 +18446,11 @@ if (typeof jQuery === 'undefined') {
      * }, []);
      * // => [4, 5, 2, 3, 0, 1]
      */
-    var reduceRight =  createReduce(arrayReduceRight, baseEachRight);
+    var reduceRight = createReduce(arrayReduceRight, baseEachRight);
 
     /**
      * The opposite of `_.filter`; this method returns the elements of `collection`
      * that `predicate` does **not** return truthy for.
-     *
-     * If a property name is provided for `predicate` the created `_.property`
-     * style callback returns the property value of the given element.
-     *
-     * If a value is also provided for `thisArg` the created `_.matchesProperty`
-     * style callback returns `true` for elements that have a matching property
-     * value, else `false`.
-     *
-     * If an object is provided for `predicate` the created `_.matches` style
-     * callback returns `true` for elements that have the properties of the given
-     * object, else `false`.
      *
      * @static
      * @memberOf _
@@ -18780,8 +18830,6 @@ if (typeof jQuery === 'undefined') {
       return filter(collection, baseMatches(source));
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      * Gets the number of milliseconds that have elapsed since the Unix epoch
      * (1 January 1970 00:00:00 UTC).
@@ -18799,8 +18847,6 @@ if (typeof jQuery === 'undefined') {
     var now = nativeNow || function() {
       return new Date().getTime();
     };
-
-    /*------------------------------------------------------------------------*/
 
     /**
      * The opposite of `_.before`; this method creates a function that invokes
@@ -19781,8 +19827,6 @@ if (typeof jQuery === 'undefined') {
       return createWrapper(wrapper, PARTIAL_FLAG, null, [value], []);
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      * Creates a clone of `value`. If `isDeep` is `true` nested objects are cloned,
      * otherwise they are assigned by reference. If `customizer` is provided it is
@@ -19914,8 +19958,7 @@ if (typeof jQuery === 'undefined') {
      * // => false
      */
     function isArguments(value) {
-      var length = isObjectLike(value) ? value.length : undefined;
-      return isLength(length) && objToString.call(value) == argsTag;
+      return isObjectLike(value) && isArrayLike(value) && objToString.call(value) == argsTag;
     }
 
     /**
@@ -20036,10 +20079,9 @@ if (typeof jQuery === 'undefined') {
       if (value == null) {
         return true;
       }
-      var length = getLength(value);
-      if (isLength(length) && (isArray(value) || isString(value) || isArguments(value) ||
+      if (isArrayLike(value) && (isArray(value) || isString(value) || isArguments(value) ||
           (isObjectLike(value) && isFunction(value.splice)))) {
-        return !length;
+        return !value.length;
       }
       return !keys(value).length;
     }
@@ -20429,7 +20471,7 @@ if (typeof jQuery === 'undefined') {
      * // => false
      */
     function isRegExp(value) {
-      return (isObjectLike(value) && objToString.call(value) == regexpTag) || false;
+      return isObjectLike(value) && objToString.call(value) == regexpTag;
     }
 
     /**
@@ -20545,8 +20587,6 @@ if (typeof jQuery === 'undefined') {
       return baseCopy(value, keysIn(value));
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      * Assigns own enumerable properties of source object(s) to the destination
      * object. Subsequent sources overwrite property assignments of previous sources.
@@ -20556,7 +20596,6 @@ if (typeof jQuery === 'undefined') {
      *
      * **Note:** This method mutates `object` and is based on
      * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
-     *
      *
      * @static
      * @memberOf _
@@ -21029,12 +21068,9 @@ if (typeof jQuery === 'undefined') {
      * // => ['0', '1']
      */
     var keys = !nativeKeys ? shimKeys : function(object) {
-      if (object) {
-        var Ctor = object.constructor,
-            length = object.length;
-      }
+      var Ctor = object != null && object.constructor;
       if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
-          (typeof object != 'function' && isLength(length))) {
+          (typeof object != 'function' && isArrayLike(object))) {
         return shimKeys(object);
       }
       return isObject(object) ? nativeKeys(object) : [];
@@ -21092,6 +21128,28 @@ if (typeof jQuery === 'undefined') {
     }
 
     /**
+     * The opposite of `_.mapValues`; this method creates an object with the
+     * same values as `object` and keys generated by running each own enumerable
+     * property of `object` through `iteratee`.
+     *
+     * @static
+     * @memberOf _
+     * @category Object
+     * @param {Object} object The object to iterate over.
+     * @param {Function|Object|string} [iteratee=_.identity] The function invoked
+     *  per iteration.
+     * @param {*} [thisArg] The `this` binding of `iteratee`.
+     * @returns {Object} Returns the new mapped object.
+     * @example
+     *
+     * _.mapKeys({ 'a': 1, 'b': 2 }, function(value, key) {
+     *   return key + value;
+     * });
+     * // => { 'a1': 1, 'b2': 2 }
+     */
+    var mapKeys = createObjectMapper(true);
+
+    /**
      * Creates an object with the same keys as `object` and values generated by
      * running each own enumerable property of `object` through `iteratee`. The
      * iteratee function is bound to `thisArg` and invoked with three arguments:
@@ -21132,15 +21190,7 @@ if (typeof jQuery === 'undefined') {
      * _.mapValues(users, 'age');
      * // => { 'fred': 40, 'pebbles': 1 } (iteration order is not guaranteed)
      */
-    function mapValues(object, iteratee, thisArg) {
-      var result = {};
-      iteratee = getCallback(iteratee, thisArg, 3);
-
-      baseForOwn(object, function(value, key, object) {
-        result[key] = iteratee(value, key, object);
-      });
-      return result;
-    }
+    var mapValues = createObjectMapper();
 
     /**
      * Recursively merges own enumerable properties of the source object(s), that
@@ -21195,11 +21245,6 @@ if (typeof jQuery === 'undefined') {
     /**
      * The opposite of `_.pick`; this method creates an object composed of the
      * own and inherited enumerable properties of `object` that are not omitted.
-     * Property names may be specified as individual arguments or as arrays of
-     * property names. If `predicate` is provided it is invoked for each property
-     * of `object` omitting the properties `predicate` returns truthy for. The
-     * predicate is bound to `thisArg` and invoked with three arguments:
-     * (value, key, object).
      *
      * @static
      * @memberOf _
@@ -21493,8 +21538,6 @@ if (typeof jQuery === 'undefined') {
       return baseValues(object, keysIn(object));
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      * Checks if `n` is between `start` and up to but not including, `end`. If
      * `end` is not specified it is set to `start` with `start` then set to `0`.
@@ -21598,8 +21641,6 @@ if (typeof jQuery === 'undefined') {
       }
       return baseRandom(min, max);
     }
-
-    /*------------------------------------------------------------------------*/
 
     /**
      * Converts `string` to [camel case](https://en.wikipedia.org/wiki/CamelCase).
@@ -22466,8 +22507,6 @@ if (typeof jQuery === 'undefined') {
       return string.match(pattern || reWords) || [];
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      * Attempts to invoke `func`, returning either the result or the caught error
      * object. Any additional arguments are provided to `func` when it is invoked.
@@ -22538,7 +22577,9 @@ if (typeof jQuery === 'undefined') {
       if (guard && isIterateeCall(func, thisArg, guard)) {
         thisArg = null;
       }
-      return baseCallback(func, thisArg);
+      return isObjectLike(func)
+        ? matches(func)
+        : baseCallback(func, thisArg);
     }
 
     /**
@@ -22663,7 +22704,7 @@ if (typeof jQuery === 'undefined') {
     var method = restParam(function(path, args) {
       return function(object) {
         return invokePath(object, path, args);
-      }
+      };
     });
 
     /**
@@ -23000,8 +23041,6 @@ if (typeof jQuery === 'undefined') {
       return baseToString(prefix) + id;
     }
 
-    /*------------------------------------------------------------------------*/
-
     /**
      * Adds two numbers.
      *
@@ -23166,8 +23205,6 @@ if (typeof jQuery === 'undefined') {
         : baseSum(collection, iteratee);
     }
 
-    /*------------------------------------------------------------------------*/
-
     // Ensure wrappers are instances of `baseLodash`.
     lodash.prototype = baseLodash.prototype;
 
@@ -23238,6 +23275,7 @@ if (typeof jQuery === 'undefined') {
     lodash.keys = keys;
     lodash.keysIn = keysIn;
     lodash.map = map;
+    lodash.mapKeys = mapKeys;
     lodash.mapValues = mapValues;
     lodash.matches = matches;
     lodash.matchesProperty = matchesProperty;
@@ -23286,6 +23324,7 @@ if (typeof jQuery === 'undefined') {
     lodash.union = union;
     lodash.uniq = uniq;
     lodash.unzip = unzip;
+    lodash.unzipWith = unzipWith;
     lodash.values = values;
     lodash.valuesIn = valuesIn;
     lodash.where = where;
@@ -23294,6 +23333,7 @@ if (typeof jQuery === 'undefined') {
     lodash.xor = xor;
     lodash.zip = zip;
     lodash.zipObject = zipObject;
+    lodash.zipWith = zipWith;
 
     // Add aliases.
     lodash.backflow = flowRight;
@@ -23311,8 +23351,6 @@ if (typeof jQuery === 'undefined') {
 
     // Add functions to `lodash.prototype`.
     mixin(lodash, lodash);
-
-    /*------------------------------------------------------------------------*/
 
     // Add functions that return unwrapped values when chaining.
     lodash.add = add;
@@ -23417,8 +23455,6 @@ if (typeof jQuery === 'undefined') {
       return source;
     }()), false);
 
-    /*------------------------------------------------------------------------*/
-
     // Add functions capable of returning wrapped and unwrapped values when chaining.
     lodash.sample = sample;
 
@@ -23430,8 +23466,6 @@ if (typeof jQuery === 'undefined') {
         return sample(value, n);
       });
     };
-
-    /*------------------------------------------------------------------------*/
 
     /**
      * The semantic version number.
@@ -23543,8 +23577,13 @@ if (typeof jQuery === 'undefined') {
 
     LazyWrapper.prototype.slice = function(start, end) {
       start = start == null ? 0 : (+start || 0);
-      var result = start < 0 ? this.takeRight(-start) : this.drop(start);
 
+      var result = this;
+      if (start < 0) {
+        result = this.takeRight(-start);
+      } else if (start) {
+        result = this.drop(start);
+      }
       if (end !== undefined) {
         end = (+end || 0);
         result = end < 0 ? result.dropRight(-end) : result.take(end - start);
@@ -23567,7 +23606,6 @@ if (typeof jQuery === 'undefined') {
 
       lodash.prototype[methodName] = function() {
         var args = arguments,
-            length = args.length,
             chainAll = this.__chain__,
             value = this.__wrapped__,
             isHybrid = !!this.__actions__.length,
@@ -23655,8 +23693,6 @@ if (typeof jQuery === 'undefined') {
 
     return lodash;
   }
-
-  /*--------------------------------------------------------------------------*/
 
   // Export lodash.
   var _ = runInContext();
@@ -23962,9 +23998,9 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
  * provides you with the $firebase service which allows you to easily keep your $scope
  * variables in sync with your Firebase backend.
  *
- * AngularFire 1.0.0
+ * AngularFire 1.1.1
  * https://github.com/firebase/angularfire/
- * Date: 03/04/2015
+ * Date: 05/05/2015
  * License: MIT
  */
 (function(exports) {
@@ -23974,16 +24010,7 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
 // services will live.
   angular.module("firebase", [])
     //todo use $window
-    .value("Firebase", exports.Firebase)
-
-    // used in conjunction with firebaseUtils.debounce function, this is the
-    // amount of time we will wait for additional records before triggering
-    // Angular's digest scope to dirty check and re-render DOM elements. A
-    // larger number here significantly improves performance when working with
-    // big data sets that are frequently changing in the DOM, but delays the
-    // speed at which each record is rendered in real-time. A number less than
-    // 100ms will usually be optimal.
-    .value('firebaseBatchDelay', 50 /* milliseconds */);
+    .value("Firebase", exports.Firebase);
 
 })(window);
 (function() {
@@ -24230,7 +24257,8 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
         /**
          * Listeners passed into this method are notified whenever a new change (add, updated,
          * move, remove) is received from the server. Each invocation is sent an object
-         * containing <code>{ type: 'added|updated|moved|removed', key: 'key_of_item_affected'}</code>
+         * containing <code>{ type: 'child_added|child_updated|child_moved|child_removed',
+         * key: 'key_of_item_affected'}</code>
          *
          * Additionally, added and moved events receive a prevChild parameter, containing the
          * key of the item before this one in the array.
@@ -24264,7 +24292,6 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
             this._isDestroyed = true;
             this._sync.destroy(err);
             this.$list.length = 0;
-            $log.debug('destroy called for FirebaseArray: '+this.$ref().ref().toString());
           }
         },
 
@@ -24564,7 +24591,13 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
       FirebaseArray.$extend = function(ChildClass, methods) {
         if( arguments.length === 1 && angular.isObject(ChildClass) ) {
           methods = ChildClass;
-          ChildClass = function() { return FirebaseArray.apply(this, arguments); };
+          ChildClass = function(ref) {
+            if( !(this instanceof ChildClass) ) {
+              return new ChildClass(ref);
+            }
+            FirebaseArray.apply(this, arguments);
+            return this.$list;
+          };
         }
         return $firebaseUtils.inherit(ChildClass, FirebaseArray, methods);
       };
@@ -24612,47 +24645,48 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
         }
 
         var def     = $firebaseUtils.defer();
-        var batch   = $firebaseUtils.batch();
-        var created = batch(function(snap, prevChild) {
+        var created = function(snap, prevChild) {
           var rec = firebaseArray.$$added(snap, prevChild);
-          if( rec ) {
+          $firebaseUtils.whenUnwrapped(rec, function(rec) {
             firebaseArray.$$process('child_added', rec, prevChild);
-          }
-        });
-        var updated = batch(function(snap) {
+          });
+        };
+        var updated = function(snap) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            var changed = firebaseArray.$$updated(snap);
-            if( changed ) {
+            var res = firebaseArray.$$updated(snap);
+            $firebaseUtils.whenUnwrapped(res, function() {
               firebaseArray.$$process('child_changed', rec);
-            }
+            });
           }
-        });
-        var moved   = batch(function(snap, prevChild) {
+        };
+        var moved   = function(snap, prevChild) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            var confirmed = firebaseArray.$$moved(snap, prevChild);
-            if( confirmed ) {
+            var res = firebaseArray.$$moved(snap, prevChild);
+            $firebaseUtils.whenUnwrapped(res, function() {
               firebaseArray.$$process('child_moved', rec, prevChild);
-            }
+            });
           }
-        });
-        var removed = batch(function(snap) {
+        };
+        var removed = function(snap) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            var confirmed = firebaseArray.$$removed(snap);
-            if( confirmed ) {
+            var res = firebaseArray.$$removed(snap);
+            $firebaseUtils.whenUnwrapped(res, function() {
               firebaseArray.$$process('child_removed', rec);
-            }
+            });
           }
-        });
+        };
 
         var isResolved = false;
-        var error   = batch(function(err) {
+        var error   = $firebaseUtils.batch(function(err) {
           _initComplete(err);
-          firebaseArray.$$error(err);
+          if( firebaseArray ) {
+            firebaseArray.$$error(err);
+          }
         });
-        var initComplete = batch(_initComplete);
+        var initComplete = $firebaseUtils.batch(_initComplete);
 
         var sync = {
           destroy: destroy,
@@ -24685,7 +24719,7 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
 
   // Define a service which provides user authentication and management.
   angular.module('firebase').factory('$firebaseAuth', [
-    '$q', '$firebaseUtils', '$log', function($q, $firebaseUtils, $log) {
+    '$q', '$firebaseUtils', function($q, $firebaseUtils) {
       /**
        * This factory returns an object allowing you to manage the client's authentication state.
        *
@@ -24694,21 +24728,20 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
        * authentication state, and managing users.
        */
       return function(ref) {
-        var auth = new FirebaseAuth($q, $firebaseUtils, $log, ref);
+        var auth = new FirebaseAuth($q, $firebaseUtils, ref);
         return auth.construct();
       };
     }
   ]);
 
-  FirebaseAuth = function($q, $firebaseUtils, $log, ref) {
+  FirebaseAuth = function($q, $firebaseUtils, ref) {
     this._q = $q;
     this._utils = $firebaseUtils;
-    this._log = $log;
-
     if (typeof ref === 'string') {
       throw new Error('Please provide a Firebase reference instead of a URL when creating a `$firebaseAuth` object.');
     }
     this._ref = ref;
+    this._initialAuthResolver = this._initAuthResolver();
   };
 
   FirebaseAuth.prototype = {
@@ -24927,27 +24960,38 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
      * rejected if the client is unauthenticated and rejectIfAuthDataIsNull is true.
      */
     _routerMethodOnAuthPromise: function(rejectIfAuthDataIsNull) {
-      var ref = this._ref;
+      var ref = this._ref, utils = this._utils;
+      // wait for the initial auth state to resolve; on page load we have to request auth state
+      // asynchronously so we don't want to resolve router methods or flash the wrong state
+      return this._initialAuthResolver.then(function() {
+        // auth state may change in the future so rather than depend on the initially resolved state
+        // we also check the auth data (synchronously) if a new promise is requested, ensuring we resolve
+        // to the current auth state and not a stale/initial state
+        var authData = ref.getAuth(), res = null;
+        if (rejectIfAuthDataIsNull && authData === null) {
+          res = utils.reject("AUTH_REQUIRED");
+        }
+        else {
+          res = utils.resolve(authData);
+        }
+        return res;
+      });
+    },
 
-      return this._utils.promise(function(resolve,reject){
-        function callback(authData) {
+    /**
+     * Helper that returns a promise which resolves when the initial auth state has been
+     * fetched from the Firebase server. This never rejects and resolves to undefined.
+     *
+     * @return {Promise<Object>} A promise fulfilled when the server returns initial auth state.
+     */
+    _initAuthResolver: function() {
+      var ref = this._ref;
+      return this._utils.promise(function(resolve) {
+        function callback() {
           // Turn off this onAuth() callback since we just needed to get the authentication data once.
           ref.offAuth(callback);
-
-          if (authData !== null) {
-            resolve(authData);
-            return;
-          }
-          else if (rejectIfAuthDataIsNull) {
-            reject("AUTH_REQUIRED");
-            return;
-          }
-          else {
-            resolve(null);
-            return;
-          }
+          resolve();
         }
-
         ref.onAuth(callback);
       });
     },
@@ -25036,11 +25080,13 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
      * @return {Promise<>} An empty promise fulfilled once the email change is complete.
      */
     changeEmail: function(credentials) {
+      var deferred = this._q.defer();
+
       if (typeof this._ref.changeEmail !== 'function') {
+        throw new Error("$firebaseAuth.$changeEmail() requires Firebase version 2.1.0 or greater.");
+      } else if (typeof credentials === 'string') {
         throw new Error("$changeEmail() expects an object containing 'oldEmail', 'newEmail', and 'password', but got a string.");
       }
-
-      var deferred = this._q.defer();
 
       try {
         this._ref.changeEmail(credentials, this._utils.makeNodeResolver(deferred));
@@ -25254,7 +25300,7 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
         /**
          * Listeners passed into this method are notified whenever a new change is received
          * from the server. Each invocation is sent an object containing
-         * <code>{ type: 'updated', key: 'my_firebase_id' }</code>
+         * <code>{ type: 'value', key: 'my_firebase_id' }</code>
          *
          * This method returns an unbind function that can be used to detach the listener.
          *
@@ -25390,7 +25436,12 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
       FirebaseObject.$extend = function(ChildClass, methods) {
         if( arguments.length === 1 && angular.isObject(ChildClass) ) {
           methods = ChildClass;
-          ChildClass = function() { FirebaseObject.apply(this, arguments); };
+          ChildClass = function(ref) {
+            if( !(this instanceof ChildClass) ) {
+              return new ChildClass(ref);
+            }
+            FirebaseObject.apply(this, arguments);
+          };
         }
         return $firebaseUtils.inherit(ChildClass, FirebaseObject, methods);
       };
@@ -25536,8 +25587,7 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
 
         var isResolved = false;
         var def = $firebaseUtils.defer();
-        var batch = $firebaseUtils.batch();
-        var applyUpdate = batch(function(snap) {
+        var applyUpdate = $firebaseUtils.batch(function(snap) {
           var changed = firebaseObject.$$updated(snap);
           if( changed ) {
             // notifies $watch listeners and
@@ -25545,8 +25595,13 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
             firebaseObject.$$notify();
           }
         });
-        var error = batch(firebaseObject.$$error, firebaseObject);
-        var initComplete = batch(_initComplete);
+        var error = $firebaseUtils.batch(function(err) {
+          _initComplete(err);
+          if( firebaseObject ) {
+            firebaseObject.$$error(err);
+          }
+        });
+        var initComplete = $firebaseUtils.batch(_initComplete);
 
         var sync = {
           isDestroyed: false,
@@ -25781,8 +25836,8 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
       }
     ])
 
-    .factory('$firebaseUtils', ["$q", "$timeout", "firebaseBatchDelay",
-      function($q, $timeout, firebaseBatchDelay) {
+    .factory('$firebaseUtils', ["$q", "$timeout", "$rootScope",
+      function($q, $timeout, $rootScope) {
 
         // ES6 style promises polyfill for angular 1.2.x
         // Copied from angular 1.3.x implementation: https://github.com/angular/angular.js/blob/v1.3.5/src/ng/q.js#L539
@@ -25808,88 +25863,21 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
 
         var utils = {
           /**
-           * Returns a function which, each time it is invoked, will pause for `wait`
-           * milliseconds before invoking the original `fn` instance. If another
-           * request is received in that time, it resets `wait` up until `maxWait` is
-           * reached.
+           * Returns a function which, each time it is invoked, will gather up the values until
+           * the next "tick" in the Angular compiler process. Then they are all run at the same
+           * time to avoid multiple cycles of the digest loop. Internally, this is done using $evalAsync()
            *
-           * Unlike a debounce function, once wait is received, all items that have been
-           * queued will be invoked (not just once per execution). It is acceptable to use 0,
-           * which means to batch all synchronously queued items.
-           *
-           * The batch function actually returns a wrap function that should be called on each
-           * method that is to be batched.
-           *
-           * <pre><code>
-           *   var total = 0;
-           *   var batchWrapper = batch(10, 100);
-           *   var fn1 = batchWrapper(function(x) { return total += x; });
-           *   var fn2 = batchWrapper(function() { console.log(total); });
-           *   fn1(10);
-           *   fn2();
-           *   fn1(10);
-           *   fn2();
-           *   console.log(total); // 0 (nothing invoked yet)
-           *   // after 10ms will log "10" and then "20"
-           * </code></pre>
-           *
-           * @param {int} wait number of milliseconds to pause before sending out after each invocation
-           * @param {int} maxWait max milliseconds to wait before sending out, defaults to wait * 10 or 100
+           * @param {Function} action
+           * @param {Object} [context]
            * @returns {Function}
            */
-          batch: function(wait, maxWait) {
-            wait = typeof('wait') === 'number'? wait : firebaseBatchDelay;
-            if( !maxWait ) { maxWait = wait*10 || 100; }
-            var queue = [];
-            var start;
-            var cancelTimer;
-            var runScheduledForNextTick;
-
-            // returns `fn` wrapped in a function that queues up each call event to be
-            // invoked later inside fo runNow()
-            function createBatchFn(fn, context) {
-               if( typeof(fn) !== 'function' ) {
-                 throw new Error('Must provide a function to be batched. Got '+fn);
-               }
-               return function() {
-                 var args = Array.prototype.slice.call(arguments, 0);
-                 queue.push([fn, context, args]);
-                 resetTimer();
-               };
-            }
-
-            // clears the current wait timer and creates a new one
-            // however, if maxWait is exceeded, calls runNow() on the next tick.
-            function resetTimer() {
-              if( cancelTimer ) {
-                cancelTimer();
-                cancelTimer = null;
-              }
-              if( start && Date.now() - start > maxWait ) {
-                if(!runScheduledForNextTick){
-                  runScheduledForNextTick = true;
-                  utils.compile(runNow);
-                }
-              }
-              else {
-                if( !start ) { start = Date.now(); }
-                cancelTimer = utils.wait(runNow, wait);
-              }
-            }
-
-            // Clears the queue and invokes all of the functions awaiting notification
-            function runNow() {
-              cancelTimer = null;
-              start = null;
-              runScheduledForNextTick = false;
-              var copyList = queue.slice(0);
-              queue = [];
-              angular.forEach(copyList, function(parts) {
-                parts[0].apply(parts[1], parts[2]);
+          batch: function(action, context) {
+            return function() {
+              var args = Array.prototype.slice.call(arguments, 0);
+              utils.compile(function() {
+                action.apply(context, args);
               });
-            }
-
-            return createBatchFn;
+            };
           },
 
           /**
@@ -26007,6 +25995,16 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
 
           resolve: $q.when,
 
+          whenUnwrapped: function(possiblePromise, callback) {
+            if( possiblePromise ) {
+              utils.resolve(possiblePromise).then(function(res) {
+                if( res ) {
+                  callback(res);
+                }
+              });
+            }
+          },
+
           //TODO: Remove false branch and use only angular implementation when we drop angular 1.2.x support.
           promise: angular.isFunction($q) ? $q : Q,
 
@@ -26035,7 +26033,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
           },
 
           compile: function(fn) {
-            return $timeout(fn||function() {});
+            return $rootScope.$evalAsync(fn||function() {});
           },
 
           deepCopy: function(obj) {
@@ -26248,9 +26246,8 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
           /**
            * AngularFire version number.
            */
-          VERSION: '1.0.0',
+          VERSION: '1.1.1',
 
-          batchDelay: firebaseBatchDelay,
           allPromises: $q.all.bind($q)
         };
 
@@ -26271,7 +26268,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
 })();
 
 //! moment.js
-//! version : 2.10.2
+//! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -26294,28 +26291,12 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
         hookCallback = callback;
     }
 
-    function defaultParsingFlags() {
-        // We need to deep clone this object.
-        return {
-            empty           : false,
-            unusedTokens    : [],
-            unusedInput     : [],
-            overflow        : -2,
-            charsLeftOver   : 0,
-            nullInput       : false,
-            invalidMonth    : null,
-            invalidFormat   : false,
-            userInvalidated : false,
-            iso             : false
-        };
-    }
-
     function isArray(input) {
         return Object.prototype.toString.call(input) === '[object Array]';
     }
 
     function isDate(input) {
-        return Object.prototype.toString.call(input) === '[object Date]' || input instanceof Date;
+        return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
     }
 
     function map(arr, fn) {
@@ -26352,21 +26333,45 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
         return createLocalOrUTC(input, format, locale, strict, true).utc();
     }
 
+    function defaultParsingFlags() {
+        // We need to deep clone this object.
+        return {
+            empty           : false,
+            unusedTokens    : [],
+            unusedInput     : [],
+            overflow        : -2,
+            charsLeftOver   : 0,
+            nullInput       : false,
+            invalidMonth    : null,
+            invalidFormat   : false,
+            userInvalidated : false,
+            iso             : false
+        };
+    }
+
+    function getParsingFlags(m) {
+        if (m._pf == null) {
+            m._pf = defaultParsingFlags();
+        }
+        return m._pf;
+    }
+
     function valid__isValid(m) {
         if (m._isValid == null) {
+            var flags = getParsingFlags(m);
             m._isValid = !isNaN(m._d.getTime()) &&
-                m._pf.overflow < 0 &&
-                !m._pf.empty &&
-                !m._pf.invalidMonth &&
-                !m._pf.nullInput &&
-                !m._pf.invalidFormat &&
-                !m._pf.userInvalidated;
+                flags.overflow < 0 &&
+                !flags.empty &&
+                !flags.invalidMonth &&
+                !flags.nullInput &&
+                !flags.invalidFormat &&
+                !flags.userInvalidated;
 
             if (m._strict) {
                 m._isValid = m._isValid &&
-                    m._pf.charsLeftOver === 0 &&
-                    m._pf.unusedTokens.length === 0 &&
-                    m._pf.bigHour === undefined;
+                    flags.charsLeftOver === 0 &&
+                    flags.unusedTokens.length === 0 &&
+                    flags.bigHour === undefined;
             }
         }
         return m._isValid;
@@ -26375,10 +26380,10 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     function valid__createInvalid (flags) {
         var m = create_utc__createUTC(NaN);
         if (flags != null) {
-            extend(m._pf, flags);
+            extend(getParsingFlags(m), flags);
         }
         else {
-            m._pf.userInvalidated = true;
+            getParsingFlags(m).userInvalidated = true;
         }
 
         return m;
@@ -26414,7 +26419,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             to._offset = from._offset;
         }
         if (typeof from._pf !== 'undefined') {
-            to._pf = from._pf;
+            to._pf = getParsingFlags(from);
         }
         if (typeof from._locale !== 'undefined') {
             to._locale = from._locale;
@@ -26449,7 +26454,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     }
 
     function isMoment (obj) {
-        return obj instanceof Moment || (obj != null && hasOwnProp(obj, '_isAMomentObject'));
+        return obj instanceof Moment || (obj != null && obj._isAMomentObject != null);
     }
 
     function toInt(argumentForCoercion) {
@@ -26887,7 +26892,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
         if (month != null) {
             array[MONTH] = month;
         } else {
-            config._pf.invalidMonth = input;
+            getParsingFlags(config).invalidMonth = input;
         }
     });
 
@@ -26971,7 +26976,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
         var overflow;
         var a = m._a;
 
-        if (a && m._pf.overflow === -2) {
+        if (a && getParsingFlags(m).overflow === -2) {
             overflow =
                 a[MONTH]       < 0 || a[MONTH]       > 11  ? MONTH :
                 a[DATE]        < 1 || a[DATE]        > daysInMonth(a[YEAR], a[MONTH]) ? DATE :
@@ -26981,11 +26986,11 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
                 a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND :
                 -1;
 
-            if (m._pf._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+            if (getParsingFlags(m)._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
                 overflow = DATE;
             }
 
-            m._pf.overflow = overflow;
+            getParsingFlags(m).overflow = overflow;
         }
 
         return m;
@@ -26998,10 +27003,12 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     }
 
     function deprecate(msg, fn) {
-        var firstTime = true;
+        var firstTime = true,
+            msgWithStack = msg + '\n' + (new Error()).stack;
+
         return extend(function () {
             if (firstTime) {
-                warn(msg);
+                warn(msgWithStack);
                 firstTime = false;
             }
             return fn.apply(this, arguments);
@@ -27046,7 +27053,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             match = from_string__isoRegex.exec(string);
 
         if (match) {
-            config._pf.iso = true;
+            getParsingFlags(config).iso = true;
             for (i = 0, l = isoDates.length; i < l; i++) {
                 if (isoDates[i][1].exec(string)) {
                     // match[5] should be 'T' or undefined
@@ -27326,7 +27333,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
 
             if (config._dayOfYear > daysInYear(yearToUse)) {
-                config._pf._overflowDayOfYear = true;
+                getParsingFlags(config)._overflowDayOfYear = true;
             }
 
             date = createUTCDate(yearToUse, 0, config._dayOfYear);
@@ -27422,7 +27429,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
         }
 
         config._a = [];
-        config._pf.empty = true;
+        getParsingFlags(config).empty = true;
 
         // This array is used to make a Date, either with `new Date` or `Date.UTC`
         var string = '' + config._i,
@@ -27438,7 +27445,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             if (parsedInput) {
                 skipped = string.substr(0, string.indexOf(parsedInput));
                 if (skipped.length > 0) {
-                    config._pf.unusedInput.push(skipped);
+                    getParsingFlags(config).unusedInput.push(skipped);
                 }
                 string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
                 totalParsedInputLength += parsedInput.length;
@@ -27446,27 +27453,29 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             // don't parse if it's not a known token
             if (formatTokenFunctions[token]) {
                 if (parsedInput) {
-                    config._pf.empty = false;
+                    getParsingFlags(config).empty = false;
                 }
                 else {
-                    config._pf.unusedTokens.push(token);
+                    getParsingFlags(config).unusedTokens.push(token);
                 }
                 addTimeToArrayFromToken(token, parsedInput, config);
             }
             else if (config._strict && !parsedInput) {
-                config._pf.unusedTokens.push(token);
+                getParsingFlags(config).unusedTokens.push(token);
             }
         }
 
         // add remaining unparsed input length to the string
-        config._pf.charsLeftOver = stringLength - totalParsedInputLength;
+        getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
         if (string.length > 0) {
-            config._pf.unusedInput.push(string);
+            getParsingFlags(config).unusedInput.push(string);
         }
 
         // clear _12h flag if hour is <= 12
-        if (config._pf.bigHour === true && config._a[HOUR] <= 12) {
-            config._pf.bigHour = undefined;
+        if (getParsingFlags(config).bigHour === true &&
+                config._a[HOUR] <= 12 &&
+                config._a[HOUR] > 0) {
+            getParsingFlags(config).bigHour = undefined;
         }
         // handle meridiem
         config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
@@ -27510,7 +27519,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             currentScore;
 
         if (config._f.length === 0) {
-            config._pf.invalidFormat = true;
+            getParsingFlags(config).invalidFormat = true;
             config._d = new Date(NaN);
             return;
         }
@@ -27521,7 +27530,6 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             if (config._useUTC != null) {
                 tempConfig._useUTC = config._useUTC;
             }
-            tempConfig._pf = defaultParsingFlags();
             tempConfig._f = config._f[i];
             configFromStringAndFormat(tempConfig);
 
@@ -27530,12 +27538,12 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             }
 
             // if there is any input that was not parsed add a penalty for that format
-            currentScore += tempConfig._pf.charsLeftOver;
+            currentScore += getParsingFlags(tempConfig).charsLeftOver;
 
             //or tokens
-            currentScore += tempConfig._pf.unusedTokens.length * 10;
+            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
 
-            tempConfig._pf.score = currentScore;
+            getParsingFlags(tempConfig).score = currentScore;
 
             if (scoreToBeat == null || currentScore < scoreToBeat) {
                 scoreToBeat = currentScore;
@@ -27578,6 +27586,8 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             configFromStringAndArray(config);
         } else if (format) {
             configFromStringAndFormat(config);
+        } else if (isDate(input)) {
+            config._d = input;
         } else {
             configFromInput(config);
         }
@@ -27630,7 +27640,6 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
         c._i = input;
         c._f = format;
         c._strict = strict;
-        c._pf = defaultParsingFlags();
 
         return createFromConfig(c);
     }
@@ -28204,11 +28213,25 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     }
 
     function from (time, withoutSuffix) {
+        if (!this.isValid()) {
+            return this.localeData().invalidDate();
+        }
         return create__createDuration({to: this, from: time}).locale(this.locale()).humanize(!withoutSuffix);
     }
 
     function fromNow (withoutSuffix) {
         return this.from(local__createLocal(), withoutSuffix);
+    }
+
+    function to (time, withoutSuffix) {
+        if (!this.isValid()) {
+            return this.localeData().invalidDate();
+        }
+        return create__createDuration({from: this, to: time}).locale(this.locale()).humanize(!withoutSuffix);
+    }
+
+    function toNow (withoutSuffix) {
+        return this.to(local__createLocal(), withoutSuffix);
     }
 
     function locale (key) {
@@ -28313,11 +28336,11 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     }
 
     function parsingFlags () {
-        return extend({}, this._pf);
+        return extend({}, getParsingFlags(this));
     }
 
     function invalidAt () {
-        return this._pf.overflow;
+        return getParsingFlags(this).overflow;
     }
 
     addFormatToken(0, ['gg', 2], 0, function () {
@@ -28468,7 +28491,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
         if (weekday != null) {
             week.d = weekday;
         } else {
-            config._pf.invalidWeekday = input;
+            getParsingFlags(config).invalidWeekday = input;
         }
     });
 
@@ -28593,7 +28616,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     });
     addParseToken(['h', 'hh'], function (input, array, config) {
         array[HOUR] = toInt(input);
-        config._pf.bigHour = true;
+        getParsingFlags(config).bigHour = true;
     });
 
     // LOCALES
@@ -28710,6 +28733,8 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     momentPrototype__proto.format       = format;
     momentPrototype__proto.from         = from;
     momentPrototype__proto.fromNow      = fromNow;
+    momentPrototype__proto.to           = to;
+    momentPrototype__proto.toNow        = toNow;
     momentPrototype__proto.get          = getSet;
     momentPrototype__proto.invalidAt    = invalidAt;
     momentPrototype__proto.isAfter      = isAfter;
@@ -28898,7 +28923,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
         }
         // Lenient ordinal parsing accepts just a number in addition to
         // number + (possibly) stuff coming from _ordinalParseLenient.
-        this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + /\d{1,2}/.source);
+        this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + (/\d{1,2}/).source);
     }
 
     var prototype__proto = Locale.prototype;
@@ -29115,13 +29140,13 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
             // handle milliseconds separately because of floating point math errors (issue #1867)
             days = this._days + Math.round(yearsToDays(this._months / 12));
             switch (units) {
-                case 'week'   : return days / 7            + milliseconds / 6048e5;
-                case 'day'    : return days                + milliseconds / 864e5;
-                case 'hour'   : return days * 24           + milliseconds / 36e5;
-                case 'minute' : return days * 24 * 60      + milliseconds / 6e4;
-                case 'second' : return days * 24 * 60 * 60 + milliseconds / 1000;
+                case 'week'   : return days / 7     + milliseconds / 6048e5;
+                case 'day'    : return days         + milliseconds / 864e5;
+                case 'hour'   : return days * 24    + milliseconds / 36e5;
+                case 'minute' : return days * 1440  + milliseconds / 6e4;
+                case 'second' : return days * 86400 + milliseconds / 1000;
                 // Math.floor prevents floating point math errors here
-                case 'millisecond': return Math.floor(days * 24 * 60 * 60 * 1000) + milliseconds;
+                case 'millisecond': return Math.floor(days * 864e5) + milliseconds;
                 default: throw new Error('Unknown unit ' + units);
             }
         }
@@ -29322,7 +29347,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     // Side effect imports
 
 
-    utils_hooks__hooks.version = '2.10.2';
+    utils_hooks__hooks.version = '2.10.3';
 
     setHookCallback(local__createLocal);
 
@@ -29353,3 +29378,5 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     return _moment;
 
 }));
+(function(){var j=false;window.JQClass=function(){};JQClass.classes={};JQClass.extend=function extender(f){var g=this.prototype;j=true;var h=new this();j=false;for(var i in f){h[i]=typeof f[i]=='function'&&typeof g[i]=='function'?(function(d,e){return function(){var b=this._super;this._super=function(a){return g[d].apply(this,a||[])};var c=e.apply(this,arguments);this._super=b;return c}})(i,f[i]):f[i]}function JQClass(){if(!j&&this._init){this._init.apply(this,arguments)}}JQClass.prototype=h;JQClass.prototype.constructor=JQClass;JQClass.extend=extender;return JQClass}})();(function($){JQClass.classes.JQPlugin=JQClass.extend({name:'plugin',defaultOptions:{},regionalOptions:{},_getters:[],_getMarker:function(){return'is-'+this.name},_init:function(){$.extend(this.defaultOptions,(this.regionalOptions&&this.regionalOptions[''])||{});var c=camelCase(this.name);$[c]=this;$.fn[c]=function(a){var b=Array.prototype.slice.call(arguments,1);if($[c]._isNotChained(a,b)){return $[c][a].apply($[c],[this[0]].concat(b))}return this.each(function(){if(typeof a==='string'){if(a[0]==='_'||!$[c][a]){throw'Unknown method: '+a;}$[c][a].apply($[c],[this].concat(b))}else{$[c]._attach(this,a)}})}},setDefaults:function(a){$.extend(this.defaultOptions,a||{})},_isNotChained:function(a,b){if(a==='option'&&(b.length===0||(b.length===1&&typeof b[0]==='string'))){return true}return $.inArray(a,this._getters)>-1},_attach:function(a,b){a=$(a);if(a.hasClass(this._getMarker())){return}a.addClass(this._getMarker());b=$.extend({},this.defaultOptions,this._getMetadata(a),b||{});var c=$.extend({name:this.name,elem:a,options:b},this._instSettings(a,b));a.data(this.name,c);this._postAttach(a,c);this.option(a,b)},_instSettings:function(a,b){return{}},_postAttach:function(a,b){},_getMetadata:function(d){try{var f=d.data(this.name.toLowerCase())||'';f=f.replace(/'/g,'"');f=f.replace(/([a-zA-Z0-9]+):/g,function(a,b,i){var c=f.substring(0,i).match(/"/g);return(!c||c.length%2===0?'"'+b+'":':b+':')});f=$.parseJSON('{'+f+'}');for(var g in f){var h=f[g];if(typeof h==='string'&&h.match(/^new Date\((.*)\)$/)){f[g]=eval(h)}}return f}catch(e){return{}}},_getInst:function(a){return $(a).data(this.name)||{}},option:function(a,b,c){a=$(a);var d=a.data(this.name);if(!b||(typeof b==='string'&&c==null)){var e=(d||{}).options;return(e&&b?e[b]:e)}if(!a.hasClass(this._getMarker())){return}var e=b||{};if(typeof b==='string'){e={};e[b]=c}this._optionsChanged(a,d,e);$.extend(d.options,e)},_optionsChanged:function(a,b,c){},destroy:function(a){a=$(a);if(!a.hasClass(this._getMarker())){return}this._preDestroy(a,this._getInst(a));a.removeData(this.name).removeClass(this._getMarker())},_preDestroy:function(a,b){}});function camelCase(c){return c.replace(/-([a-z])/g,function(a,b){return b.toUpperCase()})}$.JQPlugin={createPlugin:function(a,b){if(typeof a==='object'){b=a;a='JQPlugin'}a=camelCase(a);var c=camelCase(b.name);JQClass.classes[c]=JQClass.classes[a].extend(b);new JQClass.classes[c]()}}})(jQuery);
+(function($){var k='keypad';var l=['  BSCECA','_1_2_3_+@X','_4_5_6_-@U','_7_8_9_*@E','_0_._=_/'];$.JQPlugin.createPlugin({name:k,defaultOptions:{showOn:'focus',buttonImage:'',buttonImageOnly:false,showAnim:'show',showOptions:null,duration:'normal',appendText:'',useThemeRoller:false,keypadClass:'',prompt:'',layout:[],separator:'',target:null,keypadOnly:true,randomiseAlphabetic:false,randomiseNumeric:false,randomiseOther:false,randomiseAll:false,beforeShow:null,onKeypress:null,onClose:null},regionalOptions:{'':{buttonText:'...',buttonStatus:'Open the keypad',closeText:'Close',closeStatus:'Close the keypad',clearText:'Clear',clearStatus:'Erase all the text',backText:'Back',backStatus:'Erase the previous character',spacebarText:'&#160;',spacebarStatus:'Space',enterText:'Enter',enterStatus:'Carriage return',tabText:'→',tabStatus:'Horizontal tab',shiftText:'Shift',shiftStatus:'Toggle upper/lower case characters',alphabeticLayout:[],fullLayout:[],isAlphabetic:null,isNumeric:null,toUpper:null,isRTL:false}},_getters:['isDisabled'],_curInst:null,_disabledFields:[],_keypadShowing:false,_keyCode:0,_specialKeys:[],_mainDivClass:k+'-popup',_inlineClass:k+'-inline',_appendClass:k+'-append',_triggerClass:k+'-trigger',_disableClass:k+'-disabled',_inlineEntryClass:k+'-keyentry',_rtlClass:k+'-rtl',_rowClass:k+'-row',_promptClass:k+'-prompt',_specialClass:k+'-special',_namePrefixClass:k+'-',_keyClass:k+'-key',_keyDownClass:k+'-key-down',qwertyAlphabetic:['qwertyuiop','asdfghjkl','zxcvbnm'],qwertyLayout:['!@#$%^&*()_='+this.HALF_SPACE+this.SPACE+this.CLOSE,this.HALF_SPACE+'`~[]{}<>\\|/'+this.SPACE+'789','qwertyuiop\'"'+this.HALF_SPACE+'456',this.HALF_SPACE+'asdfghjkl;:'+this.SPACE+'123',this.SPACE+'zxcvbnm,.?'+this.SPACE+this.HALF_SPACE+'-0+',''+this.TAB+this.ENTER+this.SPACE_BAR+this.SHIFT+this.HALF_SPACE+this.BACK+this.CLEAR],addKeyDef:function(a,b,c,d){if(this._keyCode==32){throw'Only 32 special keys allowed';}this[a]=String.fromCharCode(this._keyCode++);this._specialKeys.push({code:this[a],id:a,name:b,action:c,noHighlight:d});return this},_init:function(){this.mainDiv=$('<div class="'+this._mainDivClass+'" style="display: none;"></div>');this._super()},_instSettings:function(a,b){var c=!a[0].nodeName.toLowerCase().match(/input|textarea/);return{_inline:c,ucase:false,_mainDiv:(c?$('<div class="'+this._inlineClass+'"></div>'):m.mainDiv)}},_postAttach:function(a,b){if(b._inline){a.append(b._mainDiv).on('click.'+b.name,function(){b._input.focus()});this._updateKeypad(b)}else if(a.is(':disabled')){this.disable(a)}},_setInput:function(a,b){b._input=$(!b._inline?a:b.options.target||'<input type="text" class="'+this._inlineEntryClass+'" disabled/>');if(b._inline){a.find('input').remove();if(!b.options.target){a.append(b._input)}}},_optionsChanged:function(d,e,f){$.extend(e.options,f);d.off('.'+e.name).siblings('.'+this._appendClass).remove().end().siblings('.'+this._triggerClass).remove();var g=e.options.appendText;if(g){d[e.options.isRTL?'before':'after']('<span class="'+this._appendClass+'">'+g+'</span>')}if(!e._inline){if(e.options.showOn=='focus'||e.options.showOn=='both'){d.on('focus.'+e.name,this.show).on('keydown.'+e.name,this._doKeyDown)}if(e.options.showOn=='button'||e.options.showOn=='both'){var h=e.options.buttonStatus;var i=e.options.buttonImage;var j=$(e.options.buttonImageOnly?$('<img src="'+i+'" alt="'+h+'" title="'+h+'"/>'):$('<button type="button" title="'+h+'"></button>').html(i==''?e.options.buttonText:$('<img src="'+i+'" alt="'+h+'" title="'+h+'"/>')));d[e.options.isRTL?'before':'after'](j);j.addClass(this._triggerClass).click(function(){if(m._keypadShowing&&m._lastField==d[0]){m.hide()}else{m.show(d[0])}return false})}}e.saveReadonly=d.attr('readonly');d[e.options.keypadOnly?'attr':'removeAttr']('readonly',true).on('setData.'+e.name,function(a,b,c){e.options[b]=c}).on('getData.'+e.name,function(a,b){return e.options[b]});this._setInput(d,e);this._updateKeypad(e)},_preDestroy:function(a,b){if(this._curInst==b){this.hide()}a.siblings('.'+this._appendClass).remove().end().siblings('.'+this._triggerClass).remove().end().prev('.'+this._inlineEntryClass).remove();a.empty().off('.'+b.name)[b.saveReadonly?'attr':'removeAttr']('readonly',true);b._input.removeData(b.name)},enable:function(b){b=$(b);if(!b.hasClass(this._getMarker())){return}var c=b[0].nodeName.toLowerCase();if(c.match(/input|textarea/)){b.prop('disabled',false).siblings('button.'+this._triggerClass).prop('disabled',false).end().siblings('img.'+this._triggerClass).css({opacity:'1.0',cursor:''})}else if(c.match(/div|span/)){b.children('.'+this._disableClass).remove();this._getInst(b)._mainDiv.find('button').prop('disabled',false)}this._disabledFields=$.map(this._disabledFields,function(a){return(a==b[0]?null:a)})},disable:function(b){b=$(b);if(!b.hasClass(this._getMarker())){return}var c=b[0].nodeName.toLowerCase();if(c.match(/input|textarea/)){b.prop('disabled',true).siblings('button.'+this._triggerClass).prop('disabled',true).end().siblings('img.'+this._triggerClass).css({opacity:'0.5',cursor:'default'})}else if(c.match(/div|span/)){var d=b.children('.'+this._inlineClass);var e=d.offset();var f={left:0,top:0};d.parents().each(function(){if($(this).css('position')=='relative'){f=$(this).offset();return false}});b.prepend('<div class="'+this._disableClass+'" style="width: '+d.outerWidth()+'px; height: '+d.outerHeight()+'px; left: '+(e.left-f.left)+'px; top: '+(e.top-f.top)+'px;"></div>');this._getInst(b)._mainDiv.find('button').prop('disabled',true)}this._disabledFields=$.map(this._disabledFields,function(a){return(a==b[0]?null:a)});this._disabledFields[this._disabledFields.length]=b[0]},isDisabled:function(a){return(a&&$.inArray(a,this._disabledFields)>-1)},show:function(a){a=a.target||a;if(m.isDisabled(a)||m._lastField==a){return}var b=m._getInst(a);m.hide(null,'');m._lastField=a;m._pos=m._findPos(a);m._pos[1]+=a.offsetHeight;var c=false;$(a).parents().each(function(){c|=$(this).css('position')=='fixed';return!c});var d={left:m._pos[0],top:m._pos[1]};m._pos=null;b._mainDiv.css({position:'absolute',display:'block',top:'-1000px',width:'auto'});m._updateKeypad(b);d=m._checkOffset(b,d,c);b._mainDiv.css({position:(c?'fixed':'absolute'),display:'none',left:d.left+'px',top:d.top+'px'});var e=b.options.duration;var f=b.options.showAnim;var g=function(){m._keypadShowing=true};if($.effects&&($.effects[f]||($.effects.effect&&$.effects.effect[f]))){var h=b._mainDiv.data();for(var i in h){if(i.match(/^ec\.storage\./)){h[i]=b._mainDiv.css(i.replace(/ec\.storage\./,''))}}b._mainDiv.data(h).show(f,b.options.showOptions||{},e,g)}else{b._mainDiv[f||'show']((f?e:0),g)}if(b._input[0].type!='hidden'){b._input[0].focus()}m._curInst=b},_updateKeypad:function(a){var b=this._getBorders(a._mainDiv);a._mainDiv.empty().append(this._generateHTML(a)).removeClass().addClass(a.options.keypadClass+(a.options.useThemeRoller?' ui-widget ui-widget-content':'')+(a.options.isRTL?' '+this._rtlClass:'')+' '+(a._inline?this._inlineClass:this._mainDivClass));if($.isFunction(a.options.beforeShow)){a.options.beforeShow.apply((a._input?a._input[0]:null),[a._mainDiv,a])}},_getBorders:function(b){var c=function(a){return{thin:1,medium:3,thick:5}[a]||a};return[parseFloat(c(b.css('border-left-width'))),parseFloat(c(b.css('border-top-width')))]},_checkOffset:function(a,b,c){var d=a._input?this._findPos(a._input[0]):null;var e=window.innerWidth||document.documentElement.clientWidth;var f=window.innerHeight||document.documentElement.clientHeight;var g=document.documentElement.scrollLeft||document.body.scrollLeft;var h=document.documentElement.scrollTop||document.body.scrollTop;var i=0;a._mainDiv.find(':not(div)').each(function(){i=Math.max(i,this.offsetLeft+$(this).outerWidth(true))});a._mainDiv.css('width',i+1);if(a.options.isRTL||(b.left+a._mainDiv.outerWidth()-g)>e){b.left=Math.max((c?0:g),d[0]+(a._input?a._input.outerWidth():0)-(c?g:0)-a._mainDiv.outerWidth())}else{b.left=Math.max((c?0:g),b.left-(c?g:0))}if((b.top+a._mainDiv.outerHeight()-h)>f){b.top=Math.max((c?0:h),d[1]-(c?h:0)-a._mainDiv.outerHeight())}else{b.top=Math.max((c?0:h),b.top-(c?h:0))}return b},_findPos:function(a){while(a&&(a.type=='hidden'||a.nodeType!=1)){a=a.nextSibling}var b=$(a).offset();return[b.left,b.top]},hide:function(a,b){var c=this._curInst;if(!c||(a&&c!=$.data(a,this.name))){return}if(this._keypadShowing){b=(b!=null?b:c.options.duration);var d=c.options.showAnim;if($.effects&&($.effects[d]||($.effects.effect&&$.effects.effect[d]))){c._mainDiv.hide(d,c.options.showOptions||{},b)}else{c._mainDiv[(d=='slideDown'?'slideUp':(d=='fadeIn'?'fadeOut':'hide'))](d?b:0)}}if($.isFunction(c.options.onClose)){c.options.onClose.apply((c._input?c._input[0]:null),[c._input.val(),c])}if(this._keypadShowing){this._keypadShowing=false;this._lastField=null}if(c._inline){c._input.val('')}this._curInst=null},_doKeyDown:function(a){if(a.keyCode==9){m.mainDiv.stop(true,true);m.hide()}},_checkExternalClick:function(a){if(!m._curInst){return}var b=$(a.target);if(b.closest('.'+m._mainDivClass).length===0&&!b.hasClass(m._getMarker())&&b.closest('.'+m._triggerClass).length===0&&m._keypadShowing){m.hide()}},_shiftKeypad:function(a){a.ucase=!a.ucase;this._updateKeypad(a);a._input.focus()},_clearValue:function(a){this._setValue(a,'',0);this._notifyKeypress(a,m.DEL)},_backValue:function(a){var b=a._input[0];var c=a._input.val();var d=[c.length,c.length];d=(a._input.prop('readonly')||a._input.prop('disabled')?d:(b.setSelectionRange?[b.selectionStart,b.selectionEnd]:(b.createTextRange?this._getIERange(b):d)));this._setValue(a,(c.length==0?'':c.substr(0,d[0]-1)+c.substr(d[1])),d[0]-1);this._notifyKeypress(a,m.BS)},_selectValue:function(a,b){this.insertValue(a._input[0],b);this._setValue(a,a._input.val());this._notifyKeypress(a,b)},insertValue:function(a,b){a=(a.jquery?a:$(a));var c=a[0];var d=a.val();var e=[d.length,d.length];e=(a.attr('readonly')||a.attr('disabled')?e:(c.setSelectionRange?[c.selectionStart,c.selectionEnd]:(c.createTextRange?this._getIERange(c):e)));a.val(d.substr(0,e[0])+b+d.substr(e[1]));pos=e[0]+b.length;if(a.is(':visible')){a.focus()}if(c.setSelectionRange){if(a.is(':visible')){c.setSelectionRange(pos,pos)}}else if(c.createTextRange){e=c.createTextRange();e.move('character',pos);e.select()}},_getIERange:function(e){e.focus();var f=document.selection.createRange().duplicate();var g=this._getIETextRange(e);g.setEndPoint('EndToStart',f);var h=function(a){var b=a.text;var c=b;var d=false;while(true){if(a.compareEndPoints('StartToEnd',a)==0){break}else{a.moveEnd('character',-1);if(a.text==b){c+='\r\n'}else{break}}}return c};var i=h(g);var j=h(f);return[i.length,i.length+j.length]},_getIETextRange:function(a){var b=(a.nodeName.toLowerCase()=='input');var c=(b?a.createTextRange():document.body.createTextRange());if(!b){c.moveToElementText(a)}return c},_setValue:function(a,b){var c=a._input.attr('maxlength');if(c>-1){b=b.substr(0,c)}a._input.val(b);if(!$.isFunction(a.options.onKeypress)){a._input.trigger('change')}},_notifyKeypress:function(a,b){if($.isFunction(a.options.onKeypress)){a.options.onKeypress.apply((a._input?a._input[0]:null),[b,a._input.val(),a])}},_generateHTML:function(b){var c=(!b.options.prompt?'':'<div class="'+this._promptClass+(b.options.useThemeRoller?' ui-widget-header ui-corner-all':'')+'">'+b.options.prompt+'</div>');var d=this._randomiseLayout(b);for(var i=0;i<d.length;i++){c+='<div class="'+this._rowClass+'">';var e=d[i].split(b.options.separator);for(var j=0;j<e.length;j++){if(b.ucase){e[j]=b.options.toUpper(e[j])}var f=this._specialKeys[e[j].charCodeAt(0)];if(f){c+=(f.action?'<button type="button" class="'+this._specialClass+' '+this._namePrefixClass+f.name+(b.options.useThemeRoller?' ui-corner-all ui-state-default'+(f.noHighlight?'':' ui-state-highlight'):'')+'" title="'+b.options[f.name+'Status']+'">'+(b.options[f.name+'Text']||'&#160;')+'</button>':'<div class="'+this._namePrefixClass+f.name+'"></div>')}else{c+='<button type="button" class="'+this._keyClass+(b.options.useThemeRoller?' ui-corner-all ui-state-default':'')+'">'+(e[j]==' '?'&#160;':e[j])+'</button>'}}c+='</div>'}c=$(c);var g=b;var h=this._keyDownClass+(b.options.useThemeRoller?' ui-state-active':'');c.find('button').mousedown(function(){$(this).addClass(h)}).mouseup(function(){$(this).removeClass(h)}).mouseout(function(){$(this).removeClass(h)}).filter('.'+this._keyClass).click(function(){m._selectValue(g,$(this).text())});$.each(this._specialKeys,function(i,a){c.find('.'+m._namePrefixClass+a.name).click(function(){a.action.apply(g._input,[g])})});return c},_randomiseLayout:function(b){if(!b.options.randomiseNumeric&&!b.options.randomiseAlphabetic&&!b.options.randomiseOther&&!b.options.randomiseAll){return b.options.layout}var c=[];var d=[];var e=[];var f=[];for(var i=0;i<b.options.layout.length;i++){f[i]='';var g=b.options.layout[i].split(b.options.separator);for(var j=0;j<g.length;j++){if(this._isControl(g[j])){continue}if(b.options.randomiseAll){e.push(g[j])}else if(b.options.isNumeric(g[j])){c.push(g[j])}else if(b.options.isAlphabetic(g[j])){d.push(g[j])}else{e.push(g[j])}}}if(b.options.randomiseNumeric){this._shuffle(c)}if(b.options.randomiseAlphabetic){this._shuffle(d)}if(b.options.randomiseOther||b.options.randomiseAll){this._shuffle(e)}var n=0;var a=0;var o=0;for(var i=0;i<b.options.layout.length;i++){var g=b.options.layout[i].split(b.options.separator);for(var j=0;j<g.length;j++){f[i]+=(this._isControl(g[j])?g[j]:(b.options.randomiseAll?e[o++]:(b.options.isNumeric(g[j])?c[n++]:(b.options.isAlphabetic(g[j])?d[a++]:e[o++]))))+b.options.separator}}return f},_isControl:function(a){return a<' '},isAlphabetic:function(a){return(a>='A'&&a<='Z')||(a>='a'&&a<='z')},isNumeric:function(a){return(a>='0'&&a<='9')},toUpper:function(a){return a.toUpperCase()},_shuffle:function(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*a.length);var b=a[i];a[i]=a[j];a[j]=b}}});var m=$.keypad;m.addKeyDef('CLOSE','close',function(a){m._curInst=(a._inline?a:m._curInst);m.hide()});m.addKeyDef('CLEAR','clear',function(a){m._clearValue(a)});m.addKeyDef('BACK','back',function(a){m._backValue(a)});m.addKeyDef('SHIFT','shift',function(a){m._shiftKeypad(a)});m.addKeyDef('SPACE_BAR','spacebar',function(a){m._selectValue(a,' ')},true);m.addKeyDef('SPACE','space');m.addKeyDef('HALF_SPACE','half-space');m.addKeyDef('ENTER','enter',function(a){m._selectValue(a,'\x0D')},true);m.addKeyDef('TAB','tab',function(a){m._selectValue(a,'\x09')},true);m.numericLayout=['123'+m.CLOSE,'456'+m.CLEAR,'789'+m.BACK,m.SPACE+'0'];m.qwertyLayout=['!@#$%^&*()_='+m.HALF_SPACE+m.SPACE+m.CLOSE,m.HALF_SPACE+'`~[]{}<>\\|/'+m.SPACE+'789','qwertyuiop\'"'+m.HALF_SPACE+'456',m.HALF_SPACE+'asdfghjkl;:'+m.SPACE+'123',m.SPACE+'zxcvbnm,.?'+m.SPACE+m.HALF_SPACE+'-0+',''+m.TAB+m.ENTER+m.SPACE_BAR+m.SHIFT+m.HALF_SPACE+m.BACK+m.CLEAR],$.extend(m.regionalOptions[''],{alphabeticLayout:m.qwertyAlphabetic,fullLayout:m.qwertyLayout,isAlphabetic:m.isAlphabetic,isNumeric:m.isNumeric,toUpper:m.toUpper});m.setDefaults($.extend({layout:m.numericLayout},m.regionalOptions['']));$(function(){$(document.body).append(m.mainDiv).on('mousedown.'+k,m._checkExternalClick)})})(jQuery);

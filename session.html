@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html ng-app="escapeApp">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="A game of escape">
+    <meta name="author" content="Moritz Company">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel - The Game Escape</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="inc/escape.css">
+    <script src="inc/angular.js"></script>
+  </head>
+  <body ng-cloak ng-controller="SessionCtrl">
+    <div id="previousMessagesModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button data-dismiss="modal" aria-label="close" class="close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">All Messages</h4>
+          </div>
+          <div class="modal-body">
+            <p ng-repeat="message in activeTeam.storedMessages">{{message.text}}</p>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <header class="hide">
+        <h1>Control Panel - The Game Escape</h1>
+      </header>
+      <div class="jumbotron">
+        <h1 class="digital"><span ng-hide="activeTeam">Loading<i class="fa fa-spinner fa-pulse"></i></span><span ng-show="activeTeam">{{moment(timeRemaining * 1000).format('mm:ss')}}</span></h1>
+        <div class="displayMessage">
+          <h3 ng-if="curMsg" class="digital">{{curMsg.display}}</h3>
+        </div>
+        <button ng-click="restartTimer()" ng-show="admin" class="btn btn-primary">Restart Timer</button>
+        <button data-toggle="modal" data-target="#previousMessagesModal" ng-show="activeTeam" class="btn btn-info">Show All Messages</button>
+      </div>
+      <div id="game" ng-show="activeTeam">
+        <h3>Team: {{activeTeam.name}}</h3>
+        <div class="row">
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.operation.prerequisite)" id="{{_.kebabCase(q.operation.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.operation.icon}}"></i></span><em ng-show="isSolved(q.operation)">({{q.operation.display || mc.camelToTitle(q.operation.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.operation)">
+              <label class="sr-only">What kind of Operation is this?</label>
+              <input type="text" ng-model="q.operation.guess" placeholder="What kind of Operation is this?" class="form-control">
+              <button ng-click="submitGuess(q.operation)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.operation)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.operation)" ng-class="{active: q.operation.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.operation)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.operation.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.operation.nextClue.lockIcon}}"></i></span>Code: {{q.operation.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.monopoly.prerequisite)" id="{{_.kebabCase(q.monopoly.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.monopoly.icon}}"></i></span><em ng-show="isSolved(q.monopoly)">({{q.monopoly.display || mc.camelToTitle(q.monopoly.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.monopoly)">
+              <label class="sr-only">Where did I stay?</label>
+              <input type="text" ng-model="q.monopoly.splitGuess.property" placeholder="Where did I stay?" class="form-control">
+              <label class="sr-only">How much money did I have left?</label>
+              <input type="text" ng-model="q.monopoly.splitGuess.money" placeholder="How much money did I have left?" class="form-control">
+              <button ng-click="submitGuessSpecial(q.monopoly)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.monopoly)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.monopoly)" ng-class="{active: q.monopoly.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.monopoly)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.monopoly.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.monopoly.nextClue.lockIcon}}"></i></span>Code: {{q.monopoly.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.yahtzee.prerequisite)" id="{{_.kebabCase(q.yahtzee.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.yahtzee.icon}}"></i></span><em ng-show="isSolved(q.yahtzee)">({{q.yahtzee.display || mc.camelToTitle(q.yahtzee.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.yahtzee)">
+              <label>What did I roll?</label>
+              <select escape-ddslick ng-model="q.yahtzee.splitGuess.die1" class="form-control">
+                <option ng-repeat="die in _.range(1, 7)" value="{{die}}" ng-attr-data-imagesrc="{{&quot;http://dobbelsteen.virtuworld.net/img/&quot; + die + &quot;c.gif&quot;}}"></option>
+              </select>
+              <select escape-ddslick ng-model="q.yahtzee.splitGuess.die2" class="form-control">
+                <option ng-repeat="die in _.range(1, 7)" value="{{die}}" ng-attr-data-imagesrc="{{&quot;http://dobbelsteen.virtuworld.net/img/&quot; + die + &quot;c.gif&quot;}}"></option>
+              </select>
+              <button ng-click="submitGuessSpecial(q.yahtzee)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.yahtzee)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.yahtzee)" ng-class="{active: q.yahtzee.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.yahtzee)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.yahtzee.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.yahtzee.nextClue.lockIcon}}"></i></span>Code: {{q.yahtzee.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.scrabble.prerequisite)" id="{{_.kebabCase(q.scrabble.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.scrabble.icon}}"></i></span><em ng-show="isSolved(q.scrabble)">({{q.scrabble.display || mc.camelToTitle(q.scrabble.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.scrabble)">
+              <label class="sr-only">What SCRABBLE word did I spell?</label>
+              <input type="text" ng-model="q.scrabble.guess" placeholder="What SCRABBLE word did I spell?" class="form-control">
+              <button ng-click="submitGuess(q.scrabble)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.scrabble)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.scrabble)" ng-class="{active: q.scrabble.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.scrabble)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.scrabble.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.scrabble.nextClue.lockIcon}}"></i></span>Code: {{q.scrabble.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.battleship.prerequisite)" id="{{_.kebabCase(q.battleship.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.battleship.icon}}"></i></span><em ng-show="isSolved(q.battleship)">({{q.battleship.display || mc.camelToTitle(q.battleship.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.battleship)">
+              <table class="battleship">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th ng-repeat="col in q.battleship.columns">{{col}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="row in q.battleship.rows">
+                    <th>{{row.toUpperCase()}}</th>
+                    <td ng-repeat="col in q.battleship.columns" ng-class="{active: isCoordSelected(q.battleship, row + col)}" ng-click="toggleCoordSelect(q.battleship, row + col)"><i class="fa fa-circle"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button ng-click="submitGuessSpecial(q.battleship)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.battleship)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.battleship)" ng-class="{active: q.battleship.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.battleship)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.battleship.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.battleship.nextClue.lockIcon}}"></i></span>Code: {{q.battleship.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.clue.prerequisite)" id="{{_.kebabCase(q.clue.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.clue.icon}}"></i></span><em ng-show="isSolved(q.clue)">({{q.clue.display || mc.camelToTitle(q.clue.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.clue)">
+              <label>Who?</label>
+              <select ng-model="q.clue.splitGuess.who" ng-options="who as who for who in q.clue.suspects" class="form-control">
+                <option value="" disabled ng-if="!q.clue.splitGuess.who">Suspect...</option>
+              </select>
+              <label>With what?</label>
+              <select ng-model="q.clue.splitGuess.what" ng-options="what as what for what in q.clue.weapons" class="form-control">
+                <option value="" disabled ng-if="!q.clue.splitGuess.what">Weapon...</option>
+              </select>
+              <label>Where?</label>
+              <select ng-model="q.clue.splitGuess.where" ng-options="where as where for where in q.clue.rooms" class="form-control">
+                <option value="" disabled ng-if="!q.clue.splitGuess.where">Room...</option>
+              </select>
+              <button ng-click="submitGuessSpecial(q.clue)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.clue)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.clue)" ng-class="{active: q.clue.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.clue)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.clue.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.clue.nextClue.lockIcon}}"></i></span>Code: {{q.clue.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.guessWho.prerequisite)" id="{{_.kebabCase(q.guessWho.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.guessWho.icon}}"></i></span><em ng-show="isSolved(q.guessWho)">({{q.guessWho.display || mc.camelToTitle(q.guessWho.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.guessWho)">
+              <label class="sr-only">Guess Who?</label>
+              <input type="text" ng-model="q.guessWho.guess" placeholder="Guess Who?" class="form-control">
+              <button ng-click="submitGuess(q.guessWho)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.guessWho)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.guessWho)" ng-class="{active: q.guessWho.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.guessWho)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.guessWho.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.guessWho.nextClue.lockIcon}}"></i></span>Code: {{q.guessWho.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.chess.prerequisite)" id="{{_.kebabCase(q.chess.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.chess.icon}}"></i></span><em ng-show="isSolved(q.chess)">({{q.chess.display || mc.camelToTitle(q.chess.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.chess)">
+              <table class="chess">
+                <tbody>
+                  <tr ng-repeat="row in q.chess.rows">
+                    <th>{{row}}</th>
+                    <td ng-repeat="col in q.chess.columns" ng-class="{active: isCoordSelected(q.chess, col + row)}" ng-click="toggleCoordSelect(q.chess, col + row)"></td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th></th>
+                    <th ng-repeat="col in q.chess.columns">{{col}}</th>
+                  </tr>
+                </tfoot>
+              </table>
+              <button ng-click="submitGuessSpecial(q.chess)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.chess)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.chess)" ng-class="{active: q.chess.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.chess)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.chess.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.chess.nextClue.lockIcon}}"></i></span>Code: {{q.chess.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-md-6" ng-show="isSolved(q.crossword.prerequisite)" id="{{_.kebabCase(q.crossword.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.crossword.icon}}"></i></span><em ng-show="isSolved(q.crossword)">({{q.crossword.display || mc.camelToTitle(q.crossword.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.crossword)">
+              <label>What is the {{q.crossword.answers[0].length}}-character secret code in the crossword (#8 Down)?</label>
+              <input type="text" ng-model="q.crossword.guess" maxlength="{{q.crossword.answers[0].length}}" class="form-control">
+              <button ng-click="submitGuessSpecial(q.crossword)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.crossword)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.crossword)" ng-class="{active: q.crossword.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.crossword)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.crossword.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.crossword.nextClue.lockIcon}}"></i></span>Code: {{q.crossword.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.texasHoldEm.prerequisite)" id="{{_.kebabCase(q.texasHoldEm.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.texasHoldEm.icon}}"></i></span><em ng-show="isSolved(q.texasHoldEm)">({{q.texasHoldEm.display || mc.camelToTitle(q.texasHoldEm.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.texasHoldEm)">
+              <label>Who is the Big Winner?</label>
+              <div class="row">
+                <section class="col-xs-6">
+                  <input type="text" ng-model="q.texasHoldEm.splitGuess.word1" placeholder="First Name" class="form-control">
+                </section>
+                <section class="col-xs-6">
+                  <input type="text" ng-model="q.texasHoldEm.splitGuess.word2" placeholder="Last Name" class="form-control">
+                </section>
+              </div>
+              <button ng-click="submitGuessSpecial(q.texasHoldEm)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.texasHoldEm)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.texasHoldEm)" ng-class="{active: q.texasHoldEm.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.texasHoldEm)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.texasHoldEm.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.texasHoldEm.nextClue.lockIcon}}"></i></span>Code: {{q.texasHoldEm.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.connect4.prerequisite)" id="{{_.kebabCase(q.connect4.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.connect4.icon}}"></i></span><em ng-show="isSolved(q.connect4)">({{q.connect4.display || mc.camelToTitle(q.connect4.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.connect4)">
+              <label>Which column should Red choose?</label>
+              <button data-target=".connect4game" data-toggle="collapse" class="btn btn-warning"><span class="connect4game collapse in">Show game</span><span class="connect4game collapse hidecollapsing">Hide game</span></button>
+              <!--.btn-group.connect4
+              button.btn.btn-warning(ng-repeat='column in _.range(1, 8)',
+              	ng-class='{active: q.connect4.guess === column.toString()}',
+              	ng-click='toggleColumnSelect(q.connect4, column)') {{column}}
+              -->
+              <!--img.img-responsive(src='img/connect4.png' alt)-->
+              <iframe src="html/connect4.html" width="354px" height="354px" scrolling="no" class="connect4game collapse"></iframe>
+              <!--button.btn.btn-primary(ng-click='submitGuess(q.connect4)') #[i.fa.fa-lightbulb-o] Submit-->
+            </div>
+            <div ng-if="isSolved(q.connect4)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.connect4)" ng-class="{active: q.connect4.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.connect4)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.connect4.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.connect4.nextClue.lockIcon}}"></i></span>Code: {{q.connect4.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.fiveRoutes.prerequisite)" id="{{_.kebabCase(q.fiveRoutes.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.fiveRoutes.icon}}"></i></span><em ng-show="isSolved(q.fiveRoutes)">({{q.fiveRoutes.display || mc.camelToTitle(q.fiveRoutes.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.fiveRoutes)">
+              <label>Put the animals in order from the shortest route to the longest route</label>
+              <ul class="list-inline">
+                <li ng-repeat="oAnimal in q.fiveRoutes.orderedAnimals">
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <div class="panel-title">{{$index + 1}}</div>
+                    </div>
+                    <div class="panel-body"><img ng-src="{{&quot;img/five-routes-&quot; + oAnimal + &quot;.png&quot;}}" alt="{{oAnimal}}" class="invert-color"></div>
+                  </div>
+                </li>
+                <li ng-repeat="num in _.range(q.fiveRoutes.orderedAnimals.length, q.fiveRoutes.animals.length)">
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <div class="panel-title">{{num + 1}}</div>
+                    </div>
+                    <div class="panel-body"></div>
+                  </div>
+                </li>
+              </ul>
+              <div class="btn-group">
+                <button ng-repeat="animal in q.fiveRoutes.animals" ng-click="toggleAnimalSelect(q.fiveRoutes, animal)" ng-class="{active: _.includes(q.fiveRoutes.orderedAnimals, animal)}" class="btn btn-default"><img ng-src="{{&quot;img/five-routes-&quot; + animal + &quot;.png&quot;}}" alt="{{animal}}"></button>
+              </div>
+              <button ng-click="submitGuessSpecial(q.fiveRoutes)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.fiveRoutes)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.fiveRoutes)" ng-class="{active: q.fiveRoutes.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.fiveRoutes)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.fiveRoutes.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.fiveRoutes.nextClue.lockIcon}}"></i></span>Code: {{q.fiveRoutes.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.wordFind.prerequisite)" id="{{_.kebabCase(q.wordFind.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.wordFind.icon}}"></i></span><em ng-show="isSolved(q.wordFind)">({{q.wordFind.display || mc.camelToTitle(q.wordFind.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.wordFind)">
+              <h5>Answer the Word Find riddle below...</h5>
+              <label>"Not European":</label>
+              <div class="row">
+                <section class="col-xs-6">
+                  <input type="text" ng-model="q.wordFind.splitGuess.word1" maxlength="{{q.wordFind.answers[0].split(' ')[0].length}}" class="form-control">
+                </section>
+                <section class="col-xs-6">
+                  <input type="text" ng-model="q.wordFind.splitGuess.word2" maxlength="{{q.wordFind.answers[0].split(' ')[1].length}}" class="form-control">
+                </section>
+              </div>
+              <button ng-click="submitGuessSpecial(q.wordFind)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.wordFind)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.wordFind)" ng-class="{active: q.wordFind.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.wordFind)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.wordFind.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.wordFind.nextClue.lockIcon}}"></i></span>Code: {{q.wordFind.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+          <section class="col-sm-6 col-md-4" ng-show="isSolved(q.taboo.prerequisite)" id="{{_.kebabCase(q.taboo.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.taboo.icon}}"></i></span><em ng-show="isSolved(q.taboo)">({{q.taboo.display || mc.camelToTitle(q.taboo.name)}})</em>
+            </h4>
+            <div ng-if="!isSolved(q.taboo)">
+              <label class="sr-only">Which word is Taboo?</label>
+              <input type="text" ng-model="q.taboo.guess" placeholder="Which word is Taboo?" class="form-control">
+              <button ng-click="submitGuess(q.taboo)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.taboo)">
+              <h3><i class="fa fa-check"></i> SOLVED!</h3>
+              <button ng-click="toggleNextClue(q.taboo)" ng-class="{active: q.taboo.nextClue.visible}" class="btn btn-success"><i class="fa fa-search"></i> Next Clue</button>
+              <button ng-click="unsolve(q.taboo)" class="btn btn-danger"><i class="fa fa-exclamation-triangle"></i> Unsolve</button>
+              <div ng-show="q.taboo.nextClue.visible" class="well">
+                <p class="lead"><span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-circle text-white"></i><i class="fa fa-stack-1x fa-inverse fa-{{q.taboo.nextClue.lockIcon}}"></i></span>Code: {{q.taboo.nextClue.code}}</p>
+              </div>
+            </div>
+          </section>
+        </div>
+        <hr>
+        <div class="row">
+          <section class="col-xs-12" ng-show="isSolved(q.jigsaw.prerequisite)" id="{{_.kebabCase(q.jigsaw.name)}}">
+            <h4>Question<span class="fa-stack fa-2x"><i class="fa fa-stack-2x fa-square"></i><i class="fa fa-stack-1x text-white fa-{{q.jigsaw.icon}}"></i></span>
+            </h4>
+            <div ng-if="!isSolved(q.jigsaw)">
+              <label>Enter the 5-digit Numeric code to escape the room...</label>
+              <input type="text" ng-model="q.jigsaw.guess" placeholder="XXXXX" maxlength="5" class="numericKeypad form-control">
+              <button id="jigsawSubmit" ng-click="submitGuess(q.jigsaw)" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Submit</button>
+            </div>
+            <div ng-if="isSolved(q.jigsaw)">
+              <h3><i class="fa fa-check"></i> YOU WIN!  YOU'VE ESCAPED THE ROOM!</h3>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div><script src="inc/lib.js"></script><script src="inc/escape.js"></script>
+  </body>
+</html>
