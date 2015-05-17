@@ -35,7 +35,7 @@ html(ng-app='escapeApp')
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
 				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
-			#game(ng-show='activeTeam')
+			#game(ng-if='activeTeam')
 				h3 Team: {{activeTeam.name}}
 				.row
 					+col(null, 6, 4)(ng-show='isSolved(q.operation.prerequisite)' id='{{_.kebabCase(q.operation.name)}}')

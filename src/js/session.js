@@ -36,6 +36,31 @@ escapeApp.controller('SessionCtrl', [
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
+
+		$(function onReady() {
+			$('.numericKeypad').keypad({
+				separator: '|',
+				layout: [
+					'7|8|9',
+					'4|5|6',
+					'1|2|3',
+					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
+				],
+				showAnim: '',
+				clearText: 'X',
+				keypadClass: 'midnightKeypad',
+				keypadOnly: false,
+				onKeypress: function(key, value, inst) {
+					// play *beep
+					console.log('beep');
+
+					if (key == '#') {
+						$('.numericKeypad').keypad('close');
+						$('#jigsawSubmit').trigger('click');
+					}
+				}
+			});
+		});
 		var lockoutPeriod = 45;	//	seconds to lock people out
 
 		$interval(function everySecond() {
