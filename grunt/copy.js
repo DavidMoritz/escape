@@ -5,9 +5,9 @@ module.exports = function exportCopy(grunt) {
 				// copy all html pages
 				{
 					expand: true,
-					cwd: 'src/',
-					src: ['**/*.html'],
-					dest: '<%= distRoot %>'
+					cwd: 'src/html',
+					src: ['**'],
+					dest: '<%= distRoot %>/html'
 				},
 
 				// copy all bootstrap fonts

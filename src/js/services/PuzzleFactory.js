@@ -54,7 +54,7 @@ escapeApp.factory('PuzzleFactory', [
 				prerequisite: 'yahtzee',
 				icon: 'th-large',
 				guess: '',
-				answers: ['watermelon'],
+				answers: ['frustrate'],
 				attempts: [],
 				nextClue: {
 					lockIcon: 'birthday-cake',
