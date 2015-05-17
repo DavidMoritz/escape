@@ -168,13 +168,15 @@ html(ng-app='escapeApp')
 							em(ng-show='isSolved(q.connect4)') ({{q.connect4.display || mc.camelToTitle(q.connect4.name)}})
 						div(ng-if='!isSolved(q.connect4)')
 							label Which column should Red choose?
-							button.btn.btn-warning(data-target="#connect4game" data-toggle="collapse") Show game
+							button.btn.btn-warning(data-target=".connect4game" data-toggle="collapse")
+								span.connect4game.collapse.in Show game
+								span.connect4game.collapse.hidecollapsing Hide game
 							//.btn-group.connect4
 								button.btn.btn-warning(ng-repeat='column in _.range(1, 8)',
 									ng-class='{active: q.connect4.guess === column.toString()}',
 									ng-click='toggleColumnSelect(q.connect4, column)') {{column}}
 							//img.img-responsive(src='img/connect4.png' alt)
-							iframe#connect4game.collapse(src="html/connect4.html" width="354px" height="354px" scrolling="no")
+							iframe.connect4game.collapse(src="html/connect4.html" width="354px" height="354px" scrolling="no")
 							button.btn.btn-primary(ng-click='submitGuess(q.connect4)') #[i.fa.fa-lightbulb-o] Submit
 						+solvedSection('q.connect4')
 					+col(null, 6, 4)(ng-show='isSolved(q.fiveRoutes.prerequisite)' id='{{_.kebabCase(q.fiveRoutes.name)}}')
