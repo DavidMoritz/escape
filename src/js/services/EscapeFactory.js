@@ -9,6 +9,8 @@ escapeApp.factory('EscapeFactory', [
 		return {
 			initialTimeAllowed: 60 * 60,
 
+			defaultLockoutPeriod: 45,
+
 			getFB: function getFB(childPath) {
 				if (!FB) {
 					FB = new Firebase('https://escape.firebaseio.com/');
