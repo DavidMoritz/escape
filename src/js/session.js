@@ -6,6 +6,57 @@ escapeApp.controller('SessionCtrl', [
 	function SessionCtrl($s, $timeout, $interval, EF) {
 		'use strict';
 
+		function init() {
+			//	initKeypad
+			$('.numericKeypad').keypad({
+				separator: '|',
+				layout: [
+					'7|8|9',
+					'4|5|6',
+					'1|2|3',
+					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
+				],
+				showAnim: '',
+				clearText: 'X',
+				keypadClass: 'digitalKeypad',
+				onKeypress: function(key, value, inst) {
+					// play *beep
+					$s.q.jigsaw.guess = value;
+					console.log($s.q.jigsaw.guess);
+
+					if (key === '') {
+						$(this).keypad('hide');
+						$s.submitGuess($s.q.jigsaw);
+					}
+				},
+				beforeShow: function(div, inst) {
+					console.log(inst);
+					console.log(div);
+					$('<div>', {
+						class: 'numberEntry',
+						text: 'CODE'
+					}).prependTo(div);
+				}
+			});
+			$('.numericKeypadShow').click(function() {
+				$('.numericKeypad').keypad('show');
+			});
+			//	DDSlick - Dropdowns (selects) with images in them!
+			$('.ddslick').each(function eachSelect() {
+				$(this).ddslick({
+					onSelected: function onSelected(data) {
+						// console.log(data);
+						if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
+							$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
+						}
+						if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die2')) {
+							$s.q.yahtzee.splitGuess.die2 = data.selectedData.value;
+						}
+					}
+				});
+			});
+		}
+
 		function typeOutMessage() {
 			console.log('SESS> typeOutMessage() called');
 			$s.curMsg.display = '';
@@ -36,31 +87,6 @@ escapeApp.controller('SessionCtrl', [
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
-
-		$(function onReady() {
-			$('.numericKeypad').keypad({
-				separator: '|',
-				layout: [
-					'7|8|9',
-					'4|5|6',
-					'1|2|3',
-					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
-				],
-				showAnim: '',
-				clearText: 'X',
-				keypadClass: 'midnightKeypad',
-				keypadOnly: false,
-				onKeypress: function(key, value, inst) {
-					// play *beep
-					console.log('beep');
-
-					if (key == '#') {
-						$('.numericKeypad').keypad('close');
-						$('#jigsawSubmit').trigger('click');
-					}
-				}
-			});
-		});
 		var lockoutPeriod = 45;	//	seconds to lock people out
 
 		$interval(function everySecond() {
@@ -112,6 +138,7 @@ escapeApp.controller('SessionCtrl', [
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				console.log('SESS> afterTeamLoaded');
+				init();
 				if(firstLoad) {
 					bindMessaging();
 				}
@@ -236,60 +263,5 @@ escapeApp.controller('SessionCtrl', [
 				q.orderedAnimals.push(animal);
 			}
 		};
-
-		(function init() {
-			$(function onReady() {
-				//	initKeypad
-				$('.numericKeypad').keypad({
-					separator: '|',
-					layout: [
-						'7|8|9',
-						'4|5|6',
-						'1|2|3',
-						$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
-					],
-					showAnim: '',
-					clearText: 'X',
-					keypadClass: 'digitalKeypad',
-					onKeypress: function(key, value, inst) {
-						// play *beep
-						$s.q.jigsaw.guess = value;
-						console.log($s.q.jigsaw.guess);
-
-						if (key === '') {
-							$(this).keypad('hide');
-							$s.submitGuess($s.q.jigsaw);
-						}
-					},
-					beforeShow: function(div, inst) {
-						console.log(inst);
-						console.log(div);
-						$('<div>', {
-							class: 'numberEntry',
-							text: 'CODE'
-						}).prependTo(div);
-					}
-				});
-				$('.numericKeypadShow').click(function() {
-					$('.numericKeypad').keypad('show');
-				});
-				//	DDSlick - Dropdowns (selects) with images in them!
-				$('.ddslick').each(function eachSelect() {
-					$(this).ddslick({
-						onSelected: function onSelected(data) {
-							// console.log(data);
-							if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
-								$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
-							}
-							if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die2')) {
-								$s.q.yahtzee.splitGuess.die2 = data.selectedData.value;
-							}
-
-							$s.$apply();	//	alert the scope that it's been updated
-						}
-					});
-				});
-			});
-		})();
 	}
 ]);

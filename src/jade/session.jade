@@ -35,7 +35,7 @@ html(ng-app='escapeApp')
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
 				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
-			#game(ng-if='activeTeam')
+			#game(ng-show='activeTeam')
 				#lockout(ng-show='lockout.active')
 					h4 You are locked out for {{lockout.secondsRemaining}} seconds
 				#questions(ng-show='!lockout.active')
@@ -235,6 +235,7 @@ html(ng-app='escapeApp')
 							h4 Question
 								+squaredIcon('q.jigsaw.icon')
 							div(ng-if='!isSolved(q.jigsaw)')
+								label Enter the 5-digit Numeric code to escape the room...
 								button.btn.btn-warning.numericKeypadShow ESCAPE
 								input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' placeholder='XXXXX' maxlength='5' hidden)
 								//button.btn.btn-primary(ng-click='submitGuess(q.jigsaw)') #[i.fa.fa-lightbulb-o] Submit
