@@ -245,7 +245,9 @@ escapeApp.controller('SessionCtrl', [
 				console.log('SESS> connect4 is currently: ' + $s.q.connect4.guess);
 
 				if ($s.q.connect4.guess !== 'attempting') {
-					$s.submitGuess($s.q.connect4);
+					if ($s.activeTeam && !$s.isSolved($s.q.connect4)) {
+						$s.submitGuess($s.q.connect4);
+					}
 				}
 			});
 		});
