@@ -138,6 +138,7 @@ escapeApp.controller('SessionCtrl', [
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				console.log('SESS> afterTeamLoaded');
+				$s.$apply();
 				init();
 				if(firstLoad) {
 					bindMessaging();

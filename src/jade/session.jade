@@ -35,7 +35,7 @@ html(ng-app='escapeApp')
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
 				button.btn.btn-primary(ng-click='restartTimer()' ng-show='admin') Restart Timer
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
-			#game(ng-show='activeTeam')
+			#game(ng-if='activeTeam')
 				#lockout(ng-show='lockout.active')
 					h4 You are locked out for {{lockout.secondsRemaining}} seconds
 				#questions(ng-show='!lockout.active')
