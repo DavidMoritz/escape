@@ -27,7 +27,18 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 	font-family: @digital;
 	color: @mk-Class-name;
 }
-.midnightKeypad {
+.digitalKeypad {
+	font-family: @digital;
+	.numberEntry {
+		background-color: @gray-darker;
+		color: @mk-Class-name;
+		letter-spacing: 10px;
+		font-size: 2em;
+		text-align: center;
+		margin: 5px auto;
+		padding: 5px 0;
+		width: 90%;
+	}
 	&.keypad-popup {
 		background: @gray-light;
 	}
@@ -37,7 +48,6 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 		padding: 2px; 
 		background: @gray;
 		color: @mk-String;
-		font-family: @digital;
 		font-size: 1.5em;
 		margin: 3px;
 	} 

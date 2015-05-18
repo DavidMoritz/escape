@@ -212,48 +212,58 @@ escapeApp.controller('SessionCtrl', [
 			}
 		};
 
-		$timeout(function makeDropdownSlick() {
-			//	DDSlick - Dropdowns (selects) with images in them!
-			$('.ddslick').each(function eachSelect() {
-				$(this).ddslick({
-					onSelected: function onSelected(data) {
-						// console.log(data);
-						if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
-							$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
-						}
-						if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die2')) {
-							$s.q.yahtzee.splitGuess.die2 = data.selectedData.value;
-						}
+		(function init() {
+			$(function onReady() {
+				//	initKeypad
+				$('.numericKeypad').keypad({
+					separator: '|',
+					layout: [
+						'7|8|9',
+						'4|5|6',
+						'1|2|3',
+						$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
+					],
+					showAnim: '',
+					clearText: 'X',
+					keypadClass: 'digitalKeypad',
+					onKeypress: function(key, value, inst) {
+						// play *beep
+						$s.q.jigsaw.guess = value;
+						console.log($s.q.jigsaw.guess);
 
-						$s.$apply();	//	alert the scope that it's been updated
+						if (key === '') {
+							$(this).keypad('hide');
+							$s.submitGuess($s.q.jigsaw);
+						}
+					},
+					beforeShow: function(div, inst) {
+						console.log(inst);
+						console.log(div);
+						$('<div>', {
+							class: 'numberEntry',
+							text: 'CODE'
+						}).prependTo(div);
 					}
 				});
-			});
-		}, 1500);
+				$('.numericKeypadShow').click(function() {
+					$('.numericKeypad').keypad('show');
+				});
+				//	DDSlick - Dropdowns (selects) with images in them!
+				$('.ddslick').each(function eachSelect() {
+					$(this).ddslick({
+						onSelected: function onSelected(data) {
+							// console.log(data);
+							if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
+								$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
+							}
+							if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die2')) {
+								$s.q.yahtzee.splitGuess.die2 = data.selectedData.value;
+							}
 
-		(function init() {
-			//	initKeypad
-			$('.numericKeypad').keypad({
-				separator: '|',
-				layout: [
-					'7|8|9',
-					'4|5|6',
-					'1|2|3',
-					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
-				],
-				showAnim: '',
-				clearText: 'X',
-				keypadClass: 'midnightKeypad',
-				onKeypress: function(key, value, inst) {
-					// play *beep
-					$s.q.jigsaw.guess = value;
-					console.log($s.q.jigsaw.guess);
-
-					if (key === '') {
-						$('.numericKeypad').keypad('hide');
-						$s.submitGuess($s.q.jigsaw);
-					}
-				}
+							$s.$apply();	//	alert the scope that it's been updated
+						}
+					});
+				});
 			});
 		})();
 	}

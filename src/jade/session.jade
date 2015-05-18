@@ -233,8 +233,9 @@ html(ng-app='escapeApp')
 							+squaredIcon('q.jigsaw.icon')
 						div(ng-if='!isSolved(q.jigsaw)')
 							label Enter the 5-digit Numeric code to escape the room...
-							input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' placeholder='XXXXX' maxlength='5')
-							button.btn.btn-primary(ng-click='submitGuess(q.jigsaw)') #[i.fa.fa-lightbulb-o] Submit
+							button.btn.btn-warning.numericKeypadShow ESCAPE
+							input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' placeholder='XXXXX' maxlength='5' hidden)
+							//button.btn.btn-primary(ng-click='submitGuess(q.jigsaw)') #[i.fa.fa-lightbulb-o] Submit
 						div(ng-if='isSolved(q.jigsaw)')
 							h3 #[i.fa.fa-check] YOU WIN!  YOU'VE ESCAPED THE ROOM!
 							button.btn.btn-danger(ng-click='unsolve(q.jigsaw)') #[i.fa.fa-exclamation-triangle] Unsolve
