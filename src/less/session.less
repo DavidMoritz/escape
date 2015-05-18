@@ -18,6 +18,26 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 	font-family: messageFont;
 	src: url(../fonts/monospace.ttf);
 }
+.buttonList {
+	list-style-type: none;
+	list-style-position: inside;
+	padding-left: 0;
+	li {
+		float: left;
+		margin-left: 10px;
+		&.solved a {
+			color: @brand-info;
+		}
+		.tiny-icon {
+			position: absolute;
+			padding: 5px;
+			margin: 34px -23px;
+			color: @near-black;
+			background: @gray-lighter;
+			border-radius: 50%;
+		}
+	}
+}
 .hidecollapsing.collapsing {
 	display: none;
 }
@@ -88,7 +108,11 @@ h1.digital {
 		font-size: 200%;
 	}
 }
-
+.jumbotron {
+	button {
+		margin-right: 15px;
+	}
+}
 .choices ul {
 	list-style-type: none;
 
