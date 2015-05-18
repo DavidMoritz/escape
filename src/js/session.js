@@ -36,38 +36,21 @@ escapeApp.controller('SessionCtrl', [
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
-		$(function onReady() {
-			$('.numericKeypad').keypad({
-				separator: '|', 
-				layout: [
-					'7|8|9', 
-					'4|5|6', 
-					'1|2|3', 
-					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
-				],
-				showAnim: '',
-				clearText: 'X',
-				keypadClass: 'midnightKeypad',
-				keypadOnly: false,
-				onKeypress: function(key, value, inst) {
-					// play *beep
-					console.log('beep');
-
-					if (key === '') {
-						$('.numericKeypad').keypad('hide');
-						$('#jigsawSubmit').trigger('click');
-					}
-				}
-			});
-		});
+		var lockoutPeriod = 45;	//	seconds to lock people out
 
 		$interval(function everySecond() {
-			if ($s.activeTeam && $s.activeTeam.timerStarted) {
-				// convertTimer
-				var start = moment($s.activeTeam.timerStarted, timeFormat);
+			if ($s.activeTeam && $s.activeTeam.timerStarted) {				// convertTimer
+				var gameStart = moment($s.activeTeam.timerStarted);
 				var current = $s.activeTeam.finished ? moment($s.activeTeam.finished, timeFormat) : moment();
 
-				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(start, 'seconds');
+				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
+
+				//	check for lockout time
+				if ($s.lockout.active) {
+					var lockoutStart = moment($s.activeTeam.lockoutStarted);
+
+					$s.lockout.secondsRemaining = $s.activeTeam.lockoutPeriod - current.diff(lockoutStart, 'seconds');
+				}
 			} else {
 				$s.timeRemaining = 0;
 			}
@@ -83,7 +66,11 @@ escapeApp.controller('SessionCtrl', [
 			},
 			timeRemaining: 0,
 			solvedQuestions: [],
-			q: EF.questions
+			q: EF.questions,
+			lockout: {
+				active: false,
+				secondsRemaining: 0
+			}
 		});
 
 		$s.chooseTeam = function chooseTeam(teamId) {
@@ -108,12 +95,9 @@ escapeApp.controller('SessionCtrl', [
 
 		$s.submitGuess = function submitGuess(q) {
 			var lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
-					return ans.toLowerCase();
-				});
+				return ans.toLowerCase();
+			});
 
-			if (q.name == 'jigsaw') {
-				q.guess = $('[name=jigsaw]').val();
-			}
 			q.attempts.push({
 				guess: q.guess,
 				time: moment().format(timeFormat)
@@ -228,7 +212,8 @@ escapeApp.controller('SessionCtrl', [
 			}
 		};
 
-		$timeout(function makeDropdownSlick() {	//	selects with images
+		$timeout(function makeDropdownSlick() {
+			//	DDSlick - Dropdowns (selects) with images in them!
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({
 					onSelected: function onSelected(data) {
@@ -245,5 +230,31 @@ escapeApp.controller('SessionCtrl', [
 				});
 			});
 		}, 1500);
+
+		(function init() {
+			//	initKeypad
+			$('.numericKeypad').keypad({
+				separator: '|',
+				layout: [
+					'7|8|9',
+					'4|5|6',
+					'1|2|3',
+					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
+				],
+				showAnim: '',
+				clearText: 'X',
+				keypadClass: 'midnightKeypad',
+				onKeypress: function(key, value, inst) {
+					// play *beep
+					$s.q.jigsaw.guess = value;
+					console.log($s.q.jigsaw.guess);
+
+					if (key === '') {
+						$('.numericKeypad').keypad('hide');
+						$s.submitGuess($s.q.jigsaw);
+					}
+				}
+			});
+		})();
 	}
 ]);
