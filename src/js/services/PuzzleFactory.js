@@ -188,7 +188,7 @@ escapeApp.factory('PuzzleFactory', [
 				prerequisite: 'texasHoldEm',
 				icon: 'table',
 				guess: '',
-				answers: ['4'],
+				answers: ['Winner!'],
 				attempts: [],
 				nextClue: {
 					lockIcon: 'tree',

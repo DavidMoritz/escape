@@ -4,6 +4,8 @@
 <!-- #BeginEditable "doctitle" --> 
 <!-- FULL WINDOW 350px by 373px -->
 <title>Four In A Line</title>
+<script language="JavaScript" type="text/javascript" src="../inc/angular.js"></script>
+<script language="JavaScript" type="text/javascript" src="../inc/lib.js"></script>
 <script language="JavaScript" type="text/javascript">
 <!-- Begin
 // Note when upgrading template, remember to add onload="AutoStart();" to BODY statement
@@ -27,6 +29,8 @@ var bluScore = 0;
 var colcount = new Array(COLS);
 var globali = 0;
 var newMove = true;
+var FBobj = new Firebase("http://escape.firebaseio.com");
+var connect4obj = FBobj.child("connect4");
 
 var board = new Array(ROWS);
 for (var row = 0; row < ROWS; row++) {
@@ -172,6 +176,7 @@ function dropIt(whichCol, auto) {
 				//placeTop(whichRow);
 			}
 			if(auto == "player" && newMove) {
+				connect4obj.set("attempting");
 				if(whichCol == 3) newMove = "alert";
 				else newMove = false;
 			}
@@ -216,8 +221,8 @@ function switchTurns() {
 			//document.formo.texter.value = document.formo.redplayer.value + "'s turn.";
 		}
 	
-		if (whosTurn==RedNum && document.formo.redtype.value=="Computer") ComputersTurn(RedNum); 
-		if (whosTurn==BlkNum && document.formo.blktype.value=="Computer") ComputersTurn(BlkNum); 
+		if (whosTurn==RedNum && (document.formo.redtype.value=="Computer" || !newMove)) ComputersTurn(RedNum); 
+		if (whosTurn==BlkNum && (document.formo.blktype.value=="Computer" || !newMove)) ComputersTurn(BlkNum); 
 		
 		isdropping = 0;
 
@@ -481,7 +486,7 @@ function AutoStart() {
 function checkForWinner(player) {
 	if (newMove == "alert") {
 		newMove = false;
-		alert("Very Good! Now win the game!");
+		//alert("Very Good! Now win the game!");
 	}
 	if (gameActive == 1) {
 		var someOneWon;
@@ -525,11 +530,15 @@ function checkForWinner(player) {
 						unPlaceTop(col);
 					}
 					if (player == RedNum) {
-						alert("Congratulations!");
+						connect4obj.set("Winner!");
+						//alert("Congratulations!");
 						redScore += 1;
 					} else if (player == BlkNum) {
-						alert("You Lose. Try again after lockout");
-						location.reload();
+						connect4obj.set("Loser!");
+						//alert("You Lose. Try again after lockout");
+						setTimeout(function() {
+							location.reload();
+						}, 200);
 						bluScore += 1;
 					}
 					gameActive = 0;
@@ -559,8 +568,15 @@ function checkForWinner(player) {
 		}
 		
 		// NB these go here, coz the last animation frame calls "CheckForWinner" and then has to do these:
-		switchTurns();
-		isdropping = 0;
+		if(!newMove) {
+			setTimeout(function() {
+				switchTurns();
+				isdropping = 0;
+			},250);
+		} else {
+			switchTurns();
+			isdropping = 0;
+		}
 		//placeTop(1); // NB
 
 		//for (var col=0; col<COLS; col++) {
@@ -571,6 +587,7 @@ function checkForWinner(player) {
 }
 
 function setupPos() {
+	connect4obj.set("attempting");
 	//var posArray = [6, 5, 6, 6, 5, 2, 5, 5, 0, 0, 3, 0, 0, 2, 2, 2, 4];
 	var posArray = [3, 2, 4, 5, 5, 2, 0, 0, 5, 3, 6, 0, 6, 6, 2, 2, 0];
 	//document.formo.blktype.value = "Human"

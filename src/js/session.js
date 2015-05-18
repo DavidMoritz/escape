@@ -11,35 +11,42 @@ escapeApp.controller('SessionCtrl', [
 			$('.numericKeypad').keypad({
 				separator: '|',
 				layout: [
-					'7|8|9',
-					'4|5|6',
 					'1|2|3',
+					'4|5|6',
+					'7|8|9',
 					$.keypad.CLEAR + '|0|<i class="fa fa-level-down fa-rotate-90"></i>'
 				],
 				showAnim: '',
 				clearText: 'X',
 				keypadClass: 'digitalKeypad',
 				onKeypress: function(key, value, inst) {
+					var display = value;
 					// play *beep
+					for(var i = value.length; i < 5; i++) {
+						display += '-';
+					}
 					$s.q.jigsaw.guess = value;
-					console.log($s.q.jigsaw.guess);
+					$('.numberEntry').text(display);
 
 					if (key === '') {
-						$(this).keypad('hide');
+						$('#keypadModal').modal('hide');
 						$s.submitGuess($s.q.jigsaw);
 					}
 				},
 				beforeShow: function(div, inst) {
-					console.log(inst);
-					console.log(div);
 					$('<div>', {
 						class: 'numberEntry',
-						text: 'CODE'
+						text: '-----'
 					}).prependTo(div);
+					div.appendTo($('#keypadModal .modal-body'));
 				}
 			});
-			$('.numericKeypadShow').click(function() {
+			$('#keypadModal').on('shown.bs.modal', function() {
+				$(this).addClass('shown');
 				$('.numericKeypad').keypad('show');
+			}).on('hidden.bs.modal', function() {
+				$('.numberEntry').text('-----');
+				$s.q.jigsaw.guess = '';
 			});
 			//	DDSlick - Dropdowns (selects) with images in them!
 			$('.ddslick').each(function eachSelect() {
@@ -138,8 +145,7 @@ escapeApp.controller('SessionCtrl', [
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				console.log('SESS> afterTeamLoaded');
-				$s.$apply();
-				init();
+				$timeout(init, 0);
 				if(firstLoad) {
 					bindMessaging();
 				}
@@ -232,6 +238,14 @@ escapeApp.controller('SessionCtrl', [
 
 				if ($s.activeTeamId) {
 					$s.chooseTeam($s.activeTeamId);
+				}
+			});
+			EF.getFB('connect4').on('value', function attemptingConnect4(snap) {
+				$s.q.connect4.guess = snap.val();
+				console.log('SESS> connect4 is currently: ' + $s.q.connect4.guess);
+
+				if ($s.q.connect4.guess !== 'attempting') {
+					$s.submitGuess($s.q.connect4);
 				}
 			});
 		});

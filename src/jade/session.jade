@@ -23,6 +23,13 @@ html(ng-app='escapeApp')
 						p(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
 					.modal-footer
 						button.btn.btn-default(data-dismiss='modal') Close
+		#keypadModal.modal.fade
+			.modal-dialog.modal-sm
+				.modal-content
+					.modal-header
+					.modal-body
+					.modal-footer
+						//button.btn.btn-default(data-dismiss='modal') Cancel
 		.container
 			header.hide
 				h1 Control Panel - The Game Escape
@@ -67,10 +74,12 @@ html(ng-app='escapeApp')
 								em(ng-show='isSolved(q.yahtzee)') ({{q.yahtzee.display || mc.camelToTitle(q.yahtzee.name)}})
 							div(ng-if='!isSolved(q.yahtzee)')
 								label What did I roll?
+								span.clearfix
 								select.form-control(escape-ddslick ng-model='q.yahtzee.splitGuess.die1')
-									option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"http://dobbelsteen.virtuworld.net/img/" + die + "c.gif"}}')
+									option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"img/dice/" + die + "c.gif"}}')
 								select.form-control(escape-ddslick ng-model='q.yahtzee.splitGuess.die2')
-									option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"http://dobbelsteen.virtuworld.net/img/" + die + "c.gif"}}')
+									option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"img/dice/" + die + "c.gif"}}')
+								.clearfix
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.yahtzee)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.yahtzee')
 						+col(null, 6, 4)(ng-show='isSolved(q.scrabble.prerequisite)' id='{{_.kebabCase(q.scrabble.name)}}')
@@ -236,7 +245,7 @@ html(ng-app='escapeApp')
 								+squaredIcon('q.jigsaw.icon')
 							div(ng-if='!isSolved(q.jigsaw)')
 								label Enter the 5-digit Numeric code to escape the room...
-								button.btn.btn-warning.numericKeypadShow ESCAPE
+								button.btn.btn-warning.numericKeypadShow(data-toggle='modal' data-target='#keypadModal') ESCAPE
 								input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' placeholder='XXXXX' maxlength='5' hidden)
 								//button.btn.btn-primary(ng-click='submitGuess(q.jigsaw)') #[i.fa.fa-lightbulb-o] Submit
 							div(ng-if='isSolved(q.jigsaw)')
