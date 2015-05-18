@@ -53,8 +53,8 @@ escapeApp.controller('SessionCtrl', [
 					// play *beep
 					console.log('beep');
 
-					if (key == '#') {
-						$('.numericKeypad').keypad('close');
+					if (key === '') {
+						$('.numericKeypad').keypad('hide');
 						$('#jigsawSubmit').trigger('click');
 					}
 				}
@@ -107,12 +107,13 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.submitGuess = function submitGuess(q) {
-			var $el = $('[name=' + q.name + ']'),
-				lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
+			var lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
 					return ans.toLowerCase();
 				});
 
-			q.guess = q.guess || $el.val();
+			if (q.name == 'jigsaw') {
+				q.guess = $('[name=jigsaw]').val();
+			}
 			q.attempts.push({
 				guess: q.guess,
 				time: moment().format(timeFormat)
