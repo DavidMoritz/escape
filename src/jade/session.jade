@@ -43,6 +43,9 @@ html(ng-app='escapeApp')
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
 				button.btn.btn-warning(data-toggle='modal' data-target='#keypadModal' ng-show='activeTeam') ESCAPE
+			.alert.alert-success(role='alert' ng-show='gauge < 0') Doing well! You are on track to getting out with time to spare!
+			.alert.alert-warning(role='alert' ng-show='gauge >= 0 && gauge < 0.1') You might want to step it up, time is not your friend.
+			.alert.alert-danger(role='alert' ng-show='gauge >= 0.1') Yikes! Use a hint or something! You are way behind schedule!
 			#game(ng-if='activeTeam' role='tabpanel')
 				#lockout(ng-show='lockout.active')
 					h4 You are locked out for {{lockout.secondsRemaining}} seconds

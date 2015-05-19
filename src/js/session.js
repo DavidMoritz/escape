@@ -79,6 +79,26 @@ escapeApp.controller('SessionCtrl', [
 			}, 40);
 		}
 
+		function getTotalPoints() {
+			return _.reduce(EF.questions, function(result, q) {
+				return result + q.points;
+			}, 0);
+		}
+
+		function getSolvedPoints() {
+			return _.reduce($s.q, function(result, q) {
+				return $s.isSolved(q) ? result + q.points : result;
+			}, 0);
+		}
+
+		function getGauge() {
+			var percentageTimeUsed = ($s.activeTeam.timeAllowed - $s.timeRemaining - EF.bufferTime) / $s.activeTeam.timeAllowed;
+			var solvedPoints = getSolvedPoints();
+			var solvedPercentage = solvedPoints / $s.totalPoints;
+
+			return (percentageTimeUsed - solvedPercentage).toFixed(2);
+		}
+
 		function bindMessaging() {
 			$s.$watch('activeTeam.storedMessages', function onNewMessages(messages) {
 				if(messages) {
@@ -97,7 +117,8 @@ escapeApp.controller('SessionCtrl', [
 		var lockoutPeriod = 45;	//	seconds to lock people out
 
 		$interval(function everySecond() {
-			if ($s.activeTeam && $s.activeTeam.timerStarted) {				// convertTimer
+			if ($s.activeTeam && $s.activeTeam.timerStarted) {
+				// convertTimer
 				var gameStart = moment($s.activeTeam.timerStarted);
 				var current = $s.activeTeam.finished ? moment($s.activeTeam.finished, timeFormat) : moment();
 
@@ -109,6 +130,8 @@ escapeApp.controller('SessionCtrl', [
 
 					$s.lockout.secondsRemaining = $s.activeTeam.lockoutPeriod - current.diff(lockoutStart, 'seconds');
 				}
+
+				$s.gauge = getGauge();
 			} else {
 				$s.timeRemaining = 0;
 			}
@@ -125,6 +148,7 @@ escapeApp.controller('SessionCtrl', [
 			timeRemaining: 0,
 			solvedQuestions: [],
 			q: EF.questions,
+			totalPoints: getTotalPoints(),
 			lockout: {
 				active: false,
 				secondsRemaining: 0

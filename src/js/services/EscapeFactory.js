@@ -9,6 +9,8 @@ escapeApp.factory('EscapeFactory', [
 		return {
 			initialTimeAllowed: 60 * 60,
 
+			bufferTime: 60 * 5,
+
 			defaultLockoutPeriod: 45,
 
 			getFB: function getFB(childPath) {

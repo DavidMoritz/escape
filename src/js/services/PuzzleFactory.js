@@ -9,11 +9,12 @@ escapeApp.factory('PuzzleFactory', [
 				guess: '',
 				answers: ['risky'],
 				attempts: [],
+				points: 3,
 				nextClue: {
 					lockIcon: 'anchor',
 					code: '__-__-__',
 					visible: true
-				}
+				},
 			},
 			monopoly: {
 				name: 'monopoly',
@@ -26,6 +27,7 @@ escapeApp.factory('PuzzleFactory', [
 				},
 				answers: ['Illinois10'],
 				attempts: [],
+				points: 4,
 				nextClue: {
 					lockIcon: 'bomb',
 					code: '__-__-__',
@@ -43,6 +45,7 @@ escapeApp.factory('PuzzleFactory', [
 				},
 				answers: ['5&5'],
 				attempts: [],
+				points: 5,
 				nextClue: {
 					lockIcon: 'university',
 					code: '__-__-__',
@@ -56,6 +59,7 @@ escapeApp.factory('PuzzleFactory', [
 				guess: '',
 				answers: ['frustrate'],
 				attempts: [],
+				points: 5,
 				nextClue: {
 					lockIcon: 'birthday-cake',
 					code: '__-__-__',
@@ -71,6 +75,7 @@ escapeApp.factory('PuzzleFactory', [
 				rows: 'abcdefghij'.split(''),
 				answers: ['b2&d2'],
 				attempts: [],
+				points: 4,
 				nextClue: {
 					lockIcon: 'gavel',
 					code: '__-__-__',
@@ -116,6 +121,7 @@ escapeApp.factory('PuzzleFactory', [
 				],
 				answers: ['Colonel Mustard&Wrench&Lounge'],
 				attempts: [],
+				points: 1,
 				nextClue: {
 					lockIcon: 'globe',
 					code: '__-__-__',
@@ -130,6 +136,7 @@ escapeApp.factory('PuzzleFactory', [
 				guess: '',
 				answers: ['alex'],
 				attempts: [],
+				points: 1,
 				nextClue: {
 					lockIcon: 'scissors',
 					code: '__-__-__',
@@ -146,6 +153,7 @@ escapeApp.factory('PuzzleFactory', [
 				rows: _.range(1, 9),
 				answers: ['h4'],
 				attempts: [],
+				points: 2,
 				nextClue: {
 					lockIcon: 'diamond',
 					code: '__-__-__',
@@ -159,6 +167,7 @@ escapeApp.factory('PuzzleFactory', [
 				guess: '',
 				answers: ['drmcnordtsieooluon'],
 				attempts: [],
+				points: 4,
 				nextClue: {
 					lockIcon: 'rocket',
 					code: '__-__-__',
@@ -176,6 +185,7 @@ escapeApp.factory('PuzzleFactory', [
 				},
 				answers: ['Daniel Craig', 'Craig Daniel'],
 				attempts: [],
+				points: 5,
 				nextClue: {
 					lockIcon: 'tachometer',
 					code: '__-__-__',
@@ -190,6 +200,7 @@ escapeApp.factory('PuzzleFactory', [
 				guess: '',
 				answers: ['Winner!'],
 				attempts: [],
+				points: 3,
 				nextClue: {
 					lockIcon: 'tree',
 					code: '__-__-__',
@@ -211,6 +222,7 @@ escapeApp.factory('PuzzleFactory', [
 				guess: '',
 				answers: ['elephant-lion-zebra-gorilla-giraffe'],
 				attempts: [],
+				points: 4,
 				nextClue: {
 					lockIcon: 'motorcycle',
 					code: '__-__-__',
@@ -228,6 +240,7 @@ escapeApp.factory('PuzzleFactory', [
 				},
 				answers: ['milton bradley'],
 				attempts: [],
+				points: 5,
 				nextClue: {
 					lockIcon: 'paw',
 					code: '__-__-__',
@@ -241,6 +254,7 @@ escapeApp.factory('PuzzleFactory', [
 				guess: '',
 				answers: ['fly'],
 				attempts: [],
+				points: 3,
 				nextClue: {
 					lockIcon: 'ticket',
 					code: '__-__-__',
@@ -252,7 +266,8 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'puzzle-piece',
 				guess: '',
 				answers: ['12345'],
-				attempts: []
+				attempts: [],
+				points: 8
 			}
 		};
 	}
