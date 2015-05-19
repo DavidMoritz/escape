@@ -124,12 +124,7 @@ escapeApp.controller('SessionCtrl', [
 
 				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
 
-				//	check for lockout time
-				if ($s.lockout.active) {
-					var lockoutStart = moment($s.activeTeam.lockoutStarted);
-
-					$s.lockout.secondsRemaining = $s.activeTeam.lockoutPeriod - current.diff(lockoutStart, 'seconds');
-				}
+				$s.updateLockoutTimeRemaining();
 
 				$s.gauge = getGauge();
 			} else {
@@ -148,12 +143,34 @@ escapeApp.controller('SessionCtrl', [
 			timeRemaining: 0,
 			solvedQuestions: [],
 			q: EF.questions,
+<<<<<<< HEAD
 			totalPoints: getTotalPoints(),
 			lockout: {
 				active: false,
 				secondsRemaining: 0
 			}
+=======
+			lockoutTimeRemaining: 0
+>>>>>>> 7e73f5e3a4defdf781408bfd824b851a6950f3bc
 		});
+
+		$s.endLockout = function endLockout() {
+			$s.activeTeam.lockoutStarted = null;
+		};
+
+		$s.updateLockoutTimeRemaining = function updateLockoutTimeRemaining() {
+			var secondsRemaining = 0;
+			if ($s.activeTeam.lockoutStarted) {
+				var lockoutStart = moment($s.activeTeam.lockoutStarted);
+
+				secondsRemaining = $s.activeTeam.lockoutPeriod - moment().diff(lockoutStart, 'seconds');
+				if (secondsRemaining <= 0) {
+					$s.endLockout();
+				}
+			}
+
+			$s.lockoutTimeRemaining = secondsRemaining;
+		};
 
 		$s.chooseTeam = function chooseTeam(teamId) {
 			console.log('SESS> choosing Team: ' + teamId);
@@ -252,6 +269,11 @@ escapeApp.controller('SessionCtrl', [
 
 		$s.toggleNextClue = function toggleNextClue(q) {
 			q.nextClue.visible = !q.nextClue.visible;
+		};
+
+		$s.startLockout = function startLockout() {
+			console.log('started lockout');
+			$s.activeTeam.lockoutStarted = moment().format(timeFormat);
 		};
 
 		$s.allTeams = EF.getFBArray('teams');
