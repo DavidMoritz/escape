@@ -41,12 +41,14 @@ html(ng-app='escapeApp')
 					span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
-				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') Show All Messages
-				button.btn.btn-warning(data-toggle='modal' data-target='#keypadModal' ng-show='activeTeam') ESCAPE
+				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') #[i.fa.fa-comments-o] Show All Messages
+				button.btn.btn-warning(data-toggle='modal' data-target='#keypadModal' ng-show='activeTeam') #[i.fa.fa-sign-out] ESCAPE
+				button.btn.btn-danger(data-toggle='modal' ng-click='startLockout()' ng-show='activeTeam') #[i.fa.fa-lock] Lock Me Out
 			#game(ng-if='activeTeam' role='tabpanel')
-				#lockout(ng-show='lockout.active')
-					h4 You are locked out for {{lockout.secondsRemaining}} seconds
-				#questions(ng-show='!lockout.active')
+				#lockout(ng-show='activeTeam.lockoutStarted')
+					h4 You are locked out for {{lockoutTimeRemaining}} seconds
+					button.btn.btn-danger(ng-click='endLockout()') #[i.fa.fa-unlock] End Lockout Early
+				#questions(ng-show='!activeTeam.lockoutStarted')
 					h3 Team: {{activeTeam.name}}
 					ul.buttonList
 						li(ng-repeat='(id, obj) in q' ng-show='isSolved(obj.prerequisite) && id !== "jigsaw"' class='{{isSolved(id) ? "solved" : "unsolved"}}')
