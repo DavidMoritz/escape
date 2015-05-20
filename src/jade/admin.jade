@@ -36,7 +36,7 @@ html(ng-app='escapeApp')
 					h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
 					h5 Clues: {{activeTeam.clues}}
 					h5 Time Allowed: {{activeTeam.timeAllowed / 60}} minutes
-				+col(null, 3)(ng-show='activeTeam')
+				+col(null, 3)
 					#performanceGauge(just-gage style="width:85%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 				+col(null, 6).controls
 					h3 Controls:
