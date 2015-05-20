@@ -30,7 +30,7 @@ html(ng-app='escapeApp')
 			form(ng-if='activeTeam' ng-submit='addNewMessage()')
 				input.form-control.addMessageInput(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}')
 				input.form-control(type='submit' ng-disabled='!formFields.newMessage' value='Add Message')
-			just-gage#test1.someClass(hide-title="true" min="-0.2" max="0.3" value="0" hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray" show-inner-shadow="true" shadow-opacity="0.5" shadow-size="3" shadow-vertical-offset="10")
+			#performanceGauge(just-gage style="width:33%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 			.row
 				+col(null, 6)(ng-show='activeTeam')
 					h3 Team: {{activeTeam.name}}
@@ -42,6 +42,8 @@ html(ng-app='escapeApp')
 					button.btn.btn-primary.collapse.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") {{activeTeam ? "Change Teams" : "Choose Team"}}
 					button.btn.btn-success(ng-click='restartTimer()' ng-show='activeTeam && !activeTeam.timerStarted') Start Game
 					button.btn.btn-warning(ng-click='restartTimer()' ng-show='activeTeam && activeTeam.timerStarted') Restart Timer
+					button.btn.btn-danger(ng-click='startLockout()' ng-show='activeTeam && !activeTeam.lockoutStarted') Lockout
+					button.btn.btn-info(ng-click='endLockout()' ng-show='activeTeam && activeTeam.lockoutStarted') End Lockout
 					button.btn.btn-success(ng-click='finishGame()' ng-show='activeTeam && activeTeam.timerStarted && !activeTeam.finish') Finish
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles

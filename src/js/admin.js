@@ -1,9 +1,16 @@
 escapeApp.controller('AdminCtrl', [
 	'$scope',
 	'$timeout',
-	'EscapeFactory', 
+	'$interval',
+	'EscapeFactory',
 	function AdminCtrl($s, $timeout, EF) {
 		'use strict';
+
+		function getTotalPoints() {
+			return _.reduce(EF.questions, function(result, q) {
+				return result + q.points;
+			}, 0);
+		}
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
@@ -18,8 +25,19 @@ escapeApp.controller('AdminCtrl', [
 				newMessage: ''
 			},
 			teamId: null,
-			timeRemaining: 0
+			totalPoints: getTotalPoints()
 		});
+
+		$interval(function everySecond() {
+			if ($s.activeTeam && !$s.activeTeam.finished) {
+				// gauge
+				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
+				var percentageTimeUsed = (moment().diff(gameStart, 'seconds') - EF.bufferTime) / $s.activeTeam.timeAllowed;
+				var solvedPercentage = $s.activeTeam.solvedPoints / $s.totalPoints;
+
+				$s.gauge = (percentageTimeUsed - solvedPercentage).toFixed(4);
+			}
+		}, 1000);
 
 		$s.chooseTeam = function chooseTeam(teamId) {
 			console.log('ADMIN> chooseTeam id: ' + teamId);
@@ -36,16 +54,25 @@ escapeApp.controller('AdminCtrl', [
 			});
 		};
 
+		$s.startLockout = function startLockout() {
+			console.log('ADMIN> started lockout');
+			$s.activeTeam.lockoutStarted = moment().format(timeFormat);
+		};
+
+		$s.endLockout = function endLockout() {
+			console.log('ADMIN> ended lockout');
+			$s.activeTeam.lockoutStarted = null;
+		};
+
 		$s.restartTimer = function restartTimer() {
 			if(confirm('Are you sure?')) {
-				$s.timeRemaining = EF.initialTimeAllowed;
 				$s.activeTeam.timerStarted = moment().format(timeFormat);
 				$s.addNewMessage('Timer started');
 			}
 		};
 
 		$s.finishGame = function finishGame() {
-			if(confirm('Finish Game?')) {
+			if(override || confirm('Finish Game?')) {
 				$s.activeTeam.finished = moment().format(timeFormat);
 				$s.addNewMessage('Congratulations!');
 			}

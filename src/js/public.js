@@ -39,6 +39,7 @@ escapeApp.controller('EscapeCtrl', [
 					break;
 			}
 			$s.public.timeRemaining -= 1;
+			$s.gauge = Math.random() * (0.3 + 0.2) - 0.2;
 		}, 1000);
 
 		//	initialize scoped variables
