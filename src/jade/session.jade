@@ -35,6 +35,8 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
+				just-gage#test1.someClass(hide-title="true" min="-0.2" max="0.3" value="gauge" hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray" show-inner-shadow="true" shadow-opacity="0.5" shadow-size="3" shadow-vertical-offset="10")
+			
 				h1.digital
 					span(ng-hide='activeTeam') Loading
 						i.fa.fa-spinner.fa-pulse
