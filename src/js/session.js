@@ -143,15 +143,8 @@ escapeApp.controller('SessionCtrl', [
 			timeRemaining: 0,
 			solvedQuestions: [],
 			q: EF.questions,
-<<<<<<< HEAD
 			totalPoints: getTotalPoints(),
-			lockout: {
-				active: false,
-				secondsRemaining: 0
-			}
-=======
 			lockoutTimeRemaining: 0
->>>>>>> 7e73f5e3a4defdf781408bfd824b851a6950f3bc
 		});
 
 		$s.endLockout = function endLockout() {

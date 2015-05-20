@@ -1,4 +1,4 @@
-var escapeApp = angular.module('escapeApp', ['firebase']);
+var escapeApp = angular.module('escapeApp', ['firebase', 'ngJustGage']);
 
 escapeApp.run(function runWithDependencies($rootScope) {
 	$rootScope._ = _;

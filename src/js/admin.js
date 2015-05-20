@@ -1,7 +1,7 @@
 escapeApp.controller('AdminCtrl', [
 	'$scope',
 	'$timeout',
-	'EscapeFactory',
+	'EscapeFactory', 
 	function AdminCtrl($s, $timeout, EF) {
 		'use strict';
 

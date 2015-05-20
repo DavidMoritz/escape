@@ -11,6 +11,11 @@
     "firebase": "latest",
     "angularfire": "latest",
     "moment": "latest",
-    "keypad": "https://github.com/kbwood/keypad.git"
+    "keypad": "https://github.com/kbwood/keypad.git",
+    "angular-justgage": "latest"
+  },
+  "resolutions": {
+    "raphael": "~2.1.2",
+    "angular": "1.3.x || 1.4.x"
   }
 }
