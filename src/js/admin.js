@@ -3,7 +3,7 @@ escapeApp.controller('AdminCtrl', [
 	'$timeout',
 	'$interval',
 	'EscapeFactory',
-	function AdminCtrl($s, $timeout, EF) {
+	function AdminCtrl($s, $timeout, $interval, EF) {
 		'use strict';
 
 		function getTotalPoints() {
@@ -51,6 +51,7 @@ escapeApp.controller('AdminCtrl', [
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function atThen() {
 				EF.setFB('activeTeamId', teamId);
+				$s.activeTeam.solvedPoints = $s.activeTeam.solvedPoints || 0;
 			});
 		};
 
@@ -72,7 +73,7 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.finishGame = function finishGame() {
-			if(override || confirm('Finish Game?')) {
+			if(confirm('Finish Game?')) {
 				$s.activeTeam.finished = moment().format(timeFormat);
 				$s.addNewMessage('Congratulations!');
 			}
