@@ -55,7 +55,7 @@ escapeApp.controller('AdminCtrl', [
 			});
 		};
 
-		$s.setTime = function setTime(attribute, message, question) {
+		$s.setTime = function setTime(attribute, question, message) {
 			if(question && !confirm(question)) {
 				return;
 			}
