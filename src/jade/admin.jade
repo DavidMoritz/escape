@@ -53,5 +53,6 @@ html(ng-app='escapeApp')
 					button.btn.btn-danger(ng-click='setTime("lockoutStarted")' ng-show='activeTeam && !activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
 					button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam && activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
 					button.btn.btn-success(ng-click='setTime("finished", "Finish Game?", "Congratulations!")' ng-show='activeTeam && activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+					button.btn.btn-danger(ng-click='toggleAlertTeam()' ng-show='activeTeam') #[i.fa.fa-bullhorn] {{activeTeam.alert ? 'Stop Alert' : 'Alert Team'}}
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles

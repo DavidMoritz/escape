@@ -55,8 +55,8 @@ escapeApp.controller('AdminCtrl', [
 			});
 		};
 
-		$s.setTime = function setTime(attribute, question, message) {
-			if(question && !confirm(question)) {
+		$s.setTime = function setTime(attribute, confirmQuestion, message) {
+			if(confirmQuestion && !confirm(confirmQuestion)) {
 				return;
 			}
 			console.log('ADMIN> set time for ' + attribute);
@@ -131,5 +131,15 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.allTeams = EF.getFBArray('teams');
+
+		$s.toggleAlertTeam = function toggleAlertTeam() {
+			if ($s.activeTeam) {
+				$s.activeTeam.alert = !$s.activeTeam.alert;
+
+				$timeout(function turnAlertOffAutomatically() {
+					$s.remove('alert');
+				}, 3 * 1000);
+			}
+		};
 	}
 ]);

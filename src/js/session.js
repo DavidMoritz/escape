@@ -105,6 +105,13 @@ escapeApp.controller('SessionCtrl', [
 				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
 
 				$s.updateLockoutTimeRemaining();
+
+				if ($s.activeTeam.alert) {
+					$('.jumbotron').addClass('alert-team');
+					$timeout(function removeAlert() {
+						$('.jumbotron').removeClass('alert-team');
+					}, 500);
+				}
 			} else {
 				$s.timeRemaining = 0;
 			}
