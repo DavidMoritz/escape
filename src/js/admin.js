@@ -28,6 +28,8 @@ escapeApp.controller('AdminCtrl', [
 			totalPoints: getTotalPoints()
 		});
 
+		$s.allTeams = EF.getFBArray('teams');
+
 		$interval(function everySecond() {
 			if ($s.activeTeam && !$s.activeTeam.finished) {
 				// gauge
@@ -40,11 +42,11 @@ escapeApp.controller('AdminCtrl', [
 		}, 1000);
 
 		$s.chooseTeam = function chooseTeam(teamId) {
-			console.log('ADMIN> chooseTeam id: ' + teamId);
+			//console.log('ADMIN> chooseTeam id: ' + teamId);
 
 			if (activeTeamFBObj) {
 				activeTeamFBObj.$destroy();
-				console.log('ADMIN> activeTeam is destroyed');
+				//console.log('ADMIN> activeTeam is destroyed');
 			}
 
 			//	activate the chosen team
@@ -53,17 +55,6 @@ escapeApp.controller('AdminCtrl', [
 				EF.setFB('activeTeamId', teamId);
 				$s.activeTeam.solvedPoints = $s.activeTeam.solvedPoints || 0;
 			});
-		};
-
-		$s.setTime = function setTime(attribute, confirmQuestion, message) {
-			if(confirmQuestion && !confirm(confirmQuestion)) {
-				return;
-			}
-			console.log('ADMIN> set time for ' + attribute);
-			$s.activeTeam[attribute] = moment().format(timeFormat);
-			if(message) {
-				$s.addNewMessage(message);
-			}
 		};
 
 		$s.addNewMessage = function addNewMessage(message) {
@@ -89,7 +80,7 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.createTeam = function createTeam() {
-			console.log('ADMIN> createTeam() called');
+			//console.log('ADMIN> createTeam() called');
 			var teams = EF.getFBArray('teams');
 			teams.$loaded().then(function teamsLoaded() {
 				var currentTime = moment().format(timeFormat);
@@ -104,7 +95,7 @@ escapeApp.controller('AdminCtrl', [
 					lockoutStartTime: null,
 					status: 0
 				}).then(function(newTeam) {
-					console.log('new team created with id: ' + newTeam.key());
+					//console.log('new team created with id: ' + newTeam.key());
 
 					newTeam.child('storedMessages').push({
 						time: currentTime,
@@ -116,13 +107,39 @@ escapeApp.controller('AdminCtrl', [
 			});
 		};
 
-		$s.adjust = function adjust(attribute, amount) {
-			console.log('ADMIN> ' + attribute + ' adjusted by ' + amount);
+		$s.setAttribute = function setAttribute(attribute, options) {
+			if((options.confirm && !confirm(options.confirm)) || !$s.activeTeam) {
+				return;
+			}
+			//console.log('ADMIN> set time for ' + attribute);
+			if(options.toggle) {
+				$s.activeTeam[attribute] = !$s.activeTeam[attribute];
+			} else {
+				$s.activeTeam[attribute] = options.time ? moment().format(timeFormat) : true;
+			}
+
+			if(options.message) {
+				$s.addNewMessage(options.message);
+			}
+
+			if(options.seconds) {
+				$timeout(function turnAlertOffAutomatically() {
+					$s.remove(attribute);
+				}, options.seconds * 1000);
+			}
+
+			if(options.alert) {
+				alert(options.alert);
+			}
+		};
+
+		$s.adjustAttribute = function adjustAttribute(attribute, amount) {
+			//console.log('ADMIN> ' + attribute + ' adjusted by ' + amount);
 			$s.activeTeam[attribute] += amount;
 		};
 
 		$s.remove = function remove(attribute) {
-			console.log('ADMIN> ' + attribute + ' removed');
+			//console.log('ADMIN> ' + attribute + ' removed');
 			$s.activeTeam[attribute] = null;
 		};
 
@@ -130,16 +147,8 @@ escapeApp.controller('AdminCtrl', [
 			return _.where($s.allTeams, {finished: false});
 		};
 
-		$s.allTeams = EF.getFBArray('teams');
-
-		$s.toggleAlertTeam = function toggleAlertTeam() {
-			if ($s.activeTeam) {
-				$s.activeTeam.alert = !$s.activeTeam.alert;
-
-				$timeout(function turnAlertOffAutomatically() {
-					$s.remove('alert');
-				}, 3 * 1000);
-			}
-		};
+		$s.allTeams.$loaded(function afterTeamsLoaded() {
+			$s.chooseTeam(EF.getFB('activeTeamId'));
+		});
 	}
 ]);

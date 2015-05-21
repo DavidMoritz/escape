@@ -39,20 +39,21 @@ html(ng-app='escapeApp')
 					h3 Team: {{activeTeam.name}}
 					h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
 					h5 Hints: {{activeTeam.hints}}
-						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjust("hints", 1)')
-						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjust("hints", -1)')
+						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("hints", 1)')
+						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("hints", -1)')
 					h5 Time Allowed: {{activeTeam.timeAllowed / 60}} minutes
-						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjust("timeAllowed", 60)')
-						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjust("timeAllowed", -60)')
+						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", 60)')
+						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", -60)')
 				+col(null, 3)
 					#performanceGauge(just-gage style="width:85%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 				+col(null, 6).controls
 					h3 Controls:
 					button.btn.btn-primary.collapse.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] {{activeTeam ? "Change Teams" : "Choose Team"}}
-					button.btn(class='{{activeTeam.timerStarted ? "btn-warning" : "btn-success"}}' ng-click='setTime("timerStarted", "Are you sure?", "Timer started")' ng-show='activeTeam') #[i.fa.fa-clock-o] {{activeTeam.timerStarted ? "Restart Timer" : "Start Game"}}
-					button.btn.btn-danger(ng-click='setTime("lockoutStarted")' ng-show='activeTeam && !activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
-					button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam && activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
-					button.btn.btn-success(ng-click='setTime("finished", "Finish Game?", "Congratulations!")' ng-show='activeTeam && activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
-					button.btn.btn-danger(ng-click='toggleAlertTeam()' ng-show='activeTeam') #[i.fa.fa-bullhorn] {{activeTeam.alert ? 'Stop Alert' : 'Alert Team'}}
+					span(ng-show='activeTeam')
+						button.btn(class='{{activeTeam.timerStarted ? "btn-warning" : "btn-success"}}' ng-click='setAttribute("timerStarted", {confirm: "Are you sure?", message: "Timer started"})') #[i.fa.fa-clock-o] {{activeTeam.timerStarted ? "Restart Timer" : "Start Game"}}
+						button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
+						button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
+						button.btn.btn-success(ng-click='setAttribute("finished", {confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+						button.btn.btn-danger(ng-click='setAttribute("alert", {toggle: true, seconds: 3})') #[i.fa.fa-bullhorn] {{activeTeam.alert ? 'Stop Alert' : 'Alert Team'}}
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles

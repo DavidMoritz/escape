@@ -52,7 +52,7 @@ escapeApp.controller('SessionCtrl', [
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({
 					onSelected: function onSelected(data) {
-						// console.log(data);
+						// //console.log(data);
 						if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
 							$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
 						}
@@ -65,7 +65,7 @@ escapeApp.controller('SessionCtrl', [
 		}
 
 		function typeOutMessage() {
-			console.log('SESS> typeOutMessage() called');
+			//console.log('SESS> typeOutMessage() called');
 			$s.curMsg.display = '';
 
 			var curMsgArray = $s.curMsg.text.split('');
@@ -94,7 +94,7 @@ escapeApp.controller('SessionCtrl', [
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
-		var lockoutPeriod = 45;	//	seconds to lock people out
+		$s.allTeams = EF.getFBArray('teams');
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
@@ -143,14 +143,13 @@ escapeApp.controller('SessionCtrl', [
 			$s.activeTeam.hintInProgress = true;
 		};
 
-		$s.updateLockoutTimeRemaining = function updateLockoutTimeRemaining() {
-			var secondsRemaining = 0;
+		$s.updateLockoutTimeRemaining = function updateLockoutTimeRemaining(secondsRemaining) {
 			if ($s.activeTeam.lockoutStarted) {
 				var lockoutStart = moment($s.activeTeam.lockoutStarted, timeFormat);
-
 				secondsRemaining = $s.activeTeam.lockoutPeriod - moment().diff(lockoutStart, 'seconds');
+
 				if (secondsRemaining <= 0) {
-					$s.endLockout();
+					$s.lockoutStarted = null;
 				}
 			}
 
@@ -158,19 +157,19 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.chooseTeam = function chooseTeam(teamId) {
-			console.log('SESS> choosing Team: ' + teamId);
+			//console.log('SESS> choosing Team: ' + teamId);
 
 			if (activeTeamFBObj) {
 				activeTeamFBObj.$destroy();
-				console.log('SESS> activeTeam is destroyed');
+				//console.log('SESS> activeTeam is destroyed');
 			} else {
 				var firstLoad = true;
 			}
 
-			console.log('SESS> choosing a team');
+			//console.log('SESS> choosing a team');
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
-				console.log('SESS> afterTeamLoaded');
+				//console.log('SESS> afterTeamLoaded');
 				$timeout(init, 0);
 				if(firstLoad) {
 					bindMessaging();
@@ -257,7 +256,7 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.unsolve = function unsolve(puz) {
-			console.log('deleting ' + puz.name + ' from solved puzzles');
+			//console.log('deleting ' + puz.name + ' from solved puzzles');
 			delete $s.activeTeam.solvedQuestions[puz.name];
 		};
 
@@ -266,15 +265,14 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.startLockout = function startLockout() {
-			console.log('SESS> started lockout');
+			//console.log('SESS> started lockout');
 			$s.activeTeam.lockoutStarted = moment().format(timeFormat);
 		};
 
-		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
 			EF.getFB('activeTeamId').on('value', function gotId(snap) {
 				$s.activeTeamId = snap.val();
-				console.log('SESS> new team id: ' + $s.activeTeamId);
+				//console.log('SESS> new team id: ' + $s.activeTeamId);
 
 				if ($s.activeTeamId) {
 					$s.chooseTeam($s.activeTeamId);
@@ -282,7 +280,7 @@ escapeApp.controller('SessionCtrl', [
 			});
 			EF.getFB('connect4').on('value', function attemptingConnect4(snap) {
 				$s.q.connect4.guess = snap.val();
-				console.log('SESS> connect4 is currently: ' + $s.q.connect4.guess);
+				//console.log('SESS> connect4 is currently: ' + $s.q.connect4.guess);
 
 				if ($s.q.connect4.guess !== 'attempting') {
 					if ($s.activeTeam && !$s.isSolved($s.q.connect4)) {
