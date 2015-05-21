@@ -129,13 +129,11 @@ escapeApp.controller('SessionCtrl', [
 			if ($s.activeTeam.hints) {
 				$s.activeTeam.hints--;
 			} else {
-				$s.activeTeam.status++;
+				if ($s.activeTeam.status != EF.statuses.length) {
+					$s.activeTeam.status++;
+				}
 			}
 			$s.activeTeam.hintInProgress = true;
-		};
-
-		$s.endLockout = function endLockout() {
-			$s.activeTeam.lockoutStarted = null;
 		};
 
 		$s.updateLockoutTimeRemaining = function updateLockoutTimeRemaining() {
@@ -199,7 +197,6 @@ escapeApp.controller('SessionCtrl', [
 				}
 			} else {
 				$s.startLockout();
-				alert('Incorrect answer.  You are locked out!');
 			}
 		};
 
@@ -262,7 +259,7 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.startLockout = function startLockout() {
-			console.log('started lockout');
+			console.log('SESS> started lockout');
 			$s.activeTeam.lockoutStarted = moment().format(timeFormat);
 		};
 

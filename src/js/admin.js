@@ -55,27 +55,14 @@ escapeApp.controller('AdminCtrl', [
 			});
 		};
 
-		$s.startLockout = function startLockout() {
-			console.log('ADMIN> started lockout');
-			$s.activeTeam.lockoutStarted = moment().format(timeFormat);
-		};
-
-		$s.endLockout = function endLockout() {
-			console.log('ADMIN> ended lockout');
-			$s.activeTeam.lockoutStarted = null;
-		};
-
-		$s.restartTimer = function restartTimer() {
-			if(confirm('Are you sure?')) {
-				$s.activeTeam.timerStarted = moment().format(timeFormat);
-				$s.addNewMessage('Timer started');
+		$s.setTime = function setTime(attribute, message, question) {
+			if(question && !confirm(question)) {
+				return;
 			}
-		};
-
-		$s.finishGame = function finishGame() {
-			if(confirm('Finish Game?')) {
-				$s.activeTeam.finished = moment().format(timeFormat);
-				$s.addNewMessage('Congratulations!');
+			console.log('ADMIN> set time for ' + attribute);
+			$s.activeTeam[attribute] = moment().format(timeFormat);
+			if(message) {
+				$s.addNewMessage(message);
 			}
 		};
 
@@ -130,11 +117,13 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.adjust = function adjust(attribute, amount) {
+			console.log('ADMIN> ' + attribute + ' adjusted by ' + amount);
 			$s.activeTeam[attribute] += amount;
 		};
 
-		$s.resolveHint = function resolveHint() {
-			$s.activeTeam.hintInProgress = false;
+		$s.remove = function remove(attribute) {
+			console.log('ADMIN> ' + attribute + ' removed');
+			$s.activeTeam[attribute] = null;
 		};
 
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {

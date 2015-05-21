@@ -33,7 +33,7 @@ html(ng-app='escapeApp')
 			.alert.alert-warning.alert-flip(role='alert' ng-show='gauge >= 0.1') Yikes! You might want to give them a little nudge.
 			.alert.alert-danger.alert-flip(role='alert' ng-show='gauge >= 0.2') Running out of time! Help them out!
 			.alert.alert-danger.alert-flip(ng-show='activeTeam.hintInProgress') Hint has been requested.
-				button.btn.btn-success(ng-click='resolveHint()') #[i.fa.fa-check-circle] Resolved
+				button.btn.btn-success(ng-click='remove("hintInProgress")') #[i.fa.fa-check-circle] Resolved
 			.row
 				+col(null, 3)(ng-show='activeTeam')
 					h3 Team: {{activeTeam.name}}
@@ -49,9 +49,9 @@ html(ng-app='escapeApp')
 				+col(null, 6).controls
 					h3 Controls:
 					button.btn.btn-primary.collapse.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] {{activeTeam ? "Change Teams" : "Choose Team"}}
-					button.btn(class='{{activeTeam.timerStarted ? "btn-warning" : "btn-success"}}' ng-click='restartTimer()' ng-show='activeTeam') #[i.fa.fa-clock-o] {{activeTeam.timerStarted ? "Restart Timer" : "Start Game"}}
-					button.btn.btn-danger(ng-click='startLockout()' ng-show='activeTeam && !activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
-					button.btn.btn-info(ng-click='endLockout()' ng-show='activeTeam && activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
-					button.btn.btn-success(ng-click='finishGame()' ng-show='activeTeam && activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+					button.btn(class='{{activeTeam.timerStarted ? "btn-warning" : "btn-success"}}' ng-click='setTime("timerStarted", "Are you sure?", "Timer started")' ng-show='activeTeam') #[i.fa.fa-clock-o] {{activeTeam.timerStarted ? "Restart Timer" : "Start Game"}}
+					button.btn.btn-danger(ng-click='setTime("lockoutStarted")' ng-show='activeTeam && !activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
+					button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam && activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
+					button.btn.btn-success(ng-click='setTime("finished", "Finish Game?", "Congratulations!")' ng-show='activeTeam && activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles
