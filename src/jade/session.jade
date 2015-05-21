@@ -31,6 +31,19 @@ html(ng-app='escapeApp')
 					.modal-body
 					.modal-footer
 						//button.btn.btn-default(data-dismiss='modal') Cancel
+		#hintModal.modal.fade
+			.modal-dialog.modal-sm
+				.modal-content
+					.modal-header
+						h4.modal-title Would you like to {{activeTeam.hints ? "use" : "request"}} a hint?
+					.modal-body
+						div(ng-hide='activeTeam.hints')
+							p Your team is currently holding {{status[activeTeam.status]}} status. Requesting a hint will bring your team to {{status[activeTeam.status + 1]}} status.
+						div(ng-show='activeTeam.hints')
+							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? "hints" : "hint"}} available for use. This will not affect your team's {{status[activeTeam.status]}} status.
+					.modal-footer
+						button.btn.btn-default(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
+						button.btn.btn-success(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
 		.container
 			header.hide
 				h1 Control Panel - The Game Escape
@@ -43,14 +56,10 @@ html(ng-app='escapeApp')
 					h3.digital(ng-if='curMsg') {{curMsg.display}}
 				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') #[i.fa.fa-comments-o] Show All Messages
 				button.btn.btn-warning(data-toggle='modal' data-target='#keypadModal' ng-show='activeTeam') #[i.fa.fa-sign-out] ESCAPE
-				button.btn.btn-danger(data-toggle='modal' ng-click='startLockout()' ng-show='activeTeam') #[i.fa.fa-lock] Lock Me Out
-			.alert.alert-success(role='alert' ng-show='gauge < 0') Doing well! You are on track to getting out with time to spare!
-			.alert.alert-warning(role='alert' ng-show='gauge >= 0 && gauge < 0.1') You might want to step it up, time is not your friend.
-			.alert.alert-danger(role='alert' ng-show='gauge >= 0.1') Yikes! Use a hint or something! You are way behind schedule!
+				button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hintModal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-question-circle] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
 			#game(ng-if='activeTeam' role='tabpanel')
 				#lockout(ng-show='activeTeam.lockoutStarted')
-					h4 You are locked out for {{lockoutTimeRemaining}} seconds
-					button.btn.btn-danger(ng-click='endLockout()') #[i.fa.fa-unlock] End Lockout Early
+					h4 Incorrect! You are locked out for {{lockoutTimeRemaining}} seconds
 				#questions(ng-show='!activeTeam.lockoutStarted')
 					h3 Team: {{activeTeam.name}}
 					ul.buttonList
@@ -249,8 +258,8 @@ html(ng-app='escapeApp')
 							div(ng-if='!isSolved(q.jigsaw)')
 								label Enter the 5-digit Numeric code to escape the room...
 								.clearfix
-								button.btn.btn-warning.numericKeypadShow(data-toggle='modal' data-target='#keypadModal') ESCAPE
-								input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' placeholder='XXXXX' maxlength='5' hidden)
+								button.btn.btn-warning.numericKeypadShow(data-toggle='modal' data-target='#keypadModal') #[i.fa.fa-sign-out] ESCAPE
+								input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
 							div(ng-if='isSolved(q.jigsaw)')
 								h3 #[i.fa.fa-check] YOU WIN!  YOU'VE ESCAPED THE ROOM!
 								button.btn.btn-danger(ng-click='unsolve(q.jigsaw)') #[i.fa.fa-exclamation-triangle] Unsolve

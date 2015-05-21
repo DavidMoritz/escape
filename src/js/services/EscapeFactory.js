@@ -13,6 +13,13 @@ escapeApp.factory('EscapeFactory', [
 
 			defaultLockoutPeriod: 45,
 
+			statuses: [
+				'gold',
+				'silver',
+				'bronze',
+				'honorable mention'
+			],
+
 			getFB: function getFB(childPath) {
 				if (!FB) {
 					FB = new Firebase('https://escape.firebaseio.com/');

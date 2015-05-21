@@ -110,11 +110,12 @@ escapeApp.controller('AdminCtrl', [
 				teams.$add({
 					createdDate: currentTime,
 					name: $s.formFields.newTeamName,
-					clues: 0,
+					hints: 0,
 					finished: false,
 					timeAllowed: EF.initialTimeAllowed,
 					lockoutPeriod: EF.defaultLockoutPeriod,
-					lockoutStartTime: null
+					lockoutStartTime: null,
+					status: 0
 				}).then(function(newTeam) {
 					console.log('new team created with id: ' + newTeam.key());
 
@@ -126,6 +127,14 @@ escapeApp.controller('AdminCtrl', [
 					$s.chooseTeam(newTeam.key());
 				});
 			});
+		};
+
+		$s.adjust = function adjust(attribute, amount) {
+			$s.activeTeam[attribute] += amount;
+		};
+
+		$s.resolveHint = function resolveHint() {
+			$s.activeTeam.hintInProgress = false;
 		};
 
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {

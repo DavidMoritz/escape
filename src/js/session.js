@@ -121,8 +121,18 @@ escapeApp.controller('SessionCtrl', [
 			timeRemaining: 0,
 			solvedQuestions: [],
 			q: EF.questions,
-			lockoutTimeRemaining: 0
+			lockoutTimeRemaining: 0,
+			status: EF.statuses
 		});
+
+		$s.requestHint = function requestHint() {
+			if ($s.activeTeam.hints) {
+				$s.activeTeam.hints--;
+			} else {
+				$s.activeTeam.status++;
+			}
+			$s.activeTeam.hintInProgress = true;
+		};
 
 		$s.endLockout = function endLockout() {
 			$s.activeTeam.lockoutStarted = null;
