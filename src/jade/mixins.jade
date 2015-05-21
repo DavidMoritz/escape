@@ -18,8 +18,6 @@ mixin squaredIcon(icon)
 mixin solvedSection(puzzleObj)
 	div(ng-if='isSolved(#{puzzleObj})')
 		h3 #[i.fa.fa-check] SOLVED!
-		button.btn.btn-success(ng-click='toggleNextClue(#{puzzleObj})' ng-class='{active: #{puzzleObj}.nextClue.visible}') #[i.fa.fa-search] Next Clue
-		button.btn.btn-danger(ng-click='unsolve(#{puzzleObj})') #[i.fa.fa-exclamation-triangle] Unsolve
 		.well(ng-show='#{puzzleObj}.nextClue.visible')
 			p.lead
 				span.fa-stack.fa-2x

@@ -52,7 +52,7 @@ escapeApp.controller('SessionCtrl', [
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({
 					onSelected: function onSelected(data) {
-						// //console.log(data);
+						// console.log(data);
 						if (_.contains($(data.original).attr('ng-model'), 'q.yahtzee.splitGuess.die1')) {
 							$s.q.yahtzee.splitGuess.die1 = data.selectedData.value;
 						}
@@ -94,7 +94,6 @@ escapeApp.controller('SessionCtrl', [
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
-		$s.allTeams = EF.getFBArray('teams');
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
@@ -202,7 +201,7 @@ escapeApp.controller('SessionCtrl', [
 					$s.activeTeam.finished = currentTime;
 				}
 			} else {
-				$s.startLockout();
+				$s.activeTeam.lockoutStarted = currentTime;
 			}
 		};
 
@@ -255,20 +254,7 @@ escapeApp.controller('SessionCtrl', [
 			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
 		};
 
-		$s.unsolve = function unsolve(puz) {
-			//console.log('deleting ' + puz.name + ' from solved puzzles');
-			delete $s.activeTeam.solvedQuestions[puz.name];
-		};
-
-		$s.toggleNextClue = function toggleNextClue(q) {
-			q.nextClue.visible = !q.nextClue.visible;
-		};
-
-		$s.startLockout = function startLockout() {
-			//console.log('SESS> started lockout');
-			$s.activeTeam.lockoutStarted = moment().format(timeFormat);
-		};
-
+		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
 			EF.getFB('activeTeamId').on('value', function gotId(snap) {
 				$s.activeTeamId = snap.val();

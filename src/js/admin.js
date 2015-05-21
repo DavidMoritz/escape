@@ -28,8 +28,6 @@ escapeApp.controller('AdminCtrl', [
 			totalPoints: getTotalPoints()
 		});
 
-		$s.allTeams = EF.getFBArray('teams');
-
 		$interval(function everySecond() {
 			if ($s.activeTeam && !$s.activeTeam.finished) {
 				// gauge
@@ -48,7 +46,6 @@ escapeApp.controller('AdminCtrl', [
 				activeTeamFBObj.$destroy();
 				//console.log('ADMIN> activeTeam is destroyed');
 			}
-
 			//	activate the chosen team
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function atThen() {
@@ -143,12 +140,24 @@ escapeApp.controller('AdminCtrl', [
 			$s.activeTeam[attribute] = null;
 		};
 
+		$s.unsolve = function unsolve(puz) {
+			//console.log('deleting ' + puz.name + ' from solved puzzles');
+			delete $s.activeTeam.solvedQuestions[puz.name];
+		};
+
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {
 			return _.where($s.allTeams, {finished: false});
 		};
 
+		$s.allTeams = EF.getFBArray('teams');
 		$s.allTeams.$loaded(function afterTeamsLoaded() {
-			$s.chooseTeam(EF.getFB('activeTeamId'));
+			EF.getFB('activeTeamId').on('value', function gotId(snap) {
+				//console.log('Admin> new team id: ' + snap.val());
+				if (!$s.activeTeam) {
+					$s.activeTeamId = snap.val();
+					$s.chooseTeam($s.activeTeamId);
+				}
+			});
 		});
 	}
 ]);
