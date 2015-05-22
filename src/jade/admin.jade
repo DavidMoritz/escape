@@ -47,13 +47,17 @@ html(ng-app='escapeApp')
 				+col(null, 3)
 					#performanceGauge(just-gage style="width:85%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 				+col(null, 6).controls
-					h3 Controls:
-					button.btn.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] {{activeTeam ? "Change Teams" : "Choose Team"}}
+					label.block(for='advancedControls')
+						h3 Controls: #[input(type='checkbox' ng-model='advancedControls' id='advancedControls')]
+					button.btn.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse" ng-hide='activeTeam') #[i.fa.fa-user-times] Choose Team
 					span(ng-show='activeTeam')
-						button.btn(class='{{activeTeam.timerStarted ? "btn-warning" : "btn-success"}}' ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer started"})') #[i.fa.fa-clock-o] {{activeTeam.timerStarted ? "Restart Timer" : "Start Game"}}
-						button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
-						button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
-						button.btn.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+						button.btn.btn-success(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer started"})' ng-hide='activeTeam.timerStarted') #[i.fa.fa-clock-o] Start Game
 						button.btn.btn-danger(ng-click='setAttribute("alert", {toggle: true, seconds: 3})') #[i.fa.fa-bullhorn] {{activeTeam.alert ? 'Stop Alert' : 'Alert Team'}}
+						button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
+						span(ng-show='advancedControls')
+							button.btn.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] Change Teams
+							button.btn.btn-warning(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer restarted"})' ng-show='activeTeam.timerStarted') #[i.fa.fa-clock-o] Restart Timer
+							button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
+							button.btn.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles
