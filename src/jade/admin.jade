@@ -59,5 +59,9 @@ html(ng-app='escapeApp')
 							button.btn.btn-warning(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer restarted"})' ng-show='activeTeam.timerStarted') #[i.fa.fa-clock-o] Restart Timer
 							button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
 							button.btn.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+							select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.name for (key, puzzle) in allPuzzles')
+								option(value='' selected) -- choose puzzle --
+							button.btn.btn-danger(ng-click='unsolve(formfields.puzzle)' ng-show='isSolved(formfields.puzzle)') Unsolve
+							button.btn.btn-warning(ng-click='solve(formfields.puzzle)' ng-show='formfields.puzzle && !isSolved(formfields.puzzle)') Solve
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles

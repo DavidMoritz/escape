@@ -22,10 +22,12 @@ escapeApp.controller('AdminCtrl', [
 			activeTeamId: null,
 			formFields: {
 				newTeamName: '',
-				newMessage: ''
+				newMessage: '',
+				puzzle: ''
 			},
 			teamId: null,
-			totalPoints: getTotalPoints()
+			totalPoints: getTotalPoints(),
+			allPuzzles: EF.questions
 		});
 
 		$interval(function everySecond() {
@@ -143,6 +145,27 @@ escapeApp.controller('AdminCtrl', [
 		$s.unsolve = function unsolve(puz) {
 			//console.log('deleting ' + puz.name + ' from solved puzzles');
 			delete $s.activeTeam.solvedQuestions[puz.name];
+		};
+
+		$s.solve = function solve(puz) {
+			//	auto-solve
+			if(_.isUndefined($s.activeTeam.solvedPoints)) {
+				$s.activeTeam.solvedPoints = 0;
+			}
+			if (_.isUndefined($s.activeTeam.solvedQuestions)) {
+				$s.activeTeam.solvedQuestions = {};
+			}
+			$s.activeTeam.solvedPoints += puz.points;
+			$s.activeTeam.solvedQuestions[puz.name] = moment().format(timeFormat);
+		};
+
+		$s.isSolved = function isSolved(puz) {
+			if (!puz) {
+				return false;
+			}
+
+			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
+			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
 		};
 
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {
