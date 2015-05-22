@@ -30,17 +30,22 @@ html(ng-app='escapeApp')
 						h4.modal-title Enter the correct code to escape
 					.modal-body
 					.modal-footer
-						//button.btn.btn-default(data-dismiss='modal') Cancel
 		#hintModal.modal.fade
 			.modal-dialog.modal-sm
 				.modal-content
 					.modal-header
 						h4.modal-title Would you like to {{activeTeam.hints ? "use" : "request"}} a hint?
 					.modal-body
+						.medal
+							img(src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].formal}}')
+							p.medal-title {{status[activeTeam.status].formal}}
 						div(ng-hide='activeTeam.hints')
-							p Your team is currently holding {{status[activeTeam.status]}} status. Requesting a hint will bring your team to {{status[activeTeam.status + 1]}} status.
+							div(ng-hide='activeTeam.status == status.length - 1')
+								p Your team is currently holding {{status[activeTeam.status].text}} status. Requesting a hint will bring your team to {{status[activeTeam.status + 1].text}} status.
+							div(ng-show='activeTeam.status == status.length - 1')
+								p This will not affect your team's {{status[activeTeam.status].text}} status.
 						div(ng-show='activeTeam.hints')
-							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? "hints" : "hint"}} available for use. This will not affect your team's {{status[activeTeam.status]}} status.
+							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? "hints" : "hint"}} available for use. This will not affect your team's {{status[activeTeam.status].name}} status.
 					.modal-footer
 						button.btn.btn-default(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
 						button.btn.btn-success(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
@@ -48,6 +53,9 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
+				.medal
+					p.medal-title {{status[activeTeam.status].formal}}
+					img(src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].formal}}')
 				h1.digital
 					span(ng-hide='activeTeam') Loading
 						i.fa.fa-spinner.fa-pulse
