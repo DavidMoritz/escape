@@ -15,7 +15,7 @@ html(ng-app='escapeApp')
 		.container
 			header
 				h1 The Game Escape - Admin
-			.jumbotron.collapse.in.chooseTeamSection
+			.jumbotron.collapse.chooseTeamSection
 				.pos-rel
 					i.fa.fa-close.top-corner.pointer(data-target=".chooseTeamSection" data-toggle="collapse")
 				.row.clear-fix
@@ -48,7 +48,7 @@ html(ng-app='escapeApp')
 					#performanceGauge(just-gage style="width:85%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 				+col(null, 6).controls
 					h3 Controls:
-					button.btn.btn-primary.collapse.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] {{activeTeam ? "Change Teams" : "Choose Team"}}
+					button.btn.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] {{activeTeam ? "Change Teams" : "Choose Team"}}
 					span(ng-show='activeTeam')
 						button.btn(class='{{activeTeam.timerStarted ? "btn-warning" : "btn-success"}}' ng-click='setAttribute("timerStarted", {confirm: "Are you sure?", message: "Timer started"})') #[i.fa.fa-clock-o] {{activeTeam.timerStarted ? "Restart Timer" : "Start Game"}}
 						button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
