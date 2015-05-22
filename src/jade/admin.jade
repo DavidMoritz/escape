@@ -50,10 +50,10 @@ html(ng-app='escapeApp')
 					h3 Controls:
 					button.btn.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] {{activeTeam ? "Change Teams" : "Choose Team"}}
 					span(ng-show='activeTeam')
-						button.btn(class='{{activeTeam.timerStarted ? "btn-warning" : "btn-success"}}' ng-click='setAttribute("timerStarted", {confirm: "Are you sure?", message: "Timer started"})') #[i.fa.fa-clock-o] {{activeTeam.timerStarted ? "Restart Timer" : "Start Game"}}
-						button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
+						button.btn(class='{{activeTeam.timerStarted ? "btn-warning" : "btn-success"}}' ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer started"})') #[i.fa.fa-clock-o] {{activeTeam.timerStarted ? "Restart Timer" : "Start Game"}}
+						button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
 						button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
-						button.btn.btn-success(ng-click='setAttribute("finished", {confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+						button.btn.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
 						button.btn.btn-danger(ng-click='setAttribute("alert", {toggle: true, seconds: 3})') #[i.fa.fa-bullhorn] {{activeTeam.alert ? 'Stop Alert' : 'Alert Team'}}
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles
