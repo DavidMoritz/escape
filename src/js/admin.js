@@ -80,29 +80,28 @@ escapeApp.controller('AdminCtrl', [
 
 		$s.createTeam = function createTeam() {
 			//console.log('ADMIN> createTeam() called');
-			var teams = EF.getFBArray('teams');
-			teams.$loaded().then(function teamsLoaded() {
-				var currentTime = moment().format(timeFormat);
+			var currentTime = moment().format(timeFormat);
+			var password = prompt('Team password');
 
-				teams.$add({
-					createdDate: currentTime,
-					name: $s.formFields.newTeamName,
-					hints: 0,
-					finished: false,
-					timeAllowed: EF.initialTimeAllowed,
-					lockoutPeriod: EF.defaultLockoutPeriod,
-					lockoutStartTime: null,
-					status: 0
-				}).then(function(newTeam) {
-					//console.log('new team created with id: ' + newTeam.key());
+			$s.allTeams.$add({
+				createdDate: currentTime,
+				name: $s.formFields.newTeamName,
+				hints: 0,
+				finished: false,
+				timeAllowed: EF.initialTimeAllowed,
+				lockoutPeriod: EF.defaultLockoutPeriod,
+				lockoutStartTime: null,
+				status: 0,
+				password: password
+			}).then(function(newTeam) {
+				//console.log('new team created with id: ' + newTeam.key());
 
-					newTeam.child('storedMessages').push({
-						time: currentTime,
-						text: 'We are about to begin'
-					});
-
-					$s.chooseTeam(newTeam.key());
+				newTeam.child('storedMessages').push({
+					time: currentTime,
+					text: 'We are about to begin'
 				});
+
+				$s.chooseTeam(newTeam.key());
 			});
 		};
 

@@ -61,6 +61,7 @@ html(ng-app='escapeApp')
 							button.btn.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
 							select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.name for (key, puzzle) in allPuzzles')
 								option(value='' selected) -- choose puzzle --
+							input.form-control(type='text' ng-model='activeTeam.password')
 							button.btn.btn-danger(ng-click='unsolve(formfields.puzzle)' ng-show='isSolved(formfields.puzzle)') Unsolve
 							button.btn.btn-warning(ng-click='solve(formfields.puzzle)' ng-show='formfields.puzzle && !isSolved(formfields.puzzle)') Solve
 			iframe(src="session.html" width="100%")
