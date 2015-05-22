@@ -12,7 +12,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 30,
 				nextClue: {
 					lockIcon: 'anchor',
-					code: '__-__-__',
+					code: '32-0-20',
 					visible: true
 				},
 			},
@@ -30,7 +30,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 40,
 				nextClue: {
 					lockIcon: 'bomb',
-					code: '__-__-__',
+					code: '2-20-38',
 					visible: true
 				}
 			},
@@ -48,7 +48,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 50,
 				nextClue: {
 					lockIcon: 'university',
-					code: '__-__-__',
+					code: '1-9-35',
 					visible: true
 				}
 			},
@@ -62,7 +62,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 50,
 				nextClue: {
 					lockIcon: 'birthday-cake',
-					code: '__-__-__',
+					code: '14-29-11',
 					visible: true
 				}
 			},
@@ -78,7 +78,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 40,
 				nextClue: {
 					lockIcon: 'gavel',
-					code: '__-__-__',
+					code: '30-5-33',
 					visible: true
 				}
 			},
@@ -124,7 +124,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 10,
 				nextClue: {
 					lockIcon: 'globe',
-					code: '__-__-__',
+					code: '9-21-37',
 					visible: true
 				}
 			},
@@ -139,7 +139,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 10,
 				nextClue: {
 					lockIcon: 'scissors',
-					code: '__-__-__',
+					code: '11-21-37',
 					visible: true
 				}
 			},
@@ -156,7 +156,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 20,
 				nextClue: {
 					lockIcon: 'diamond',
-					code: '__-__-__',
+					code: '30-38-24',
 					visible: true
 				}
 			},
@@ -170,7 +170,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 40,
 				nextClue: {
 					lockIcon: 'rocket',
-					code: '__-__-__',
+					code: '18-25-7',
 					visible: true
 				}
 			},
@@ -188,7 +188,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 50,
 				nextClue: {
 					lockIcon: 'tachometer',
-					code: '__-__-__',
+					code: '24-4-27',
 					visible: true
 				}
 			},
@@ -203,7 +203,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 30,
 				nextClue: {
 					lockIcon: 'tree',
-					code: '__-__-__',
+					code: '23-7-26',
 					visible: true
 				}
 			},
@@ -225,7 +225,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 40,
 				nextClue: {
 					lockIcon: 'motorcycle',
-					code: '__-__-__',
+					code: '28-36-16',
 					visible: true
 				}
 			},
@@ -243,7 +243,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 50,
 				nextClue: {
 					lockIcon: 'paw',
-					code: '__-__-__',
+					code: '36-11-37',
 					visible: true
 				}
 			},
@@ -257,7 +257,7 @@ escapeApp.factory('PuzzleFactory', [
 				points: 30,
 				nextClue: {
 					lockIcon: 'ticket',
-					code: '__-__-__',
+					code: '0-0-0',
 					visible: true
 				}
 			},
