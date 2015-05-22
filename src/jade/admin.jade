@@ -58,14 +58,14 @@ html(ng-app='escapeApp')
 							button.btn.btn-float.btn-primary.collapse.in.chooseTeamSection.inline-block(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] Change Teams
 							button.btn.btn-float.btn-warning(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer restarted"})' ng-show='activeTeam.timerStarted') #[i.fa.fa-clock-o] Restart Timer
 							button.btn.btn-float.btn-danger(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
-							button.btn.btn-float.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+							button.btn.btn-float.last.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
 							.input-group
 								span#puzzleLabel.input-group-addon Puzzle:
 								select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.name for (key, puzzle) in allPuzzles')
 									option(value='' selected) -- choose puzzle --
 								span.input-group-btn
-									button.btn.btn-warning(type='button' ng-click='solve(formfields.puzzle)' ng-if='formfields.puzzle && !isSolved(formfields.puzzle)') Solve
-									button.btn.btn-danger(type='button' ng-click='unsolve(formfields.puzzle)' ng-if='isSolved(formfields.puzzle)') Unsolve
+									button.btn.btn-warning(type='button' ng-click='solve(formfields.puzzle)' ng-if='formfields.puzzle && !isSolved(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Solve
+									button.btn.btn-danger(type='button' ng-click='unsolve(formfields.puzzle)' ng-if='isSolved(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Unsolve
 							.input-group
 								span#passwordLabel.input-group-addon Password:
 								input#teamPassword.form-control(type='text' ng-model='activeTeam.password' aria-describedby='#passwordLabel')
