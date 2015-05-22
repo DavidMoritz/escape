@@ -24,8 +24,8 @@ html(ng-app='escapeApp')
 			hr
 			a.btn.btn-success(href='session.html') Player?
 			a.btn.btn-warning(href='admin.html') Admin?
-			//hr
-			//.row
+			hr
+			.row
 				+col(null, 3)(ng-show='activeTeam')
 					h3 Team: {{activeTeam.name}}
 					h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
