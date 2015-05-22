@@ -63,7 +63,7 @@ escapeApp.controller('SessionCtrl', [
 				});
 			});
 			// Prompt Password
-			if (prompt('What is your team password?') != $s.activeTeam.password) {
+			if ($s.activeTeam.passwordRequired && prompt('What is your team password?') != $s.activeTeam.password) {
 				// failed password; redirect
 				window.location.replace('http://gameEscape.net');
 			}

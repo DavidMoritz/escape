@@ -20,8 +20,48 @@ html(ng-app='escapeApp')
 					span {{moment(public.timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
 					h3.digital {{public.display}}
-			#performanceGauge(just-gage style="width:33%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 			p The Game Escape is an interactive, cooperative, challenging experience that helps demonstrate teamwork and our various telents and strenghts when working in a group. Perfect as a team-building work activity, family experiment, or testing your friends; The Game Escape will stretch you mentally and emotionally. Success is not guaranteed. Will your team get out in time? You'd better move quickly, only have {{moment(public.timeRemaining * 1000).format('mm')}} minutes left.
+			hr
 			a.btn.btn-success(href='session.html') Player?
 			a.btn.btn-warning(href='admin.html') Admin?
+			//hr
+			//.row
+				+col(null, 3)(ng-show='activeTeam')
+					h3 Team: {{activeTeam.name}}
+					h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
+					h5 Hints: {{activeTeam.hints}}
+						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("hints", 1)')
+						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("hints", -1)')
+					h5 Time Allowed: {{activeTeam.timeAllowed / 60}} minutes
+						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", 60)')
+						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", -60)')
+				+col(null, 3)
+					#performanceGauge(just-gage style="width:85%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
+				+col(null, 6).controls
+					label.block(for='advancedControls')
+						h3 Controls: #[input(type='checkbox' ng-model='advancedControls' id='advancedControls')]
+					button.btn.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse" ng-hide='activeTeam') #[i.fa.fa-user-times] Choose Team
+					span(ng-show='activeTeam')
+						button.btn.btn-success(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer started"})' ng-hide='activeTeam.timerStarted') #[i.fa.fa-clock-o] Start Game
+						button.btn.btn-danger(ng-click='setAttribute("alert", {toggle: true, seconds: 3})') #[i.fa.fa-bullhorn] {{activeTeam.alert ? 'Stop Alert' : 'Alert Team'}}
+						button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
+						span(ng-show='advancedControls')
+							button.btn.btn-primary.collapse.in.chooseTeamSection.inline-block(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] Change Teams
+							button.btn.btn-warning(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer restarted"})' ng-show='activeTeam.timerStarted') #[i.fa.fa-clock-o] Restart Timer
+							button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
+							button.btn.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+							.input-group
+								span#puzzleLabel.input-group-addon Puzzle:
+								select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.name for (key, puzzle) in allPuzzles')
+									option(value='' selected) -- choose puzzle --
+								span.input-group-btn
+									button.btn.btn-warning(type='button' ng-click='solve(formfields.puzzle)' ng-if='formfields.puzzle && !isSolved(formfields.puzzle)') Solve
+									button.btn.btn-danger(type='button' ng-click='unsolve(formfields.puzzle)' ng-if='isSolved(formfields.puzzle)') Unsolve
+							.input-group
+								span#passwordLabel.input-group-addon Password:
+								input#teamPassword.form-control(type='text' ng-model='activeTeam.password' aria-describedby='#passwordLabel')
+								label.input-group-addon(for='teamPasswordRequired')
+									span Required?
+									input#teamPasswordRequired(type='checkbox' ng-model='activeTeam.passwordRequired')
+									i.fa.btn-icon(class='{{activeTeam.passwordRequired ? "fa-lock" : "fa-unlock"}}')
 		| @@javascriptPublicReplaceFiles

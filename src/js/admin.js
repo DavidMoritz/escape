@@ -92,7 +92,8 @@ escapeApp.controller('AdminCtrl', [
 				lockoutPeriod: EF.defaultLockoutPeriod,
 				lockoutStartTime: null,
 				status: 0,
-				password: password
+				password: password,
+				passwordRequired: true
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 

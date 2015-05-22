@@ -42,10 +42,30 @@ escapeApp.controller('EscapeCtrl', [
 			$s.gauge = Math.random() * (0.3 + 0.2) - 0.2;
 		}, 1000);
 
+		$s.isSolved = function(puz) {
+			if(puz) {
+				return puz.solved;
+			}
+			return false;
+		};
+
 		//	initialize scoped variables
 		_.assign($s, {
 			public: {
 				timeRemaining: 45 * 60
+			},
+			activeTeam: {
+				password: 'nothing',
+				passwordRequired: true
+			},
+			allPuzzles: {
+				puz1: {
+					name: 'first',
+					solved: true
+				},
+				puz2: {
+					name: 'second'
+				}
 			}
 		});
 	}

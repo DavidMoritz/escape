@@ -55,14 +55,23 @@ html(ng-app='escapeApp')
 						button.btn.btn-danger(ng-click='setAttribute("alert", {toggle: true, seconds: 3})') #[i.fa.fa-bullhorn] {{activeTeam.alert ? 'Stop Alert' : 'Alert Team'}}
 						button.btn.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
 						span(ng-show='advancedControls')
-							button.btn.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] Change Teams
+							button.btn.btn-primary.collapse.in.chooseTeamSection.inline-block(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] Change Teams
 							button.btn.btn-warning(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer restarted"})' ng-show='activeTeam.timerStarted') #[i.fa.fa-clock-o] Restart Timer
 							button.btn.btn-danger(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
 							button.btn.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
-							select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.name for (key, puzzle) in allPuzzles')
-								option(value='' selected) -- choose puzzle --
-							input.form-control(type='text' ng-model='activeTeam.password')
-							button.btn.btn-danger(ng-click='unsolve(formfields.puzzle)' ng-show='isSolved(formfields.puzzle)') Unsolve
-							button.btn.btn-warning(ng-click='solve(formfields.puzzle)' ng-show='formfields.puzzle && !isSolved(formfields.puzzle)') Solve
+							.input-group
+								span#puzzleLabel.input-group-addon Puzzle:
+								select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.name for (key, puzzle) in allPuzzles')
+									option(value='' selected) -- choose puzzle --
+								span.input-group-btn
+									button.btn.btn-warning(type='button' ng-click='solve(formfields.puzzle)' ng-if='formfields.puzzle && !isSolved(formfields.puzzle)') Solve
+									button.btn.btn-danger(type='button' ng-click='unsolve(formfields.puzzle)' ng-if='isSolved(formfields.puzzle)') Unsolve
+							.input-group
+								span#passwordLabel.input-group-addon Password:
+								input#teamPassword.form-control(type='text' ng-model='activeTeam.password' aria-describedby='#passwordLabel')
+								label.input-group-addon(for='teamPasswordRequired')
+									span Required?
+									input#teamPasswordRequired(type='checkbox' ng-model='activeTeam.passwordRequired')
+									i.fa.btn-icon(class='{{activeTeam.passwordRequired ? "fa-lock" : "fa-unlock"}}')
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles
