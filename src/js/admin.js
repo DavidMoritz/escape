@@ -143,7 +143,6 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.unsolve = function unsolve(puz) {
-			//console.log('deleting ' + puz.name + ' from solved puzzles');
 			delete $s.activeTeam.solvedQuestions[puz.name];
 		};
 
