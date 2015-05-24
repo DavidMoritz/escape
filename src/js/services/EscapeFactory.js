@@ -14,21 +14,17 @@ escapeApp.factory('EscapeFactory', [
 			defaultLockoutPeriod: 45,
 
 			statuses: [{
-				text: 'gold',
-				path: 'img/gold.png',
-				formal: 'Gold'
+				text: 'Gold',
+				path: 'img/gold.png'
 			},{
-				text: 'silver',
-				path: 'img/silver.png',
-				formal: 'Silver'
+				text: 'Silver',
+				path: 'img/silver.png'
 			},{
-				text: 'bronze',
-				path: 'img/bronze.png',
-				formal: 'Bronze'
+				text: 'Bronze',
+				path: 'img/bronze.png'
 			},{
-				text: 'honorable mention',
-				path: 'img/honorable-mention.png',
-				formal: 'Honorable Mention'
+				text: 'Honorable Mention',
+				path: 'img/honorable-mention.png'
 			}],
 
 			getFB: function getFB(childPath) {

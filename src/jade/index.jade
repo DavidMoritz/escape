@@ -25,8 +25,8 @@ html(ng-app='escapeApp')
 					.modal-header
 						h4.modal-title Would you like to request a hint?
 					.modal-body
-						.medal
-							img(src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].formal}}')
+						.medal(ng-if='activeTeam')
+							img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].formal}}')
 							p.medal-title {{status[activeTeam.status].formal}}
 						p Your team is currently holding {{status[activeTeam.status].text}} status. Requesting a hint will bring your team to {{status[activeTeam.status + 1].text}} status.
 					.modal-footer
@@ -36,9 +36,9 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 The Game Escape
 			.jumbotron
-				.medal
+				.medal(ng-if='activeTeam')
 					p.medal-title {{status[activeTeam.status].formal}}
-					img(src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].formal}}')
+					img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].formal}}')
 				h1.digital
 					span {{moment(public.timeRemaining * 1000).format('mm:ss')}}
 				.displayMessage
@@ -62,7 +62,7 @@ html(ng-app='escapeApp')
 						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", 60)')
 						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", -60)')
 				+col(null, 3)
-					#performanceGauge(just-gage style="width:85%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
+					#performance-gauge(just-gage value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 				+col(null, 6).controls
 					label.block(for='advancedControls')
 						h3 Controls: #[input(type='checkbox' ng-model='advancedControls' id='advancedControls')]

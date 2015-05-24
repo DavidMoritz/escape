@@ -102,6 +102,11 @@ escapeApp.controller('SessionCtrl', [
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
+				// if administrator "Unsolves" Jigsaw manually, this needs to update.
+				if ($s.activeTeam.finished && !$s.isSolved($s.q.jigsaw)) {
+					delete $s.activeTeam.finished;
+				}
+
 				// convertTimer
 				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
 				var current = $s.activeTeam.finished ? moment($s.activeTeam.finished, timeFormat) : moment();
@@ -153,11 +158,11 @@ escapeApp.controller('SessionCtrl', [
 				secondsRemaining = $s.activeTeam.lockoutPeriod - moment().diff(lockoutStart, 'seconds');
 
 				if (secondsRemaining <= 0) {
-					$s.lockoutStarted = null;
+					$s.activeTeam.lockoutStarted = null;
 				}
 			}
 
-			$s.lockoutTimeRemaining = secondsRemaining;
+			$s.lockoutTimeRemaining = secondsRemaining || 0;
 		};
 
 		$s.chooseTeam = function chooseTeam(teamId) {
