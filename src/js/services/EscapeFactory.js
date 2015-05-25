@@ -52,7 +52,31 @@ escapeApp.factory('EscapeFactory', [
 
 			questions: PuzzleFactory,
 
-			locks: LockFactory
+			locks: LockFactory,
+
+			tracks: {
+				a: [
+					'operation',
+					'monopoly',
+					'yahtzee',
+					'scrabble'
+				],
+				b: [
+					'battleship',
+					'clue',
+					'guessWho',
+					'chess',
+					'crossword'
+				], 
+				c: [
+					'texasHoldEm',
+					'connect4',
+					'fiveRoutes',
+					'wordFind',
+					'taboo'
+				]
+			}
 		};
 	}
 ]);
+
