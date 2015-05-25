@@ -27,7 +27,7 @@ escapeApp.controller('AdminCtrl', [
 			},
 			teamId: null,
 			totalPoints: getTotalPoints(),
-			allPuzzles: EF.questions
+			q: EF.questions
 		});
 
 		$interval(function everySecond() {
@@ -93,7 +93,8 @@ escapeApp.controller('AdminCtrl', [
 				lockoutStartTime: null,
 				status: 0,
 				password: password,
-				passwordRequired: true
+				passwordRequired: false,
+				tracks: EF.tracks
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
@@ -146,6 +147,22 @@ escapeApp.controller('AdminCtrl', [
 			delete $s.activeTeam.solvedQuestions[puz.name];
 		};
 
+		$s.bypass = function bypass(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			_.pull(track, puz.name);
+			$s.totalPoints -= puz.points;
+		};
+
+		$s.install = function install(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			if($s.isInstallable(puz)) {
+				track.push(puz.name);
+				$s.totalPoints += puz.points;
+			}
+		};
+
 		$s.solve = function solve(puz) {
 			//	auto-solve
 			if(_.isUndefined($s.activeTeam.solvedPoints)) {
@@ -156,15 +173,47 @@ escapeApp.controller('AdminCtrl', [
 			}
 			$s.activeTeam.solvedPoints += puz.points;
 			$s.activeTeam.solvedQuestions[puz.name] = moment().format(timeFormat);
+			$timeout(function() {
+				EF.setFB('checkSolvedLocks', true);
+			}, 100);
+			
 		};
 
 		$s.isSolved = function isSolved(puz) {
-			if (!puz) {
-				return false;
-			}
-
 			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
+
 			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
+		};
+
+		$s.isBypassable = function isBypassable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			return !$s.isAvailable(puz) && track.indexOf(puz.name) !== -1;
+		};
+
+		$s.isInstallable = function isInstallable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			return !$s.isAvailable(puz) && !$s.isSolved(track[track.length - 1]) && !$s.isBypassable(puz);
+		};
+
+		$s.isAvailable = function isAvailable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			if(!track) {
+				return true;
+			}
+			for(var i = 0, result; i < track.length; i++) {
+				if(puz.name == track[i]) {
+					result = true;
+					break;
+				}
+				if(!$s.isSolved(track[i])) {
+					result = false;
+					break;
+				}
+			}
+			return result;
 		};
 
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {

@@ -67,6 +67,16 @@ escapeApp.controller('SessionCtrl', [
 				// failed password; redirect
 				window.location.replace('http://gameEscape.net');
 			}
+
+			checkSolvedLocks();
+		}
+
+		function checkSolvedLocks() {
+			_.forEach($s.q, function(q, id) {
+				if($s.isSolved(q) && !q.nextClue) {
+					nextClue(q);
+				}
+			});
 		}
 
 		function typeOutMessage() {
@@ -95,6 +105,28 @@ escapeApp.controller('SessionCtrl', [
 					typeOutMessage();
 				}
 			}, true);
+		}
+
+		function nextClue(q) {
+			if(!q.track) {
+				$s.activeTeam.finished = currentTime;
+				return false;
+			}
+			var track = $s.activeTeam.tracks[q.track];
+			var index = track.indexOf(q.name) + 1;
+
+			if(index == track.length) {
+				// no more in the track
+				q.nextClue = _.findWhere(EF.locks, {
+					track: q.track,
+					opens: 'jigsaw'
+				});
+			} else {
+				q.nextClue = _.findWhere(EF.locks, {
+					track: q.track,
+					opens: track[index]
+				});
+			}
 		}
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -207,9 +239,7 @@ escapeApp.controller('SessionCtrl', [
 				}
 				$s.activeTeam.solvedPoints += q.points;
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
-				if (!q.nextClue) {
-					$s.activeTeam.finished = currentTime;
-				}
+				nextClue(q);
 			} else {
 				$s.activeTeam.lockoutStarted = currentTime;
 			}
@@ -256,12 +286,28 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.isSolved = function isSolved(puz) {
-			if (!puz) {
-				return true;	//	no prerequisite
-			}
-
 			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
+
 			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
+		};
+
+		$s.isAvailable = function isAvailable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			if(!track) {
+				return true;
+			}
+			for(var i = 0, result; i < track.length; i++) {
+				if(puz.name == track[i]) {
+					result = true;
+					break;
+				}
+				if(!$s.isSolved(track[i])) {
+					result = false;
+					break;
+				}
+			}
+			return result;
 		};
 
 		$s.allTeams = EF.getFBArray('teams');
@@ -283,6 +329,10 @@ escapeApp.controller('SessionCtrl', [
 						$s.submitGuess($s.q.connect4);
 					}
 				}
+			});
+			EF.getFB('checkSolvedLocks').on('value', function attemptingConnect4() {
+				checkSolvedLocks();
+				EF.setFB('checkSolvedLocks', null);
 			});
 		});
 

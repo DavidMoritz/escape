@@ -179,15 +179,6 @@ escapeApp.controller('EscapeCtrl', [
 				passwordRequired: false,
 				status: 0
 			},
-			allPuzzles: {
-				puz1: {
-					name: 'first',
-					solved: true
-				},
-				puz2: {
-					name: 'second'
-				}
-			},
 			status: EF.statuses,
 			answer: getNewAnswer(),
 			pause: false,
