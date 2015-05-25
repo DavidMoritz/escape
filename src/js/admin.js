@@ -18,15 +18,11 @@ escapeApp.controller('AdminCtrl', [
 		//	initialize scoped variables
 		_.assign($s, {
 			allTeams: [],
-			activeTeam: null,
-			activeTeamId: null,
 			formFields: {
 				newTeamName: '',
 				newMessage: '',
 				puzzle: ''
 			},
-			teamId: null,
-			totalPoints: getTotalPoints(),
 			q: EF.questions
 		});
 
@@ -90,12 +86,12 @@ escapeApp.controller('AdminCtrl', [
 				finished: false,
 				timeAllowed: EF.initialTimeAllowed,
 				lockoutPeriod: EF.defaultLockoutPeriod,
-				lockoutStartTime: null,
 				status: 0,
 				lockoutIndex: 0,
 				password: password,
 				passwordRequired: false,
-				tracks: EF.tracks
+				tracks: EF.tracks,
+				totalPoints: getTotalPoints()
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
@@ -152,7 +148,7 @@ escapeApp.controller('AdminCtrl', [
 			var track = $s.activeTeam.tracks[puz.track];
 
 			_.pull(track, puz.name);
-			$s.totalPoints -= puz.points;
+			$s.activeTeam.totalPoints -= puz.points;
 		};
 
 		$s.install = function install(puz) {
@@ -160,7 +156,7 @@ escapeApp.controller('AdminCtrl', [
 
 			if($s.isInstallable(puz)) {
 				track.push(puz.name);
-				$s.totalPoints += puz.points;
+				$s.activeTeam.totalPoints += puz.points;
 			}
 		};
 
