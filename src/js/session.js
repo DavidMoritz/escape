@@ -97,6 +97,17 @@ escapeApp.controller('SessionCtrl', [
 			}, true);
 		}
 
+		function nextClue(q) {
+			if(!q.track) {
+				$s.activeTeam.finished = currentTime;
+			} else {
+				q.nextClue = _.findWhere($s.activeTeam.locks, {
+					track: q.track,
+					visible: true
+				});
+			}
+		}
+
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
 
@@ -207,9 +218,7 @@ escapeApp.controller('SessionCtrl', [
 				}
 				$s.activeTeam.solvedPoints += q.points;
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
-				if (!q.nextClue) {
-					$s.activeTeam.finished = currentTime;
-				}
+				nextClue(q);
 			} else {
 				$s.activeTeam.lockoutStarted = currentTime;
 			}

@@ -12,7 +12,8 @@
     "angularfire": "latest",
     "moment": "latest",
     "keypad": "https://github.com/kbwood/keypad.git",
-    "angular-justgage": "https://github.com/sebhildebrandt/angular-justgage.git"
+    "angular-justgage": "https://github.com/sebhildebrandt/angular-justgage.git",
+    "responsivevoicejs": "latest"
   },
   "resolutions": {
     "raphael": "~2.1.2",

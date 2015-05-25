@@ -2,7 +2,8 @@ escapeApp.factory('EscapeFactory', [
 	'$firebaseArray',
 	'$firebaseObject',
 	'PuzzleFactory',
-	function EscapeFactory($fbArray, $fbObject, PuzzleFactory) {
+	'LockFactory',
+	function EscapeFactory($fbArray, $fbObject, PuzzleFactory, LockFactory) {
 		'use strict';
 		var FB = null;
 
@@ -49,7 +50,9 @@ escapeApp.factory('EscapeFactory', [
 				return false;
 			},
 
-			questions: PuzzleFactory
+			questions: PuzzleFactory,
+
+			locks: LockFactory
 		};
 	}
 ]);

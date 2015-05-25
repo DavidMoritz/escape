@@ -91,6 +91,7 @@ escapeApp.controller('AdminCtrl', [
 				timeAllowed: EF.initialTimeAllowed,
 				lockoutPeriod: EF.defaultLockoutPeriod,
 				lockoutStartTime: null,
+				locks: EF.locks,
 				status: 0,
 				password: password,
 				passwordRequired: true
@@ -144,6 +145,23 @@ escapeApp.controller('AdminCtrl', [
 
 		$s.unsolve = function unsolve(puz) {
 			delete $s.activeTeam.solvedQuestions[puz.name];
+		};
+
+		$s.bypass = function bypass(puz, install) {
+			var puzLock = _findWhere($s.activeTeam.locks, {
+				name: puz.name
+			});
+			puzLock.visible = !!install;
+
+			if(install) {
+				$s.totalPoints += puz.points;
+			} else {
+				$s.totalPoints -= puz.points;
+			}
+		};
+
+		$s.install = function bypass(puz) {
+			$s.bypass(puz, true);
 		};
 
 		$s.solve = function solve(puz) {
