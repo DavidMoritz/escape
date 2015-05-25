@@ -5,20 +5,17 @@ escapeApp.factory('PuzzleFactory', [
 		return {
 			operation: {
 				name: 'operation',
+				available: true,
 				icon: 'stethoscope',
 				guess: '',
 				answers: ['risky'],
 				attempts: [],
 				points: 30,
-				nextClue: {
-					lockIcon: 'anchor',
-					code: '32-0-20',
-					visible: true
-				},
+				track: 'a'
 			},
 			monopoly: {
 				name: 'monopoly',
-				prerequisite: 'operation',
+				available: false,
 				icon: 'building-o',
 				guess: '',
 				splitGuess: {
@@ -28,15 +25,11 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Illinois10'],
 				attempts: [],
 				points: 40,
-				nextClue: {
-					lockIcon: 'bomb',
-					code: '2-20-38',
-					visible: true
-				}
+				track: 'a'
 			},
 			yahtzee: {
 				name: 'yahtzee',
-				prerequisite: 'monopoly',
+				available: false,
 				icon: 'cubes',
 				guess: '',
 				splitGuess: {
@@ -46,28 +39,21 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['5&5'],
 				attempts: [],
 				points: 50,
-				nextClue: {
-					lockIcon: 'university',
-					code: '1-9-35',
-					visible: true
-				}
+				track: 'a'
 			},
 			scrabble: {
 				name: 'scrabble',
-				prerequisite: 'yahtzee',
+				available: false,
 				icon: 'th-large',
 				guess: '',
 				answers: ['frustrate'],
 				attempts: [],
 				points: 50,
-				nextClue: {
-					lockIcon: 'birthday-cake',
-					code: '14-29-11',
-					visible: true
-				}
+				track: 'a'
 			},
 			battleship: {
 				name: 'battleship',
+				available: true,
 				icon: 'ship',
 				guess: '',
 				coords: [],
@@ -76,15 +62,11 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['b2&d2'],
 				attempts: [],
 				points: 40,
-				nextClue: {
-					lockIcon: 'gavel',
-					code: '30-5-33',
-					visible: true
-				}
+				track: 'b'
 			},
 			clue: {
 				name: 'clue',
-				prerequisite: 'battleship',
+				available: false,
 				icon: 'search',
 				guess: '',
 				splitGuess: {
@@ -122,30 +104,22 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Colonel Mustard&Wrench&Lounge'],
 				attempts: [],
 				points: 10,
-				nextClue: {
-					lockIcon: 'globe',
-					code: '9-21-37',
-					visible: true
-				}
+				track: 'b'
 			},
 			guessWho: {
 				name: 'guessWho',
 				display: 'Guess Who?',
-				prerequisite: 'clue',
+				available: false,
 				icon: 'users',
 				guess: '',
 				answers: ['alex'],
 				attempts: [],
 				points: 10,
-				nextClue: {
-					lockIcon: 'scissors',
-					code: '11-21-37',
-					visible: true
-				}
+				track: 'b'
 			},
 			chess: {
 				name: 'chess',
-				prerequisite: 'guessWho',
+				available: false,
 				icon: 'delicious',
 				guess: '',
 				coords: [],
@@ -154,28 +128,21 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['h4'],
 				attempts: [],
 				points: 20,
-				nextClue: {
-					lockIcon: 'diamond',
-					code: '30-38-24',
-					visible: true
-				}
+				track: 'b'
 			},
 			crossword: {
 				name: 'crossword',
-				prerequisite: 'chess',
+				available: false,
 				icon: 'newspaper-o',
 				guess: '',
 				answers: ['drmcnordtsieooluon'],
 				attempts: [],
 				points: 40,
-				nextClue: {
-					lockIcon: 'rocket',
-					code: '18-25-7',
-					visible: true
-				}
+				track: 'b'
 			},
 			texasHoldEm: {
 				name: 'texasHoldEm',
+				available: true,
 				display: 'Texas Hold \'Em',
 				icon: 'beer',
 				guess: '',
@@ -186,30 +153,22 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Daniel Craig', 'Craig Daniel'],
 				attempts: [],
 				points: 50,
-				nextClue: {
-					lockIcon: 'tachometer',
-					code: '24-4-27',
-					visible: true
-				}
+				track: 'c'
 			},
 			connect4: {
 				name: 'connect4',
 				display: 'Connect Four',
-				prerequisite: 'texasHoldEm',
+				available: false,
 				icon: 'table',
 				guess: '',
 				answers: ['Winner!'],
 				attempts: [],
 				points: 30,
-				nextClue: {
-					lockIcon: 'tree',
-					code: '23-7-26',
-					visible: true
-				}
+				track: 'c'
 			},
 			fiveRoutes: {
 				name: 'fiveRoutes',
-				prerequisite: 'connect4',
+				available: false,
 				icon: 'random',
 				animals: [
 					'elephant',
@@ -223,15 +182,11 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['elephant-lion-zebra-gorilla-giraffe'],
 				attempts: [],
 				points: 40,
-				nextClue: {
-					lockIcon: 'motorcycle',
-					code: '28-36-16',
-					visible: true
-				}
+				track: 'c'
 			},
 			wordFind: {
 				name: 'wordFind',
-				prerequisite: 'fiveRoutes',
+				available: false,
 				icon: 'arrows-alt',
 				guess: '',
 				splitGuess: {
@@ -241,28 +196,21 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['milton bradley'],
 				attempts: [],
 				points: 50,
-				nextClue: {
-					lockIcon: 'paw',
-					code: '36-11-37',
-					visible: true
-				}
+				track: 'c'
 			},
 			taboo: {
 				name: 'taboo',
-				prerequisite: 'wordFind',
+				available: false,
 				icon: 'ban',
 				guess: '',
 				answers: ['fly'],
 				attempts: [],
 				points: 30,
-				nextClue: {
-					lockIcon: 'ticket',
-					code: '0-0-0',
-					visible: true
-				}
+				track: 'c'
 			},
 			jigsaw: {
 				name: 'jigsaw',
+				available: true,
 				icon: 'puzzle-piece',
 				guess: '',
 				answers: ['12345'],

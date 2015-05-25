@@ -24,20 +24,21 @@ module.exports = function exportConcat(grunt) {
 					'lib/ng-keyboard/src/ngKeypad/ngKeypadInput.js',
 					'lib/raphael/raphael.js',
 					'lib/justgage-official/justgage.js',
-					'lib/angular-justgage/ng-justgage.js'
+					'lib/angular-justgage/ng-justgage.js',
+					'src/external/**/*.js'
 				],
 				'<%= distPath %>escape.js': [
 					'src/services/mc.js',
 					'src/js/app.js',
 					'src/services/*.js',
 					'!src/js/public.js',
-					'src/**/*.js'
+					'src/js/**/*.js'
 				],
 				'<%= distPath %>public.js': [
 					'src/js/app.js',
 					'src/services/*.js',
 					'!src/js/escape.js',
-					'src/**/*.js'
+					'src/js/**/*.js'
 				]
 			}
 		},
