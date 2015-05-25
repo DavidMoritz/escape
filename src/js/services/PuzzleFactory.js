@@ -10,6 +10,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['risky'],
 				attempts: [],
 				points: 30,
+				clueSet: 1,
 				nextClue: {
 					lockIcon: 'anchor',
 					code: '32-0-20',
@@ -28,6 +29,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Illinois10'],
 				attempts: [],
 				points: 40,
+				clueSet: 1,
 				nextClue: {
 					lockIcon: 'bomb',
 					code: '2-20-38',
@@ -46,6 +48,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['5&5'],
 				attempts: [],
 				points: 50,
+				clueSet: 1,
 				nextClue: {
 					lockIcon: 'university',
 					code: '1-9-35',
@@ -60,6 +63,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['frustrate'],
 				attempts: [],
 				points: 50,
+				clueSet: 1,
 				nextClue: {
 					lockIcon: 'birthday-cake',
 					code: '14-29-11',
@@ -76,6 +80,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['b2&d2'],
 				attempts: [],
 				points: 40,
+				clueSet: 2,
 				nextClue: {
 					lockIcon: 'gavel',
 					code: '30-5-33',
@@ -122,6 +127,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Colonel Mustard&Wrench&Lounge'],
 				attempts: [],
 				points: 10,
+				clueSet: 2,
 				nextClue: {
 					lockIcon: 'globe',
 					code: '9-21-37',
@@ -137,6 +143,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['alex'],
 				attempts: [],
 				points: 10,
+				clueSet: 2,
 				nextClue: {
 					lockIcon: 'scissors',
 					code: '11-21-37',
@@ -154,6 +161,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['h4'],
 				attempts: [],
 				points: 20,
+				clueSet: 2,
 				nextClue: {
 					lockIcon: 'diamond',
 					code: '30-38-24',
@@ -168,6 +176,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['drmcnordtsieooluon'],
 				attempts: [],
 				points: 40,
+				clueSet: 2,
 				nextClue: {
 					lockIcon: 'rocket',
 					code: '18-25-7',
@@ -186,6 +195,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Daniel Craig', 'Craig Daniel'],
 				attempts: [],
 				points: 50,
+				clueSet: 3,
 				nextClue: {
 					lockIcon: 'tachometer',
 					code: '24-4-27',
@@ -201,6 +211,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['Winner!'],
 				attempts: [],
 				points: 30,
+				clueSet: 3,
 				nextClue: {
 					lockIcon: 'tree',
 					code: '23-7-26',
@@ -223,6 +234,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['elephant-lion-zebra-gorilla-giraffe'],
 				attempts: [],
 				points: 40,
+				clueSet: 3,
 				nextClue: {
 					lockIcon: 'motorcycle',
 					code: '28-36-16',
@@ -241,6 +253,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['milton bradley'],
 				attempts: [],
 				points: 50,
+				clueSet: 3,
 				nextClue: {
 					lockIcon: 'paw',
 					code: '36-11-37',
@@ -255,6 +268,7 @@ escapeApp.factory('PuzzleFactory', [
 				answers: ['fly'],
 				attempts: [],
 				points: 30,
+				clueSet: 3,
 				nextClue: {
 					lockIcon: 'ticket',
 					code: '0-0-0',
