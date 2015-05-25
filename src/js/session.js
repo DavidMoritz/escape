@@ -170,7 +170,8 @@ escapeApp.controller('SessionCtrl', [
 			solvedQuestions: [],
 			q: EF.questions,
 			lockoutTimeRemaining: 0,
-			status: EF.statuses
+			status: EF.statuses,
+			lockoutImages: EF.lockoutImages
 		});
 
 		$s.requestHint = function requestHint() {
@@ -242,6 +243,9 @@ escapeApp.controller('SessionCtrl', [
 				nextClue(q);
 			} else {
 				$s.activeTeam.lockoutStarted = currentTime;
+				if(++$s.activeTeam.lockoutIndex == $s.lockoutImages.length) {
+					$s.activeTeam.lockoutIndex = 0;
+				}
 			}
 		};
 

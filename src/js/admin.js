@@ -92,6 +92,7 @@ escapeApp.controller('AdminCtrl', [
 				lockoutPeriod: EF.defaultLockoutPeriod,
 				lockoutStartTime: null,
 				status: 0,
+				lockoutIndex: 0,
 				password: password,
 				passwordRequired: false,
 				tracks: EF.tracks
