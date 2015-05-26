@@ -30,6 +30,14 @@ html(ng-app='escapeApp')
 						h4.modal-title Enter the correct code to escape
 					.modal-body
 					.modal-footer
+		#videoModal.modal.fade
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						h4.modal-title Introduction Video
+					.modal-body.video-wrapper
+						img.overlay(src='img/intro.jpg' hidden)
+					.modal-footer
 		#hintModal.modal.fade
 			.modal-dialog.modal-sm
 				.modal-content
@@ -68,6 +76,7 @@ html(ng-app='escapeApp')
 				div(ng-if='!isSolved(q.jigsaw)')
 					.displayMessage
 						h3.digital(ng-if='curMsg') {{curMsg.display}}
+					button.btn.btn-success(data-toggle='modal' data-target='#videoModal' ng-show='activeTeam') #[i.fa.fa-video-camera] Intro Video
 					button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') #[i.fa.fa-comments-o] Show All Messages
 					button.btn.btn-warning(data-toggle='modal' data-target='#keypadModal' ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished') #[i.fa.fa-sign-out] ESCAPE
 					button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hintModal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-question-circle] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}

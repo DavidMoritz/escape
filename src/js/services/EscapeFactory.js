@@ -84,6 +84,7 @@ escapeApp.factory('EscapeFactory', [
 				'img/lockout/skip.png',
 				'img/lockout/old-maid.png',
 				'img/lockout/fireball.png',
+				'img/lockout/candyland.png',
 				'img/lockout/go-to-jail.png',
 				'img/lockout/sorry.png',
 				'img/lockout/jenga.png',

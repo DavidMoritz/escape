@@ -48,6 +48,26 @@ escapeApp.controller('SessionCtrl', [
 				$('.numberEntry').text('-----');
 				$s.q.jigsaw.guess = '';
 			});
+			$('#videoModal').on('show.bs.modal', function() {
+				var wrapper = $(this).find('.video-wrapper');
+				var video = $('<iframe>', {
+					src: 'https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0&autoplay=1',
+					frameborder: '0'
+				});
+				var image = $('<img>', {
+					src: 'img/intro.jpg'
+				});
+
+				wrapper.append(video);
+
+				$s.videoTimer = $timeout(function() {
+					video.remove();
+					wrapper.append(image);
+				}, 55500);
+			}).on('hide.bs.modal', function() {
+				$timeout.cancel($s.videoTimer);
+				$(this).find('iframe, img').remove();
+			});
 			//	DDSlick - Dropdowns (selects) with images in them!
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({
