@@ -31,7 +31,7 @@ escapeApp.controller('AdminCtrl', [
 				// gauge
 				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
 				var percentageTimeUsed = (moment().diff(gameStart, 'seconds') - EF.bufferTime) / $s.activeTeam.timeAllowed;
-				var solvedPercentage = $s.activeTeam.solvedPoints / $s.totalPoints;
+				var solvedPercentage = $s.activeTeam.solvedPoints / $s.activeTeam.totalPoints;
 
 				$s.gauge = (percentageTimeUsed - solvedPercentage).toFixed(4);
 			}

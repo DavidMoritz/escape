@@ -49,6 +49,7 @@ escapeApp.controller('SessionCtrl', [
 				$s.q.jigsaw.guess = '';
 			});
 			$('#videoModal').on('show.bs.modal', function() {
+				videoWatched = true;
 				var wrapper = $(this).find('.video-wrapper');
 				var video = $('<iframe>', {
 					src: 'https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0&autoplay=1',
@@ -87,6 +88,8 @@ escapeApp.controller('SessionCtrl', [
 				// failed password; redirect
 				window.location.replace('http://gameEscape.net');
 			}
+
+			videoWatched = !!$s.activeTeam.timerStarted;
 
 			checkSolvedLocks();
 		}
@@ -151,9 +154,13 @@ escapeApp.controller('SessionCtrl', [
 
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
+		var videoWatched;
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
+				if (!videoWatched) {
+					$('#videoModal').modal('show');
+				}
 				// if administrator "Unsolves" Jigsaw manually, this needs to update.
 				if ($s.activeTeam.finished && !$s.isSolved($s.q.jigsaw)) {
 					delete $s.activeTeam.finished;
