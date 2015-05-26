@@ -5,6 +5,7 @@ escapeApp.factory('PuzzleFactory', [
 		return {
 			operation: {
 				name: 'operation',
+				dropdown: '(a) - Operation',
 				available: true,
 				icon: 'stethoscope',
 				guess: '',
@@ -15,6 +16,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			monopoly: {
 				name: 'monopoly',
+				dropdown: '(a) - Monopoly',
 				available: false,
 				icon: 'building-o',
 				guess: '',
@@ -29,6 +31,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			yahtzee: {
 				name: 'yahtzee',
+				dropdown: '(a) - Yahtzee',
 				available: false,
 				icon: 'cubes',
 				guess: '',
@@ -43,6 +46,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			scrabble: {
 				name: 'scrabble',
+				dropdown: '(a) - Scrabble',
 				available: false,
 				icon: 'th-large',
 				guess: '',
@@ -53,6 +57,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			battleship: {
 				name: 'battleship',
+				dropdown: '(b) - Battleship',
 				available: true,
 				icon: 'ship',
 				guess: '',
@@ -66,6 +71,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			clue: {
 				name: 'clue',
+				dropdown: '(b) - Clue',
 				available: false,
 				icon: 'search',
 				guess: '',
@@ -108,6 +114,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			guessWho: {
 				name: 'guessWho',
+				dropdown: '(b) - Guess Who?',
 				display: 'Guess Who?',
 				available: false,
 				icon: 'users',
@@ -119,6 +126,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			chess: {
 				name: 'chess',
+				dropdown: '(b) - Chess',
 				available: false,
 				icon: 'delicious',
 				guess: '',
@@ -132,6 +140,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			crossword: {
 				name: 'crossword',
+				dropdown: '(b) - Crossword',
 				available: false,
 				icon: 'newspaper-o',
 				guess: '',
@@ -142,6 +151,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			texasHoldEm: {
 				name: 'texasHoldEm',
+				dropdown: '(c) - Texas Hold Em',
 				available: true,
 				display: 'Texas Hold \'Em',
 				icon: 'beer',
@@ -157,6 +167,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			connect4: {
 				name: 'connect4',
+				dropdown: '(c) - Connect Four',
 				display: 'Connect Four',
 				available: false,
 				icon: 'table',
@@ -168,6 +179,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			fiveRoutes: {
 				name: 'fiveRoutes',
+				dropdown: '(c) - Five Routes',
 				available: false,
 				icon: 'random',
 				animals: [
@@ -186,6 +198,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			wordFind: {
 				name: 'wordFind',
+				dropdown: '(c) - Word Find',
 				available: false,
 				icon: 'arrows-alt',
 				guess: '',
@@ -200,6 +213,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			taboo: {
 				name: 'taboo',
+				dropdown: '(c) - Taboo',
 				available: false,
 				icon: 'ban',
 				guess: '',
@@ -210,10 +224,11 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			jigsaw: {
 				name: 'jigsaw',
+				dropdown: '(d) - Jigsaw',
 				available: true,
 				icon: 'puzzle-piece',
 				guess: '',
-				answers: ['12345'],
+				answers: ['75679'],
 				attempts: [],
 				points: 40
 			}

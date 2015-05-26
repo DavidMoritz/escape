@@ -53,10 +53,12 @@ escapeApp.controller('SessionCtrl', [
 				var wrapper = $(this).find('.video-wrapper');
 				var video = $('<iframe>', {
 					src: 'https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0&autoplay=1',
+					class: 'intro',
 					frameborder: '0'
 				});
 				var image = $('<img>', {
-					src: 'img/intro.jpg'
+					src: 'img/intro.jpg',
+					class: 'intro'
 				});
 
 				wrapper.append(video);
@@ -67,7 +69,7 @@ escapeApp.controller('SessionCtrl', [
 				}, 55500);
 			}).on('hide.bs.modal', function() {
 				$timeout.cancel($s.videoTimer);
-				$(this).find('iframe, img').remove();
+				$('iframe.intro, img.intro').remove();
 			});
 			//	DDSlick - Dropdowns (selects) with images in them!
 			$('.ddslick').each(function eachSelect() {
@@ -132,7 +134,7 @@ escapeApp.controller('SessionCtrl', [
 
 		function nextClue(q) {
 			if(!q.track) {
-				$s.activeTeam.finished = currentTime;
+				$s.activeTeam.finished = moment().format(timeFormat);
 				return false;
 			}
 			var track = $s.activeTeam.tracks[q.track];
