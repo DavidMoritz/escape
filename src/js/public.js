@@ -111,7 +111,7 @@ escapeApp.controller('EscapeCtrl', [
 
 		function getGuess(voidN) {
 			var guess = Math.floor(Math.random() * 9) + '';
-				
+
 			voidN = voidN ? $s.answer.indexOf(voidN) : -1;
 
 			if($s.answer.indexOf(guess) !== -1 && $s.answer.indexOf(guess) !== voidN) {
