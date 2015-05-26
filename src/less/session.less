@@ -18,6 +18,29 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 	font-family: messageFont;
 	src: url(../fonts/monospace.ttf);
 }
+.video-wrapper {
+	position: relative;
+	padding-bottom: 50%;
+	margin: 4%;
+	height: 0;
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
+.lockout-image {
+	margin: auto;
+}
 .medal {
 	float: right;
 	width: 100px;
@@ -26,6 +49,7 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 		width: 100%;
 	}
 	.medal-title {
+		font-weight: normal;
 		text-align: center;
 		line-height: 1em;
 		margin-bottom: 5px;
@@ -100,7 +124,7 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 		top: 0 !important;
 		position: relative !important;
 		margin: auto;
-  		padding-top: 2px;
+			padding-top: 2px;
 	}
 }
 .dd-container {
@@ -248,8 +272,8 @@ h1.digital {
 	width: 443px;
 	height: 28px;
 	padding: 0 0 0 5px;
-  border-width: 2px 1px;
-  border-color: #1b1d1e;
+	border-width: 2px 1px;
+	border-color: #1b1d1e;
 }
 
 #word-find {
@@ -262,3 +286,50 @@ h1.digital {
 
 footer.clear {margin-top: 90px;}
 a {cursor: pointer;}
+
+#lockout {
+	&, & > * {text-align: center;}
+	h3 {text-transform: uppercase;}
+	div {
+		height: 330px;
+
+		.fa-stack {
+			.fa-lock {
+				font-size: 25em;
+				left: -95px;
+			}
+			.fa-minus {
+				font-size: 7em;
+				top: 1.9em;
+			}
+		}
+	}
+	h4 strong {
+		display: block;
+		font-size: 5em;
+		color: @brand-info;
+	}
+}
+
+#you-win {
+	&, > * {text-align: center;}
+	h2 {
+		color: @brand-info;
+		text-transform: uppercase;
+		font-size: 40px;
+		margin: 30px auto;
+	}
+	h3 {
+		font-size: 60px;
+		margin: 30px auto;
+	}
+	h4 {
+		font-size: 25px;
+		margin: 20px auto;
+
+		strong {
+			text-transform: uppercase;
+			color: @brand-success;
+		}
+	}
+}

@@ -35,17 +35,25 @@ html(ng-app='escapeApp')
 			.alert.alert-danger.alert-flip(ng-show='activeTeam.hintInProgress') Hint has been requested.
 				button.btn.btn-success(ng-click='remove("hintInProgress")') #[i.fa.fa-check-circle] Resolved
 			.row
-				+col(null, 3)(ng-show='activeTeam')
-					h3 Team: {{activeTeam.name}}
-					h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
-					h5 Hints: {{activeTeam.hints}}
-						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("hints", 1)')
-						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("hints", -1)')
-					h5 Time Allowed: {{activeTeam.timeAllowed / 60}} minutes
-						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", 60)')
-						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", -60)')
-				+col(null, 3)
-					#performanceGauge(just-gage style="width:85%" value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
+				+col(null, 6)
+					.row
+						+col(null, 6)(ng-show='activeTeam')
+							h3 Team: {{activeTeam.name}}
+							h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
+							h5 Hints: {{activeTeam.hints}}
+								i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("hints", 1)')
+								i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("hints", -1)')
+							h5 Time Allowed: {{activeTeam.timeAllowed / 60}} minutes
+								i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", 60)')
+								i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", -60)')
+							h5 Solved Points: {{activeTeam.solvedPoints}} / {{activeTeam.totalPoints}}
+						+col(null, 6)
+							#performance-gauge(just-gage value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
+					.row.tracks(ng-show='advancedControls')
+						+col(null, 4)(ng-repeat='(k, track) in activeTeam.tracks')
+							h5 Track #[span.upper {{k}}]:
+							ul
+								li(ng-repeat='game in track') {{game}}
 				+col(null, 6).controls
 					label.block(for='advancedControls')
 						h3 Controls: #[input(type='checkbox' ng-model='advancedControls' id='advancedControls')]
@@ -53,18 +61,20 @@ html(ng-app='escapeApp')
 					span(ng-show='activeTeam')
 						button.btn.btn-float.btn-success(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer started"})' ng-hide='activeTeam.timerStarted') #[i.fa.fa-clock-o] Start Game
 						button.btn.btn-float.btn-danger(ng-click='setAttribute("alert", {toggle: true, seconds: 3})') #[i.fa.fa-bullhorn] {{activeTeam.alert ? 'Stop Alert' : 'Alert Team'}}
-						button.btn.btn-float.btn-info(ng-click='remove("lockoutStarted")' ng-show='activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
+						button.btn.btn-float.btn-success(ng-click='remove("lockoutStarted")' ng-show='activeTeam.lockoutStarted') #[i.fa.fa-unlock] End Lockout
 						span(ng-show='advancedControls')
+							button.btn.btn-float.btn-info(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
 							button.btn.btn-float.btn-primary.collapse.in.chooseTeamSection.inline-block(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] Change Teams
 							button.btn.btn-float.btn-warning(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer restarted"})' ng-show='activeTeam.timerStarted') #[i.fa.fa-clock-o] Restart Timer
-							button.btn.btn-float.btn-danger(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
-							button.btn.btn-float.last.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+							//button.btn.btn-float.last.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
 							.input-group
 								span#puzzleLabel.input-group-addon Puzzle:
-								select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.name for (key, puzzle) in allPuzzles')
+								select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.dropdown for (key, puzzle) in q')
 									option(value='' selected) -- choose puzzle --
 								span.input-group-btn
-									button.btn.btn-warning(type='button' ng-click='solve(formfields.puzzle)' ng-if='formfields.puzzle && !isSolved(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Solve
+									button.btn.btn-info(type='button' ng-click='bypass(formfields.puzzle)' ng-if='formfields.puzzle && isBypassable(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Bypass
+									button.btn.btn-primary(type='button' ng-click='install(formfields.puzzle)' ng-if='formfields.puzzle && isInstallable(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Install
+									button.btn.btn-warning(type='button' ng-click='solve(formfields.puzzle)' ng-if='formfields.puzzle && !isSolved(formfields.puzzle) && isAvailable(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Solve
 									button.btn.btn-danger(type='button' ng-click='unsolve(formfields.puzzle)' ng-if='isSolved(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Unsolve
 							.input-group
 								span#passwordLabel.input-group-addon Password:

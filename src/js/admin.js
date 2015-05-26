@@ -18,24 +18,20 @@ escapeApp.controller('AdminCtrl', [
 		//	initialize scoped variables
 		_.assign($s, {
 			allTeams: [],
-			activeTeam: null,
-			activeTeamId: null,
 			formFields: {
 				newTeamName: '',
 				newMessage: '',
 				puzzle: ''
 			},
-			teamId: null,
-			totalPoints: getTotalPoints(),
-			allPuzzles: EF.questions
+			q: EF.questions
 		});
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && !$s.activeTeam.finished) {
 				// gauge
 				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
-				var percentageTimeUsed = (moment().diff(gameStart, 'seconds') - EF.bufferTime) / $s.activeTeam.timeAllowed;
-				var solvedPercentage = $s.activeTeam.solvedPoints / $s.totalPoints;
+				var percentageTimeUsed = (moment().diff(gameStart, 'seconds') + EF.bufferTime) / $s.activeTeam.timeAllowed;
+				var solvedPercentage = $s.activeTeam.solvedPoints / $s.activeTeam.totalPoints;
 
 				$s.gauge = (percentageTimeUsed - solvedPercentage).toFixed(4);
 			}
@@ -90,10 +86,12 @@ escapeApp.controller('AdminCtrl', [
 				finished: false,
 				timeAllowed: EF.initialTimeAllowed,
 				lockoutPeriod: EF.defaultLockoutPeriod,
-				lockoutStartTime: null,
 				status: 0,
+				lockoutIndex: -1,
 				password: password,
-				passwordRequired: true
+				passwordRequired: false,
+				tracks: EF.tracks,
+				totalPoints: getTotalPoints()
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
@@ -143,8 +141,23 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.unsolve = function unsolve(puz) {
-			//console.log('deleting ' + puz.name + ' from solved puzzles');
 			delete $s.activeTeam.solvedQuestions[puz.name];
+		};
+
+		$s.bypass = function bypass(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			_.pull(track, puz.name);
+			$s.activeTeam.totalPoints -= puz.points;
+		};
+
+		$s.install = function install(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			if($s.isInstallable(puz)) {
+				track.push(puz.name);
+				$s.activeTeam.totalPoints += puz.points;
+			}
 		};
 
 		$s.solve = function solve(puz) {
@@ -157,15 +170,47 @@ escapeApp.controller('AdminCtrl', [
 			}
 			$s.activeTeam.solvedPoints += puz.points;
 			$s.activeTeam.solvedQuestions[puz.name] = moment().format(timeFormat);
+			$timeout(function() {
+				EF.setFB('checkSolvedLocks', true);
+			}, 100);
+			
 		};
 
 		$s.isSolved = function isSolved(puz) {
-			if (!puz) {
-				return false;
-			}
-
 			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
+
 			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
+		};
+
+		$s.isBypassable = function isBypassable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			return !$s.isAvailable(puz) && track.indexOf(puz.name) !== -1;
+		};
+
+		$s.isInstallable = function isInstallable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			return !$s.isAvailable(puz) && !$s.isSolved(track[track.length - 1]) && !$s.isBypassable(puz);
+		};
+
+		$s.isAvailable = function isAvailable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			if(!track) {
+				return true;
+			}
+			for(var i = 0, result; i < track.length; i++) {
+				if(puz.name == track[i]) {
+					result = true;
+					break;
+				}
+				if(!$s.isSolved(track[i])) {
+					result = false;
+					break;
+				}
+			}
+			return result;
 		};
 
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {

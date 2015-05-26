@@ -11,7 +11,7 @@ html(ng-app='escapeApp')
 		link(rel='shortcut icon', href='favicon.ico')
 		link(rel='stylesheet', href='inc/escape.css')
 		script(src='inc/angular.js')
-	body(ng-cloak, ng-controller='SessionCtrl')
+	body(ng-cloak, ng-controller='SessionCtrl', ng-class='{"locked-out": activeTeam && activeTeam.lockoutStarted}')
 		#previousMessagesModal.modal.fade
 			.modal-dialog
 				.modal-content
@@ -30,15 +30,24 @@ html(ng-app='escapeApp')
 						h4.modal-title Enter the correct code to escape
 					.modal-body
 					.modal-footer
+		#videoModal.modal.fade
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						h4.modal-title Introduction Video
+					.modal-body.video-wrapper
+						img.overlay(src='img/intro.jpg' hidden)
+					.modal-footer
+						button.btn.btn-default(data-dismiss='modal') Done
 		#hintModal.modal.fade
 			.modal-dialog.modal-sm
 				.modal-content
 					.modal-header
 						h4.modal-title Would you like to {{activeTeam.hints ? "use" : "request"}} a hint?
 					.modal-body
-						.medal
-							img(src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].formal}}')
-							p.medal-title {{status[activeTeam.status].formal}}
+						.medal(ng-if='activeTeam')
+							img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
+							p.medal-title {{status[activeTeam.status].text}}
 						div(ng-hide='activeTeam.hints')
 							div(ng-hide='activeTeam.status == status.length - 1')
 								p Your team is currently holding {{status[activeTeam.status].text}} status. Requesting a hint will bring your team to {{status[activeTeam.status + 1].text}} status.
@@ -53,31 +62,40 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
-				.medal
-					p.medal-title {{status[activeTeam.status].formal}}
-					img(src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].formal}}')
+				.medal(ng-if='activeTeam')
+					p.medal-title {{status[activeTeam.status].text}}
+					img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 				h1.digital
 					span(ng-hide='activeTeam') Loading
 						i.fa.fa-spinner.fa-pulse
 					span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
-				.displayMessage
-					h3.digital(ng-if='curMsg') {{curMsg.display}}
-				button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') #[i.fa.fa-comments-o] Show All Messages
-				button.btn.btn-warning(data-toggle='modal' data-target='#keypadModal' ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished') #[i.fa.fa-sign-out] ESCAPE
-				button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hintModal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-question-circle] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
-			#game(ng-if='activeTeam' role='tabpanel')
+				#you-win(ng-if='isSolved(q.jigsaw)')
+					.displayMessage.text-center
+						h2 You win!#[br] You've escaped the room!
+						h4 You have completed your mission with #[strong {{status[activeTeam.status].text}}] status, escaping the room with #[strong {{moment(timeRemaining * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
+						h3 #[strong Congratulations!!]
+				div(ng-if='!isSolved(q.jigsaw)')
+					.displayMessage
+						h3.digital(ng-if='curMsg') {{curMsg.display}}
+					button.btn.btn-success(data-toggle='modal' data-target='#videoModal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-video-camera] Intro Video
+					button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') #[i.fa.fa-comments-o] Show All Messages
+					button.btn.btn-warning(data-toggle='modal' data-target='#keypadModal' ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished') #[i.fa.fa-sign-out] ESCAPE
+					button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hintModal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-question-circle] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
+			#game(ng-if='activeTeam && !isSolved(q.jigsaw)' role='tabpanel')
 				#lockout(ng-show='activeTeam.lockoutStarted')
-					h4 Incorrect! You are locked out for {{lockoutTimeRemaining}} seconds
+					h3 Locked Out!
+					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
+					h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockoutTimeRemaining}}] seconds.
 				#questions(ng-hide='activeTeam.lockoutStarted')
 					h3 Team: {{activeTeam.name}}
 					ul.buttonList
-						li(ng-repeat='(id, obj) in q' ng-show='isSolved(obj.prerequisite) && id !== "jigsaw"' class='{{isSolved(id) ? "solved" : "unsolved"}}')
+						li(ng-repeat='(id, obj) in q' ng-show='id !== "jigsaw" && isAvailable(obj)' class='{{isSolved(id) ? "solved" : "unsolved"}}')
 							a(data-toggle='tab' href='#{{_.kebabCase(id)}}')
 								+squaredIcon('obj.icon')
 								i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id)')
 					.clearfix
 					.row.tab-content
-						.tab-pane(ng-show='isSolved(q.operation.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.operation.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.operation.name)}}')
 							h4 Question
 								+squaredIcon('q.operation.icon')
 								em(ng-show='isSolved(q.operation)') ({{q.operation.display || mc.camelToTitle(q.operation.name)}})
@@ -86,7 +104,7 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
 								button.btn.btn-primary(ng-click='submitGuess(q.operation)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.operation')
-						.tab-pane(ng-show='isSolved(q.monopoly.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.monopoly.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.monopoly.name)}}')
 							h4 Question
 								+squaredIcon('q.monopoly.icon')
 								em(ng-show='isSolved(q.monopoly)') ({{q.monopoly.display || mc.camelToTitle(q.monopoly.name)}})
@@ -97,7 +115,7 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.monopoly)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.monopoly')
-						.tab-pane(ng-show='isSolved(q.yahtzee.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.yahtzee.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.yahtzee.name)}}')
 							h4 Question
 								+squaredIcon('q.yahtzee.icon')
 								em(ng-show='isSolved(q.yahtzee)') ({{q.yahtzee.display || mc.camelToTitle(q.yahtzee.name)}})
@@ -111,7 +129,7 @@ html(ng-app='escapeApp')
 								.clearfix
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.yahtzee)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.yahtzee')
-						.tab-pane(ng-show='isSolved(q.scrabble.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.scrabble.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.scrabble.name)}}')
 							h4 Question
 								+squaredIcon('q.scrabble.icon')
 								em(ng-show='isSolved(q.scrabble)') ({{q.scrabble.display || mc.camelToTitle(q.scrabble.name)}})
@@ -120,7 +138,7 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.scrabble.guess' placeholder='What SCRABBLE word did I spell?')
 								button.btn.btn-primary(ng-click='submitGuess(q.scrabble)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.scrabble')
-						.tab-pane(ng-show='isSolved(q.battleship.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.battleship.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.battleship.name)}}')
 							h4 Question
 								+squaredIcon('q.battleship.icon')
 								em(ng-show='isSolved(q.battleship)') ({{q.battleship.display || mc.camelToTitle(q.battleship.name)}})
@@ -138,7 +156,7 @@ html(ng-app='escapeApp')
 												ng-click='toggleCoordSelect(q.battleship, row + col)') #[i.fa.fa-circle]
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.battleship)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.battleship')
-						.tab-pane(ng-show='isSolved(q.clue.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.clue.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.clue.name)}}')
 							h4 Question
 								+squaredIcon('q.clue.icon')
 								em(ng-show='isSolved(q.clue)') ({{q.clue.display || mc.camelToTitle(q.clue.name)}})
@@ -154,7 +172,7 @@ html(ng-app='escapeApp')
 									option(value='' disabled ng-if='!q.clue.splitGuess.where') Room...
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.clue)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.clue')
-						.tab-pane(ng-show='isSolved(q.guessWho.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.guessWho.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.guessWho.name)}}')
 							h4 Question
 								+squaredIcon('q.guessWho.icon')
 								em(ng-show='isSolved(q.guessWho)') ({{q.guessWho.display || mc.camelToTitle(q.guessWho.name)}})
@@ -163,7 +181,7 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.guessWho.guess' placeholder='Guess Who?')
 								button.btn.btn-primary(ng-click='submitGuess(q.guessWho)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.guessWho')
-						.tab-pane(ng-show='isSolved(q.chess.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.chess.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.chess.name)}}')
 							h4 Question
 								+squaredIcon('q.chess.icon')
 								em(ng-show='isSolved(q.chess)') ({{q.chess.display || mc.camelToTitle(q.chess.name)}})
@@ -181,7 +199,7 @@ html(ng-app='escapeApp')
 											th(ng-repeat='col in q.chess.columns') {{col}}
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.chess)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.chess')
-						.tab-pane(ng-show='isSolved(q.crossword.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.crossword.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.crossword.name)}}')
 							h4 Question
 								+squaredIcon('q.crossword.icon')
 								em(ng-show='isSolved(q.crossword)') ({{q.crossword.display || mc.camelToTitle(q.crossword.name)}})
@@ -190,7 +208,7 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.crossword)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.crossword')
-						.tab-pane(ng-show='isSolved(q.texasHoldEm.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.texasHoldEm.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.texasHoldEm.name)}}')
 							h4 Question
 								+squaredIcon('q.texasHoldEm.icon')
 								em(ng-show='isSolved(q.texasHoldEm)') ({{q.texasHoldEm.display || mc.camelToTitle(q.texasHoldEm.name)}})
@@ -203,7 +221,7 @@ html(ng-app='escapeApp')
 										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2' placeholder='Last Name')
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.texasHoldEm)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.texasHoldEm')
-						.tab-pane(ng-show='isSolved(q.connect4.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.connect4.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.connect4.name)}}')
 							h4 Question
 								+squaredIcon('q.connect4.icon')
 								em(ng-show='isSolved(q.connect4)') ({{q.connect4.display || mc.camelToTitle(q.connect4.name)}})
@@ -211,7 +229,7 @@ html(ng-app='escapeApp')
 								label Which column should Red choose?
 								iframe.connect4game.collapse.in(src="html/connect4.html" width="354px" height="354px" scrolling="no")
 							+solvedSection('q.connect4')
-						.tab-pane(ng-show='isSolved(q.fiveRoutes.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.fiveRoutes.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.fiveRoutes.name)}}')
 							h4 Question
 								+squaredIcon('q.fiveRoutes.icon')
 								em(ng-show='isSolved(q.fiveRoutes)') ({{q.fiveRoutes.display || mc.camelToTitle(q.fiveRoutes.name)}})
@@ -235,7 +253,7 @@ html(ng-app='escapeApp')
 										img(ng-src='{{"img/five-routes-" + animal + ".png"}}' alt='{{animal}}')
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.fiveRoutes)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.fiveRoutes')
-						.tab-pane(ng-show='isSolved(q.wordFind.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.wordFind.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.wordFind.name)}}')
 							h4 Question
 								+squaredIcon('q.wordFind.icon')
 								em(ng-show='isSolved(q.wordFind)') ({{q.wordFind.display || mc.camelToTitle(q.wordFind.name)}})
@@ -249,7 +267,7 @@ html(ng-app='escapeApp')
 										input.form-control(type='text' ng-model='q.wordFind.splitGuess.word2' maxlength='{{q.wordFind.answers[0].split(\' \')[1].length}}')
 								button.btn.btn-primary(ng-click='submitGuessSpecial(q.wordFind)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.wordFind')
-						.tab-pane(ng-show='isSolved(q.taboo.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.taboo.name)}}')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.taboo.name)}}')
 							h4 Question
 								+squaredIcon('q.taboo.icon')
 								em(ng-show='isSolved(q.taboo)') ({{q.taboo.display || mc.camelToTitle(q.taboo.name)}})
@@ -260,7 +278,7 @@ html(ng-app='escapeApp')
 							+solvedSection('q.taboo')
 					hr
 					.row
-						+col(null)(ng-show='isSolved(q.jigsaw.prerequisite)' role='tabpanel' id='{{_.kebabCase(q.jigsaw.name)}}')
+						+col(null)(ng-show='isAvailable(q.jigsaw)' role='tabpanel' id='{{_.kebabCase(q.jigsaw.name)}}')
 							h4 Question
 								+squaredIcon('q.jigsaw.icon')
 							div(ng-if='!isSolved(q.jigsaw)')
@@ -268,7 +286,5 @@ html(ng-app='escapeApp')
 								.clearfix
 								button.btn.btn-warning.numericKeypadShow(data-toggle='modal' data-target='#keypadModal') #[i.fa.fa-sign-out] ESCAPE
 								input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-							div(ng-if='isSolved(q.jigsaw)')
-								h3 #[i.fa.fa-check] YOU WIN!  YOU'VE ESCAPED THE ROOM!
-								button.btn.btn-danger(ng-click='unsolve(q.jigsaw)') #[i.fa.fa-exclamation-triangle] Unsolve
+				iframe.intro(src='https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0' hidden)
 		| @@javascriptReplaceFiles

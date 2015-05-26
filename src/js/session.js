@@ -48,6 +48,29 @@ escapeApp.controller('SessionCtrl', [
 				$('.numberEntry').text('-----');
 				$s.q.jigsaw.guess = '';
 			});
+			$('#videoModal').on('show.bs.modal', function() {
+				videoWatched = true;
+				var wrapper = $(this).find('.video-wrapper');
+				var video = $('<iframe>', {
+					src: 'https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0&autoplay=1',
+					class: 'intro',
+					frameborder: '0'
+				});
+				var image = $('<img>', {
+					src: 'img/intro.jpg',
+					class: 'intro'
+				});
+
+				wrapper.append(video);
+
+				$s.videoTimer = $timeout(function() {
+					video.remove();
+					wrapper.append(image);
+				}, 55500);
+			}).on('hide.bs.modal', function() {
+				$timeout.cancel($s.videoTimer);
+				$('iframe.intro, img.intro').remove();
+			});
 			//	DDSlick - Dropdowns (selects) with images in them!
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({
@@ -67,6 +90,18 @@ escapeApp.controller('SessionCtrl', [
 				// failed password; redirect
 				window.location.replace('http://gameEscape.net');
 			}
+
+			videoWatched = !!$s.activeTeam.timerStarted;
+
+			checkSolvedLocks();
+		}
+
+		function checkSolvedLocks() {
+			_.forEach($s.q, function(q, id) {
+				if($s.isSolved(q) && !q.nextClue) {
+					nextClue(q);
+				}
+			});
 		}
 
 		function typeOutMessage() {
@@ -97,11 +132,42 @@ escapeApp.controller('SessionCtrl', [
 			}, true);
 		}
 
+		function nextClue(q) {
+			if(!q.track) {
+				$s.activeTeam.finished = moment().format(timeFormat);
+				return false;
+			}
+			var track = $s.activeTeam.tracks[q.track];
+			var index = track.indexOf(q.name) + 1;
+
+			if(index == track.length) {
+				// no more in the track
+				q.nextClue = _.findWhere(EF.locks, {
+					track: q.track,
+					opens: 'jigsaw'
+				});
+			} else {
+				q.nextClue = _.findWhere(EF.locks, {
+					track: q.track,
+					opens: track[index]
+				});
+			}
+		}
+
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
+		var videoWatched;
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
+				if (!videoWatched) {
+					$('#videoModal').modal('show');
+				}
+				// if administrator "Unsolves" Jigsaw manually, this needs to update.
+				if ($s.activeTeam.finished && !$s.isSolved($s.q.jigsaw)) {
+					delete $s.activeTeam.finished;
+				}
+
 				// convertTimer
 				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
 				var current = $s.activeTeam.finished ? moment($s.activeTeam.finished, timeFormat) : moment();
@@ -133,7 +199,8 @@ escapeApp.controller('SessionCtrl', [
 			solvedQuestions: [],
 			q: EF.questions,
 			lockoutTimeRemaining: 0,
-			status: EF.statuses
+			status: EF.statuses,
+			lockoutImages: EF.lockoutImages
 		});
 
 		$s.requestHint = function requestHint() {
@@ -153,11 +220,11 @@ escapeApp.controller('SessionCtrl', [
 				secondsRemaining = $s.activeTeam.lockoutPeriod - moment().diff(lockoutStart, 'seconds');
 
 				if (secondsRemaining <= 0) {
-					$s.lockoutStarted = null;
+					$s.activeTeam.lockoutStarted = null;
 				}
 			}
 
-			$s.lockoutTimeRemaining = secondsRemaining;
+			$s.lockoutTimeRemaining = secondsRemaining || 0;
 		};
 
 		$s.chooseTeam = function chooseTeam(teamId) {
@@ -202,11 +269,12 @@ escapeApp.controller('SessionCtrl', [
 				}
 				$s.activeTeam.solvedPoints += q.points;
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
-				if (!q.nextClue) {
-					$s.activeTeam.finished = currentTime;
-				}
+				nextClue(q);
 			} else {
 				$s.activeTeam.lockoutStarted = currentTime;
+				if(++$s.activeTeam.lockoutIndex == $s.lockoutImages.length) {
+					$s.activeTeam.lockoutIndex = 0;
+				}
 			}
 		};
 
@@ -251,12 +319,28 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.isSolved = function isSolved(puz) {
-			if (!puz) {
-				return true;	//	no prerequisite
-			}
-
 			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
+
 			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
+		};
+
+		$s.isAvailable = function isAvailable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			if(!track) {
+				return true;
+			}
+			for(var i = 0, result; i < track.length; i++) {
+				if(puz.name == track[i]) {
+					result = true;
+					break;
+				}
+				if(!$s.isSolved(track[i])) {
+					result = false;
+					break;
+				}
+			}
+			return result;
 		};
 
 		$s.allTeams = EF.getFBArray('teams');
@@ -278,6 +362,10 @@ escapeApp.controller('SessionCtrl', [
 						$s.submitGuess($s.q.connect4);
 					}
 				}
+			});
+			EF.getFB('checkSolvedLocks').on('value', function attemptingConnect4() {
+				checkSolvedLocks();
+				EF.setFB('checkSolvedLocks', null);
 			});
 		});
 

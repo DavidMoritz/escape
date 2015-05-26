@@ -2,7 +2,8 @@ escapeApp.factory('EscapeFactory', [
 	'$firebaseArray',
 	'$firebaseObject',
 	'PuzzleFactory',
-	function EscapeFactory($fbArray, $fbObject, PuzzleFactory) {
+	'LockFactory',
+	function EscapeFactory($fbArray, $fbObject, PuzzleFactory, LockFactory) {
 		'use strict';
 		var FB = null;
 
@@ -14,21 +15,17 @@ escapeApp.factory('EscapeFactory', [
 			defaultLockoutPeriod: 45,
 
 			statuses: [{
-				text: 'gold',
-				path: 'img/gold.png',
-				formal: 'Gold'
+				text: 'Gold',
+				path: 'img/gold.png'
 			},{
-				text: 'silver',
-				path: 'img/silver.png',
-				formal: 'Silver'
+				text: 'Silver',
+				path: 'img/silver.png'
 			},{
-				text: 'bronze',
-				path: 'img/bronze.png',
-				formal: 'Bronze'
+				text: 'Bronze',
+				path: 'img/bronze.png'
 			},{
-				text: 'honorable mention',
-				path: 'img/honorable-mention.png',
-				formal: 'Honorable Mention'
+				text: 'Honorable Mention',
+				path: 'img/honorable-mention.png'
 			}],
 
 			getFB: function getFB(childPath) {
@@ -53,7 +50,53 @@ escapeApp.factory('EscapeFactory', [
 				return false;
 			},
 
-			questions: PuzzleFactory
+			questions: PuzzleFactory,
+
+			locks: LockFactory,
+
+			tracks: {
+				a: [
+					'operation',
+					'monopoly',
+					'yahtzee',
+					'scrabble'
+				],
+				b: [
+					'battleship',
+					'clue',
+					'guessWho',
+					'chess',
+					'crossword'
+				],
+				c: [
+					'texasHoldEm',
+					'connect4',
+					'fiveRoutes',
+					'wordFind',
+					'taboo'
+				]
+			},
+
+			lockoutImages: [
+				'img/lockout/lock.png',
+				'img/lockout/in-jail.png',
+				'img/lockout/dunce.png',
+				'img/lockout/old-maid.png',
+				'img/lockout/hi-ho-cherry-o.png',
+				'img/lockout/fireball.png',
+				'img/lockout/candyland.png',
+				'img/lockout/skip.png',
+				'img/lockout/wheel-of-fortune.png',
+				'img/lockout/go-to-jail.png',
+				'img/lockout/sorry.png',
+				'img/lockout/jenga.png',
+				'img/lockout/dont-wake-daddy.png',
+				'img/lockout/epidemic.png',
+				'img/lockout/life.png',
+				'img/lockout/payday.png',
+				'img/lockout/jail.png'
+			]
 		};
 	}
 ]);
+

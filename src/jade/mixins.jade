@@ -18,7 +18,7 @@ mixin squaredIcon(icon)
 mixin solvedSection(puzzleObj)
 	div(ng-if='isSolved(#{puzzleObj})')
 		h3 #[i.fa.fa-check] SOLVED!
-		.well(ng-show='#{puzzleObj}.nextClue.visible')
+		.well
 			p.lead
 				span.fa-stack.fa-2x
 					i.fa.fa-stack-2x.fa-circle.text-white
