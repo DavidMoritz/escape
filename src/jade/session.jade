@@ -38,6 +38,7 @@ html(ng-app='escapeApp')
 					.modal-body.video-wrapper
 						img.overlay(src='img/intro.jpg' hidden)
 					.modal-footer
+						button.btn.btn-default(data-dismiss='modal') Done
 		#hintModal.modal.fade
 			.modal-dialog.modal-sm
 				.modal-content
@@ -83,7 +84,7 @@ html(ng-app='escapeApp')
 			#game(ng-if='activeTeam && !isSolved(q.jigsaw)' role='tabpanel')
 				#lockout(ng-show='activeTeam.lockoutStarted')
 					h3 Locked Out!
-					img.img.img-responsive.lockout-image(src='{{lockoutImages[activeTeam.lockoutIndex]}}')
+					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
 					h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockoutTimeRemaining}}] seconds.
 				#questions(ng-hide='activeTeam.lockoutStarted')
 					h3 Team: {{activeTeam.name}}
