@@ -78,9 +78,9 @@ escapeApp.factory('EscapeFactory', [
 			},
 
 			lockoutImages: [
-				'img/lockout/lock.png',
 				'img/lockout/in-jail.png',
 				'img/lockout/dunce.png',
+				'img/lockout/mousetrap.png',
 				'img/lockout/old-maid.png',
 				'img/lockout/hi-ho-cherry-o.png',
 				'img/lockout/fireball.png',
@@ -94,7 +94,8 @@ escapeApp.factory('EscapeFactory', [
 				'img/lockout/epidemic.png',
 				'img/lockout/life.png',
 				'img/lockout/payday.png',
-				'img/lockout/jail.png'
+				'img/lockout/jail.png',
+				'img/lockout/lock.png'
 			]
 		};
 	}
