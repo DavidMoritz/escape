@@ -67,15 +67,16 @@ html(ng-app='escapeApp')
 							button.btn.btn-float.btn-primary.collapse.in.chooseTeamSection.inline-block(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] Change Teams
 							button.btn.btn-float.btn-warning(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer restarted"})' ng-show='activeTeam.timerStarted') #[i.fa.fa-clock-o] Restart Timer
 							//button.btn.btn-float.last.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
+							.clearfix
 							.input-group
 								span#puzzleLabel.input-group-addon Puzzle:
-								select.form-control(ng-model='formfields.puzzle' ng-options='puzzle.dropdown for (key, puzzle) in q')
+								select.form-control(ng-model='formFields.puzzle' ng-options='puzzle.dropdown for (key, puzzle) in q')
 									option(value='' selected) -- choose puzzle --
 								span.input-group-btn
-									button.btn.btn-info(type='button' ng-click='bypass(formfields.puzzle)' ng-if='formfields.puzzle && isBypassable(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Bypass
-									button.btn.btn-primary(type='button' ng-click='install(formfields.puzzle)' ng-if='formfields.puzzle && isInstallable(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Install
-									button.btn.btn-warning(type='button' ng-click='solve(formfields.puzzle)' ng-if='formfields.puzzle && !isSolved(formfields.puzzle) && isAvailable(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Solve
-									button.btn.btn-danger(type='button' ng-click='unsolve(formfields.puzzle)' ng-if='isSolved(formfields.puzzle)') #[i.fa.fa-exclamation-triangle] Unsolve
+									button.btn.btn-info(type='button' ng-click='bypass(formFields.puzzle)' ng-if='formFields.puzzle && isBypassable(formFields.puzzle)') #[i.fa.fa-exclamation-triangle] Bypass
+									button.btn.btn-primary(type='button' ng-click='install(formFields.puzzle)' ng-if='formFields.puzzle && isInstallable(formFields.puzzle)') #[i.fa.fa-exclamation-triangle] Install
+									button.btn.btn-warning(type='button' ng-click='solve(formFields.puzzle)' ng-if='formFields.puzzle && !isSolved(formFields.puzzle) && isAvailable(formFields.puzzle)') #[i.fa.fa-exclamation-triangle] Solve
+									button.btn.btn-danger(type='button' ng-click='unsolve(formFields.puzzle)' ng-if='isSolved(formFields.puzzle)') #[i.fa.fa-exclamation-triangle] Unsolve
 							.input-group
 								span#passwordLabel.input-group-addon Password:
 								input#teamPassword.form-control(type='text' ng-model='activeTeam.password' aria-describedby='#passwordLabel')
@@ -83,5 +84,8 @@ html(ng-app='escapeApp')
 									span Required?
 									input#teamPasswordRequired(type='checkbox' ng-model='activeTeam.passwordRequired')
 									i.fa.btn-icon(class='{{activeTeam.passwordRequired ? "fa-lock" : "fa-unlock"}}')
+							.input-group
+								span#puzzleLabel.input-group-addon Message Voice:
+								select.form-control(ng-model='activeTeam.voice' ng-options='v for v in voices')
 			iframe(src="session.html" width="100%")
 		| @@javascriptReplaceFiles

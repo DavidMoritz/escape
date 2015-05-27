@@ -23,7 +23,8 @@ escapeApp.controller('AdminCtrl', [
 				newMessage: '',
 				puzzle: ''
 			},
-			q: EF.questions
+			q: EF.questions,
+			voices: _.map(responsiveVoice.getVoices(), 'name')
 		});
 
 		$interval(function everySecond() {
@@ -91,7 +92,8 @@ escapeApp.controller('AdminCtrl', [
 				password: password,
 				passwordRequired: false,
 				tracks: EF.tracks,
-				totalPoints: getTotalPoints()
+				totalPoints: getTotalPoints(),
+				voice: 'UK English Female'
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 

@@ -62,7 +62,7 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
-				.medal(ng-if='activeTeam')
+				.medal(ng-if='activeTeam' ng-click='speak()')
 					p.medal-title {{status[activeTeam.status].text}}
 					img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 				h1.digital

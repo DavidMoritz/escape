@@ -107,6 +107,7 @@ escapeApp.controller('SessionCtrl', [
 		function typeOutMessage() {
 			//console.log('SESS> typeOutMessage() called');
 			$s.curMsg.display = '';
+			$s.speak();
 
 			var curMsgArray = $s.curMsg.text.split('');
 			var curPos = 0;
@@ -202,6 +203,10 @@ escapeApp.controller('SessionCtrl', [
 			status: EF.statuses,
 			lockoutImages: EF.lockoutImages
 		});
+
+		$s.speak = function speak() {
+			responsiveVoice.speak($s.curMsg.text, $s.activeTeam.voice);
+		};
 
 		$s.requestHint = function requestHint() {
 			if ($s.activeTeam.hints) {
