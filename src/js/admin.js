@@ -24,7 +24,7 @@ escapeApp.controller('AdminCtrl', [
 				puzzle: ''
 			},
 			q: EF.questions,
-			voices: _.map(responsiveVoice.getVoices(), 'name')
+			voices: _.pluck(responsiveVoice.getVoices(), 'name')
 		});
 
 		$interval(function everySecond() {
@@ -93,7 +93,7 @@ escapeApp.controller('AdminCtrl', [
 				passwordRequired: false,
 				tracks: EF.tracks,
 				totalPoints: getTotalPoints(),
-				voice: 'UK English Female'
+				voice: 'UK English Male'
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
@@ -175,7 +175,7 @@ escapeApp.controller('AdminCtrl', [
 			$timeout(function() {
 				EF.setFB('checkSolvedLocks', true);
 			}, 100);
-			
+
 		};
 
 		$s.isSolved = function isSolved(puz) {

@@ -134,14 +134,14 @@ escapeApp.controller('SessionCtrl', [
 		}
 
 		function nextClue(q) {
-			if(!q.track) {
+			if(!q.track) {	//	this is the Jigsaw Puzzle!
 				$s.activeTeam.finished = moment().format(timeFormat);
 				return false;
 			}
 			var track = $s.activeTeam.tracks[q.track];
 			var index = track.indexOf(q.name) + 1;
 
-			if(index == track.length) {
+			if(index === track.length) {
 				// no more in the track
 				q.nextClue = _.findWhere(EF.locks, {
 					track: q.track,

@@ -107,7 +107,7 @@ escapeApp.factory('PuzzleFactory', [
 					'Dining Room',
 					'Billiard Room'
 				],
-				answers: ['Colonel Mustard&Wrench&Lounge'],
+				answers: ['Mrs. Peacock&Lead Pipe&Lounge'],
 				attempts: [],
 				points: 10,
 				track: 'b'
