@@ -276,6 +276,17 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.taboo.guess' placeholder='Which word is Taboo?')
 								button.btn.btn-primary(ng-click='submitGuess(q.taboo)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.taboo')
+						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.sudoku.name)}}')
+							h4 Question
+								+squaredIcon('q.sudoku.icon')
+								em(ng-show='isSolved(q.sudoku)') ({{q.sudoku.display || mc.camelToTitle(q.sudoku.name)}})
+							div(ng-if='!isSolved(q.sudoku)')
+								label.sr-only What is the actual retail price?
+								input.form-control(type='number' ng-model='q.sudoku.guess' placeholder='Actual retail price')
+								button.btn.btn-primary(ng-click='submitGuess(q.sudoku)') #[i.fa.fa-lightbulb-o] Submit
+							div(ng-if='isSolved(q.sudoku)')
+								h3 #[i.fa.fa-check] SOLVED!
+								h5 The team was awarded a free hint!
 					hr
 					.row
 						+col(null)(ng-show='isAvailable(q.jigsaw)' role='tabpanel' id='{{_.kebabCase(q.jigsaw.name)}}')

@@ -180,6 +180,7 @@ escapeApp.factory('PuzzleFactory', [
 			fiveRoutes: {
 				name: 'fiveRoutes',
 				dropdown: '(c) - Five Routes',
+				display: 'Animal Crossing',
 				available: false,
 				icon: 'random',
 				animals: [
@@ -221,6 +222,17 @@ escapeApp.factory('PuzzleFactory', [
 				attempts: [],
 				points: 30,
 				track: 'c'
+			},
+			sudoku: {
+				name: 'sudoku',
+				display: 'The Price is Right Home Game',
+				dropdown: '(d) - Sudoku',
+				available: true,
+				icon: 'dollar',
+				guess: '',
+				answers: ['278954613'],
+				attempts: [],
+				points: 0
 			},
 			jigsaw: {
 				name: 'jigsaw',
