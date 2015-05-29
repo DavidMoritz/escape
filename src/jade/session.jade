@@ -92,7 +92,7 @@ html(ng-app='escapeApp')
 						li(ng-repeat='(id, obj) in q' ng-show='id !== "jigsaw" && isAvailable(obj)' class='{{isSolved(id) ? "solved" : "unsolved"}}')
 							a(data-toggle='tab' href='#{{_.kebabCase(id)}}')
 								+squaredIcon('obj.icon')
-								i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id)')
+								i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id) && obj.track')
 					.clearfix
 					.row.tab-content
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.operation.name)}}')
@@ -113,7 +113,7 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.monopoly.splitGuess.property' placeholder='Where did I stay?')
 								label.sr-only How much money did I have left?
 								input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.monopoly)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.monopoly)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.monopoly')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.yahtzee.name)}}')
 							h4 Question
@@ -127,7 +127,7 @@ html(ng-app='escapeApp')
 								select.form-control(escape-ddslick ng-model='q.yahtzee.splitGuess.die2')
 									option(ng-repeat='die in _.range(1, 7)' value='{{die}}' ng-attr-data-imagesrc='{{"img/dice/" + die + "c.gif"}}')
 								.clearfix
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.yahtzee)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.yahtzee)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.yahtzee')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.scrabble.name)}}')
 							h4 Question
@@ -154,7 +154,7 @@ html(ng-app='escapeApp')
 											td(ng-repeat='col in q.battleship.columns',
 												ng-class='{active: isCoordSelected(q.battleship, row + col)}',
 												ng-click='toggleCoordSelect(q.battleship, row + col)') #[i.fa.fa-circle]
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.battleship)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.battleship)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.battleship')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.clue.name)}}')
 							h4 Question
@@ -170,7 +170,7 @@ html(ng-app='escapeApp')
 								label Where?
 								select.form-control(ng-model='q.clue.splitGuess.where' ng-options='where as where for where in q.clue.rooms')
 									option(value='' disabled ng-if='!q.clue.splitGuess.where') Room...
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.clue)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.clue)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.clue')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.guessWho.name)}}')
 							h4 Question
@@ -197,7 +197,7 @@ html(ng-app='escapeApp')
 										tr
 											th
 											th(ng-repeat='col in q.chess.columns') {{col}}
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.chess)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.chess)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.chess')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.crossword.name)}}')
 							h4 Question
@@ -206,7 +206,7 @@ html(ng-app='escapeApp')
 							div(ng-if='!isSolved(q.crossword)')
 								label What is the {{q.crossword.answers[0].length}}-character secret code in the crossword (#8 Down)?
 								input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.crossword)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.crossword)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.crossword')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.texasHoldEm.name)}}')
 							h4 Question
@@ -219,7 +219,7 @@ html(ng-app='escapeApp')
 										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word1' placeholder='First Name')
 									+col(6)
 										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2' placeholder='Last Name')
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.texasHoldEm)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.texasHoldEm)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.texasHoldEm')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.connect4.name)}}')
 							h4 Question
@@ -251,7 +251,7 @@ html(ng-app='escapeApp')
 										ng-click='toggleAnimalSelect(q.fiveRoutes, animal)',
 										ng-class='{active: _.includes(q.fiveRoutes.orderedAnimals, animal)}')
 										img(ng-src='{{"img/five-routes-" + animal + ".png"}}' alt='{{animal}}')
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.fiveRoutes)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.fiveRoutes)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.fiveRoutes')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.wordFind.name)}}')
 							h4 Question
@@ -265,7 +265,7 @@ html(ng-app='escapeApp')
 										input.form-control(type='text' ng-model='q.wordFind.splitGuess.word1' maxlength='{{q.wordFind.answers[0].split(\' \')[0].length}}')
 									+col(6)
 										input.form-control(type='text' ng-model='q.wordFind.splitGuess.word2' maxlength='{{q.wordFind.answers[0].split(\' \')[1].length}}')
-								button.btn.btn-primary(ng-click='submitGuessSpecial(q.wordFind)') #[i.fa.fa-lightbulb-o] Submit
+								button.btn.btn-primary(ng-click='submitGuess(q.wordFind)') #[i.fa.fa-lightbulb-o] Submit
 							+solvedSection('q.wordFind')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.taboo.name)}}')
 							h4 Question
@@ -282,7 +282,7 @@ html(ng-app='escapeApp')
 								em(ng-show='isSolved(q.sudoku)') ({{q.sudoku.display || mc.camelToTitle(q.sudoku.name)}})
 							div(ng-if='!isSolved(q.sudoku)')
 								label.sr-only What is the actual retail price?
-								input.form-control(type='number' ng-model='q.sudoku.guess' placeholder='Actual retail price')
+								input.form-control(type='tel' ng-model='q.sudoku.guess' placeholder='Actual retail price')
 								button.btn.btn-primary(ng-click='submitGuess(q.sudoku)') #[i.fa.fa-lightbulb-o] Submit
 							div(ng-if='isSolved(q.sudoku)')
 								h3 #[i.fa.fa-check] SOLVED!

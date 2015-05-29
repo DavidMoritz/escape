@@ -70,7 +70,7 @@ html(ng-app='escapeApp')
 							.clearfix
 							.input-group
 								span#puzzleLabel.input-group-addon Puzzle:
-								select.form-control(ng-model='formFields.puzzle' ng-options='puzzle.dropdown for (key, puzzle) in q')
+								select.form-control(ng-model='formFields.puzzle' ng-options='puzzle.dropdown group by puzzle.track for (key, puzzle) in q')
 									option(value='' selected) -- choose puzzle --
 								span.input-group-btn
 									button.btn.btn-info(type='button' ng-click='bypass(formFields.puzzle)' ng-if='formFields.puzzle && isBypassable(formFields.puzzle)') #[i.fa.fa-exclamation-triangle] Bypass

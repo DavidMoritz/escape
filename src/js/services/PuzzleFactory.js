@@ -232,6 +232,7 @@ escapeApp.factory('PuzzleFactory', [
 				guess: '',
 				answers: ['278954613'],
 				attempts: [],
+				hints: 1,
 				points: 0
 			},
 			jigsaw: {

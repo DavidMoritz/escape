@@ -87,6 +87,7 @@ escapeApp.controller('EscapeCtrl', [
 
 		function typeOutMessage(text) {
 			$s.public.display = '';
+			responsiveVoice.speak(text, 'UK English Male');
 			$interval.cancel($s.typingInterval);
 			var curMsgArray = text.split('');
 			var curPos = 0;

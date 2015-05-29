@@ -134,8 +134,12 @@ escapeApp.controller('SessionCtrl', [
 		}
 
 		function nextClue(q) {
-			if(!q.track) {	//	this is the Jigsaw Puzzle!
-				$s.activeTeam.finished = moment().format(timeFormat);
+			if(!q.track) {
+				if(q.name === 'jigsaw' ) {
+					$s.activeTeam.finished = moment().format(timeFormat);
+				} else {
+					$s.activeTeam.hints += q.hints;
+				}
 				return false;
 			}
 			var track = $s.activeTeam.tracks[q.track];
@@ -152,6 +156,47 @@ escapeApp.controller('SessionCtrl', [
 					track: q.track,
 					opens: track[index]
 				});
+			}
+		}
+
+		//	some guesses need to be parsed before submitting them
+		function parseGuess(q) {
+			switch (q.name) {
+				case 'monopoly':
+					var property = _.contains(q.splitGuess.property, 'Illinois') ? 'Illinois' : q.splitGuess.property;
+					var money = q.splitGuess.money.replace(/\$/g, '').replace('.00', '');
+
+					q.guess = property + money;
+					break;
+				case 'sudoku':
+					q.guess = q.guess + '';
+					break;
+				case 'yahtzee':
+					q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
+					break;
+				case 'battleship': // falls through
+				case 'chess':
+					q.guess = q.coords.join('&');
+					break;
+				case 'clue':
+					q.guess = q.splitGuess.who + '&' + q.splitGuess.what + '&' + q.splitGuess.where;
+					break;
+				case 'texasHoldEm': // falls through
+				case 'wordFind':
+					q.guess = q.splitGuess.word1 + ' ' + q.splitGuess.word2;
+					break;
+				case 'fiveRoutes':
+					q.guess = q.orderedAnimals.join('-');
+					break;
+				case 'crossword':
+					var correctAnswer = q.answers[0];
+					var correctlyGuessedLettersCount = 0;
+					_.forEach(q.guess.split(''), function eachLetter(letter, index) {
+						correctlyGuessedLettersCount += (letter === correctAnswer[index]) ? 1 : 0;
+					});
+					if (correctlyGuessedLettersCount >= correctAnswer.length - 1) {
+						q.guess = correctAnswer;
+					}
 			}
 		}
 
@@ -258,6 +303,7 @@ escapeApp.controller('SessionCtrl', [
 			var lowerCaseAnswers = _.map(q.answers, function lowerCaseAnswers(ans) {
 				return ans.toLowerCase();
 			});
+			parseGuess(q);
 
 			q.attempts.push({
 				guess: q.guess,
@@ -281,46 +327,6 @@ escapeApp.controller('SessionCtrl', [
 					$s.activeTeam.lockoutIndex = 0;
 				}
 			}
-		};
-
-		//	some guesses need to be massaged before submitting them
-		$s.submitGuessSpecial = function submitGuessSpecial(q) {
-			switch (q.name) {
-				case 'monopoly':
-					var property = _.contains(q.splitGuess.property, 'Illinois') ? 'Illinois' : q.splitGuess.property;
-					var money = q.splitGuess.money.replace(/\$/g, '').replace('.00', '');
-
-					q.guess = property + money;
-					break;
-				case 'yahtzee':
-					q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
-					break;
-				case 'battleship': // falls through
-				case 'chess':
-					q.guess = q.coords.join('&');
-					break;
-				case 'clue':
-					q.guess = q.splitGuess.who + '&' + q.splitGuess.what + '&' + q.splitGuess.where;
-					break;
-				case 'texasHoldEm': // falls through
-				case 'wordFind':
-					q.guess = q.splitGuess.word1 + ' ' + q.splitGuess.word2;
-					break;
-				case 'fiveRoutes':
-					q.guess = q.orderedAnimals.join('-');
-					break;
-				case 'crossword':
-					var correctAnswer = q.answers[0];
-					var correctlyGuessedLettersCount = 0;
-					_.forEach(q.guess.split(''), function eachLetter(letter, index) {
-						correctlyGuessedLettersCount += (letter === correctAnswer[index]) ? 1 : 0;
-					});
-					if (correctlyGuessedLettersCount >= correctAnswer.length - 1) {
-						q.guess = correctAnswer;
-					}
-			}
-
-			$s.submitGuess(q);
 		};
 
 		$s.isSolved = function isSolved(puz) {
