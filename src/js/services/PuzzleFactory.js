@@ -64,7 +64,7 @@ escapeApp.factory('PuzzleFactory', [
 				coords: [],
 				columns: _.range(1, 11),
 				rows: 'abcdefghij'.split(''),
-				answers: ['b2&d2'],
+				answers: ['g6&i6'],
 				attempts: [],
 				points: 40,
 				track: 'b'
