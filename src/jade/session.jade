@@ -7,6 +7,7 @@ html(ng-app='escapeApp')
 		meta(name='description', content='A game of escape')
 		meta(name='author', content='Moritz Company')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		meta(name="apple-mobile-web-app-capable" content="yes")
 		title Control Panel - The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
 		link(rel='stylesheet', href='inc/escape.css')
@@ -297,5 +298,5 @@ html(ng-app='escapeApp')
 								.clearfix
 								button.btn.btn-warning.numericKeypadShow(data-toggle='modal' data-target='#keypadModal') #[i.fa.fa-sign-out] ESCAPE
 								input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-				iframe.intro(src='https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0' hidden)
+				//iframe.intro(src='https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0' hidden)
 		| @@javascriptReplaceFiles
