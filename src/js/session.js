@@ -18,7 +18,7 @@ escapeApp.controller('SessionCtrl', [
 				],
 				showAnim: '',
 				clearText: 'X',
-				keypadClass: 'digitalKeypad',
+				keypadClass: 'digital-keypad',
 				onKeypress: function(key, value, inst) {
 					var display = value;
 					// play *beep
@@ -26,7 +26,7 @@ escapeApp.controller('SessionCtrl', [
 						display += '-';
 					}
 					$s.q.jigsaw.guess = value;
-					$('.numberEntry').text(display);
+					$('.number-entry').text(display);
 
 					if (key === '') {
 						$('#keypad-modal').modal('hide');
@@ -35,7 +35,7 @@ escapeApp.controller('SessionCtrl', [
 				},
 				beforeShow: function(div, inst) {
 					$('<div>', {
-						class: 'numberEntry',
+						class: 'number-entry',
 						text: '-----'
 					}).prependTo(div);
 					div.appendTo($('#keypad-modal .modal-body'));
@@ -45,32 +45,20 @@ escapeApp.controller('SessionCtrl', [
 				$(this).addClass('shown');
 				$('.numeric-keypad').keypad('show');
 			}).on('hidden.bs.modal', function() {
-				$('.numberEntry').text('-----');
+				$('.number-entry').text('-----');
 				$s.q.jigsaw.guess = '';
 			});
-			// $('#video-modal').on('show.bs.modal', function() {
-			// 	videoWatched = true;
-			// 	var wrapper = $(this).find('.video-wrapper');
-			// 	var video = $('<iframe>', {
-			// 		src: 'https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0&autoplay=1',
-			// 		class: 'intro',
-			// 		frameborder: '0'
-			// 	});
-			// 	var image = $('<img>', {
-			// 		src: 'img/intro.jpg',
-			// 		class: 'intro'
-			// 	});
-
-			// 	wrapper.append(video);
-
-			// 	$s.videoTimer = $timeout(function() {
-			// 		video.remove();
-			// 		wrapper.append(image);
-			// 	}, 55500);
-			// }).on('hide.bs.modal', function() {
-			// 	$timeout.cancel($s.videoTimer);
-			// 	$('iframe.intro, img.intro').remove();
-			// });
+			// show video when modal opens, pause when closed
+			$('#video-modal').on('show.bs.modal', function(e) {
+				introVideo.play();
+				$('.after-video').hide();
+			}).on('hide.bs.modal', function() {
+				introVideo.pause();
+			});
+			// this is just a fall-back
+			$('#intro-video').on('ended', function() {
+				endVideo();
+			});
 			//	DDSlick - Dropdowns (selects) with images in them!
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({
@@ -200,9 +188,15 @@ escapeApp.controller('SessionCtrl', [
 			}
 		}
 
+		function endVideo() {
+			$('.after-video').show();
+			introVideo.load();
+		}
+
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
 		var videoWatched;
+		var introVideo = $('#intro-video')[0];
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
@@ -230,6 +224,9 @@ escapeApp.controller('SessionCtrl', [
 				}
 			} else {
 				$s.timeRemaining = 0;
+			}
+			if (introVideo.currentTime >= 52) {
+				endVideo();
 			}
 		}, 1000);
 

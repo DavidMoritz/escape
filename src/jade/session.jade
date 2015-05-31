@@ -31,23 +31,27 @@ html(ng-app='escapeApp')
 						h4.modal-title Enter the correct code to escape
 					.modal-body
 					.modal-footer
+						button.btn.btn-default(data-dismiss='modal') Close
 		#video-modal.modal.fade
 			.modal-dialog.modal-lg
 				.modal-content
 					.modal-header
+						button.close(data-dismiss='modal' aria-label='close')
+							span(aria-hidden='true') &times;
 						h4.modal-title Introduction Video
 					.modal-body.video-wrapper
-						video(poster='img/intro.jpg' preload='auto') Your browswer does not support the video tag
-							source(src='img/introduction-hd.mp4' type='video/mp4')
+						img.after-video(src='img/intro.jpg' hidden)
+						video#intro-video(poster='img/intro.jpg' preload='auto') Your browswer does not support the video tag
+							source(src='img/intro-video.mp4' type='video/mp4')
 					.modal-footer
 						button.btn.btn-default(data-dismiss='modal') Done
-		#hintModal.modal.fade
+		#hint-modal.modal.fade
 			.modal-dialog.modal-sm
 				.modal-content
 					.modal-header
 						h4.modal-title Would you like to {{activeTeam.hints ? "use" : "request"}} a hint?
 					.modal-body
-						.medal(ng-if='activeTeam')
+						.medal.pull-right(ng-if='activeTeam')
 							img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 							p.medal-title {{status[activeTeam.status].text}}
 						div(ng-hide='activeTeam.hints')
@@ -60,35 +64,39 @@ html(ng-app='escapeApp')
 					.modal-footer
 						button.btn.btn-default(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
 						button.btn.btn-success(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
-		.container
+		.container-fluid
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
 				.row(ng-if='curMsg')
-					+col(null, 2).medal(ng-if='activeTeam' ng-click='speak()')
+					+col(4, 2).medal(ng-if='activeTeam' ng-click='speak()')
 						p {{status[activeTeam.status].text}}
 						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
-					+col(null, 8)(ng-class='{"col-sm-offset-2": !activeTeam}')
+					+col(10, 8)(ng-class='{"col-sm-offset-2": !activeTeam}')
 						h1.digital.text-center
 							span(ng-hide='activeTeam') Loading
 								i.fa.fa-spinner.fa-pulse
 							span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 						.display-message
 							h3.digital(ng-if='curMsg') {{curMsg.display}}
-					+col(null, 2).major-buttons(ng-if='!isSolved(q.jigsaw)')
+					+col(2).major-buttons.hidden-xs(ng-if='!isSolved(q.jigsaw)')
 						ul
 							li
 								button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]#[br] Intro Video
 							li
 								button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]#[br] Messages
 							li
-								button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hintModal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]#[br] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
-				.row
-					+col(null)(ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished' role='tabpanel' id='{{_.kebabCase(q.jigsaw.name)}}')
-						div(ng-if='!isSolved(q.jigsaw)')
-							button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal') #[i.fa.fa-2x.fa-sign-out] Escape the Room
-							input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-					//iframe.intro(src='https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0' hidden)
+								button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]#[br] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
+				section(ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished' role='tabpanel' id='{{_.kebabCase(q.jigsaw.name)}}')
+					div.hidden-xs(ng-if='!isSolved(q.jigsaw)')
+						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal') #[i.fa.fa-2x.fa-sign-out] Escape the Room
+						input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
+					div.visible-xs-block(ng-if='!isSolved(q.jigsaw)')
+						button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
+						button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
+						button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
+						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal') #[i.fa.fa-2x.fa-sign-out]
+						input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
 				#you-win(ng-if='isSolved(q.jigsaw)')
 					.display-message.text-center
 						.text-center

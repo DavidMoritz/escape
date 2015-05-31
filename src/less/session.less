@@ -29,7 +29,7 @@ ul {
 	padding-bottom: 50%;
 	margin: 4%;
 	height: 0;
-	iframe {
+	video {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -48,14 +48,23 @@ ul {
 	margin: auto;
 }
 .medal {
+	width: 100px;
+	max-width: 15%;
 	img {
-		max-width: 100px;
+		width: 100%;
 		margin: auto;
 	}
 	p {
 		text-align: center;
 		line-height: 1em;
 		margin-bottom: 5px;
+	}
+	&.col-xs-4 {
+		padding: 0 0 0 5px;
+
+		@media(min-width: 768px) {
+			padding: 0 15px
+		}
 	}
 }
 .alert-team {
@@ -92,9 +101,9 @@ ul {
 	font-family: @digital;
 	color: @mk-Class-name;
 }
-.digitalKeypad {
+.digital-keypad {
 	font-family: @digital;
-	.numberEntry {
+	.number-entry {
 		background-color: @gray-darker;
 		color: @mk-Class-name;
 		letter-spacing: 15px;
@@ -163,6 +172,9 @@ h1.digital {
 
 			button {width: 110px;}
 		}
+		p {
+			font-weight: 300;
+		}
 	}
 }
 .choices ul {
@@ -181,7 +193,7 @@ h1.digital {
 	color: @mk-String;
 }
 
-.container {
+.container-fluid {
 	.fa-inverse {
 		color: @gray-dark;
 	}
@@ -230,7 +242,7 @@ h1.digital {
 .display-message {
 	h3 {
 		display: none;
-		text-align: center;
+		font-size: 18px;
 
 		&:last-child {
 			display: block;
@@ -241,6 +253,9 @@ h1.digital {
 			&.typed {
 				opacity: 1;
 			}
+		}
+		@media(max-width: 768px) {
+			font-size: 24px;
 		}
 	}
 }

@@ -18,7 +18,7 @@ escapeApp.controller('EscapeCtrl', [
 				],
 				showAnim: '',
 				clearText: 'X',
-				keypadClass: 'digitalKeypad',
+				keypadClass: 'digital-keypad',
 				onKeypress: function(key, value, inst) {
 					var display = value;
 					// play *beep
@@ -26,7 +26,7 @@ escapeApp.controller('EscapeCtrl', [
 						display += '-';
 					}
 					$s.guess = value;
-					$('.numberEntry').text(display);
+					$('.number-entry').text(display);
 
 					if (key === '') {
 						$('#keypad-modal').modal('hide');
@@ -35,7 +35,7 @@ escapeApp.controller('EscapeCtrl', [
 				},
 				beforeShow: function(div, inst) {
 					$('<div>', {
-						class: 'numberEntry',
+						class: 'number-entry',
 						text: '-----'
 					}).prependTo(div);
 					div.appendTo($('#keypad-modal .modal-body'));
@@ -45,7 +45,7 @@ escapeApp.controller('EscapeCtrl', [
 				$(this).addClass('shown');
 				$('.numeric-keypad').keypad('show');
 			}).on('hidden.bs.modal', function() {
-				$('.numberEntry').text('-----');
+				$('.number-entry').text('-----');
 				$s.guess = '';
 			});
 		}
