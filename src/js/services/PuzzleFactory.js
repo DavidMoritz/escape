@@ -35,11 +35,9 @@ escapeApp.factory('PuzzleFactory', [
 				available: false,
 				icon: 'cubes',
 				guess: '',
-				splitGuess: {
-					die1: '',
-					die2: ''
-				},
-				answers: ['5&5'],
+				dice: _.range(1, 7),
+				guessedDice: [5],
+				answers: ['4-5-5-5-6'],
 				attempts: [],
 				points: 50,
 				track: 'a'
@@ -64,7 +62,7 @@ escapeApp.factory('PuzzleFactory', [
 				coords: [],
 				columns: _.range(1, 11),
 				rows: 'abcdefghij'.split(''),
-				answers: ['g6&i6'],
+				answers: ['g6&i6', 'g6&h6&i6'],
 				attempts: [],
 				points: 40,
 				track: 'b'

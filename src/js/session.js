@@ -172,7 +172,7 @@ escapeApp.controller('SessionCtrl', [
 					q.guess = q.guess + '';
 					break;
 				case 'yahtzee':
-					q.guess = q.splitGuess.die1 + '&' + q.splitGuess.die2;
+					q.guess = q.guessedDice.sort().join('-');
 					break;
 				case 'battleship': // falls through
 				case 'chess':
@@ -407,6 +407,16 @@ escapeApp.controller('SessionCtrl', [
 			} else {
 				q.orderedAnimals.push(animal);
 			}
+		};
+
+		$s.addDie = function addDie(q, die) {
+			if (q.guessedDice.length < 5) {
+				q.guessedDice.push(die);
+			}
+		};
+
+		$s.removeDie = function removeDie(q, dieIndex) {
+			_.pullAt(q.guessedDice, dieIndex);
 		};
 	}
 ]);
