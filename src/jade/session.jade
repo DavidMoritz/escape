@@ -13,7 +13,7 @@ html(ng-app='escapeApp')
 		link(rel='stylesheet', href='inc/escape.css')
 		script(src='inc/angular.js')
 	body(ng-cloak, ng-controller='SessionCtrl', ng-class='{"locked-out": activeTeam && activeTeam.lockoutStarted}')
-		#previousMessagesModal.modal.fade
+		#previous-messages-modal.modal.fade
 			.modal-dialog
 				.modal-content
 					.modal-header
@@ -24,14 +24,14 @@ html(ng-app='escapeApp')
 						p(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
 					.modal-footer
 						button.btn.btn-default(data-dismiss='modal') Close
-		#keypadModal.modal.fade
+		#keypad-modal.modal.fade
 			.modal-dialog.modal-sm
 				.modal-content
 					.modal-header
 						h4.modal-title Enter the correct code to escape
 					.modal-body
 					.modal-footer
-		#videoModal.modal.fade
+		#video-modal.modal.fade
 			.modal-dialog.modal-lg
 				.modal-content
 					.modal-header
@@ -63,25 +63,33 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
-				.medal(ng-if='activeTeam' ng-click='speak()')
-					p.medal-title {{status[activeTeam.status].text}}
-					img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
-				h1.digital
-					span(ng-hide='activeTeam') Loading
-						i.fa.fa-spinner.fa-pulse
-					span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
+				.row(ng-if='curMsg')
+					+col(null, 2).medal(ng-if='activeTeam' ng-click='speak()')
+						p {{status[activeTeam.status].text}}
+						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
+					+col(null, 8)
+						h1.digital
+							span(ng-hide='activeTeam') Loading
+								i.fa.fa-spinner.fa-pulse
+							span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
+						.display-message
+							h3.digital(ng-if='curMsg') {{curMsg.display}}
+					+col(null, 2)(ng-if='!isSolved(q.jigsaw)')
+						ul
+							li
+								button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-3x.fa-video-camera]
+							li
+								button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-3x.fa-comments-o]
+								//- button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished') #[i.fa.fa-3x.fa-sign-out] ESCAPE
+							li
+								button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hintModal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-3x.fa-question-circle]#[br] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
 				#you-win(ng-if='isSolved(q.jigsaw)')
-					.displayMessage.text-center
+					.display-message.text-center
+						.text-center
+							img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 						h2 You win!#[br] You've escaped the room!
 						h4 You have completed your mission with #[strong {{status[activeTeam.status].text}}] status, escaping the room with #[strong {{moment(timeRemaining * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
 						h3 #[strong Congratulations!!]
-				div(ng-if='!isSolved(q.jigsaw)')
-					.displayMessage
-						h3.digital(ng-if='curMsg') {{curMsg.display}}
-					button.btn.btn-success(data-toggle='modal' data-target='#videoModal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-video-camera] Intro Video
-					button.btn.btn-info(data-toggle='modal' data-target='#previousMessagesModal' ng-show='activeTeam') #[i.fa.fa-comments-o] Show All Messages
-					button.btn.btn-warning(data-toggle='modal' data-target='#keypadModal' ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished') #[i.fa.fa-sign-out] ESCAPE
-					button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hintModal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-question-circle] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
 			#game(ng-if='activeTeam && !isSolved(q.jigsaw)' role='tabpanel')
 				#lockout(ng-show='activeTeam.lockoutStarted')
 					h3 Locked Out!
@@ -302,7 +310,7 @@ html(ng-app='escapeApp')
 							div(ng-if='!isSolved(q.jigsaw)')
 								label Enter the 5-digit Numeric code to escape the room...
 								.clearfix
-								button.btn.btn-warning.numericKeypadShow(data-toggle='modal' data-target='#keypadModal') #[i.fa.fa-sign-out] ESCAPE
-								input.numericKeypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
+								button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal') #[i.fa.fa-sign-out] ESCAPE
+								input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
 				//iframe.intro(src='https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0' hidden)
 		| @@javascriptReplaceFiles

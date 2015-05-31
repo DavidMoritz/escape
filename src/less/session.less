@@ -5,9 +5,11 @@
 @import "common";
 
 /*html5 display rule (for older browsers to display these html5 tags as block level elements)*/
-address, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {display:block}
+address, article, aside, canvas, details, figcaption,
+figure, footer, header, hgroup, menu, nav, section, summary {display:block}
 
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.nav, .pagination, .carousel, .panel-title a {cursor: pointer;}
+ul li {list-style-type: none;}
 
 @font-face {
 	font-family: digitalFont;
@@ -42,14 +44,11 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 	margin: auto;
 }
 .medal {
-	float: right;
-	width: 100px;
-	max-width: 15%;
 	img {
-		width: 100%;
+		max-width: 100px;
+		margin: auto;
 	}
-	.medal-title {
-		font-weight: normal;
+	p {
 		text-align: center;
 		line-height: 1em;
 		margin-bottom: 5px;
@@ -119,7 +118,7 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 	.keypad-space {
 		width: 30px; height: 8px;
 	}
-	#keypadModal.shown & {
+	#keypad-modal.shown & {
 		display: block !important;
 		top: 0 !important;
 		position: relative !important;
@@ -217,9 +216,11 @@ h1.digital {
 		background-color: @gray-dark
 	}
 }
-.displayMessage {
+.display-message {
 	h3 {
 		display: none;
+		text-align: center;
+
 		&:last-child {
 			display: block;
 			min-height: 26px;

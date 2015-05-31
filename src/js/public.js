@@ -8,7 +8,7 @@ escapeApp.controller('EscapeCtrl', [
 
 		function init() {
 			//	initKeypad
-			$('.numericKeypad').keypad({
+			$('.numeric-keypad').keypad({
 				separator: '|',
 				layout: [
 					'1|2|3',
@@ -29,7 +29,7 @@ escapeApp.controller('EscapeCtrl', [
 					$('.numberEntry').text(display);
 
 					if (key === '') {
-						$('#keypadModal').modal('hide');
+						$('#keypad-modal').modal('hide');
 						submitGuess();
 					}
 				},
@@ -38,12 +38,12 @@ escapeApp.controller('EscapeCtrl', [
 						class: 'numberEntry',
 						text: '-----'
 					}).prependTo(div);
-					div.appendTo($('#keypadModal .modal-body'));
+					div.appendTo($('#keypad-modal .modal-body'));
 				}
 			});
-			$('#keypadModal').on('shown.bs.modal', function() {
+			$('#keypad-modal').on('shown.bs.modal', function() {
 				$(this).addClass('shown');
-				$('.numericKeypad').keypad('show');
+				$('.numeric-keypad').keypad('show');
 			}).on('hidden.bs.modal', function() {
 				$('.numberEntry').text('-----');
 				$s.guess = '';

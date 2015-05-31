@@ -8,7 +8,7 @@ escapeApp.controller('SessionCtrl', [
 
 		function init() {
 			//	initKeypad
-			$('.numericKeypad').keypad({
+			$('.numeric-keypad').keypad({
 				separator: '|',
 				layout: [
 					'1|2|3',
@@ -29,7 +29,7 @@ escapeApp.controller('SessionCtrl', [
 					$('.numberEntry').text(display);
 
 					if (key === '') {
-						$('#keypadModal').modal('hide');
+						$('#keypad-modal').modal('hide');
 						$s.submitGuess($s.q.jigsaw);
 					}
 				},
@@ -38,17 +38,17 @@ escapeApp.controller('SessionCtrl', [
 						class: 'numberEntry',
 						text: '-----'
 					}).prependTo(div);
-					div.appendTo($('#keypadModal .modal-body'));
+					div.appendTo($('#keypad-modal .modal-body'));
 				}
 			});
-			$('#keypadModal').on('shown.bs.modal', function() {
+			$('#keypad-modal').on('shown.bs.modal', function() {
 				$(this).addClass('shown');
-				$('.numericKeypad').keypad('show');
+				$('.numeric-keypad').keypad('show');
 			}).on('hidden.bs.modal', function() {
 				$('.numberEntry').text('-----');
 				$s.q.jigsaw.guess = '';
 			});
-			$('#videoModal').on('show.bs.modal', function() {
+			$('#video-modal').on('show.bs.modal', function() {
 				videoWatched = true;
 				var wrapper = $(this).find('.video-wrapper');
 				var video = $('<iframe>', {
@@ -207,7 +207,7 @@ escapeApp.controller('SessionCtrl', [
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
 				if (!videoWatched) {
-					$('#videoModal').modal('show');
+					$('#video-modal').modal('show');
 				}
 				// if administrator "Unsolves" Jigsaw manually, this needs to update.
 				if ($s.activeTeam.finished && !$s.isSolved($s.q.jigsaw)) {
