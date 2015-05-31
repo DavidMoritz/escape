@@ -9,7 +9,11 @@ address, article, aside, canvas, details, figcaption,
 figure, footer, header, hgroup, menu, nav, section, summary {display:block}
 
 .nav, .pagination, .carousel, .panel-title a {cursor: pointer;}
-ul li {list-style-type: none;}
+ul {
+	padding-left: 0;
+
+	li {list-style-type: none;}
+}
 
 @font-face {
 	font-family: digitalFont;
@@ -149,9 +153,16 @@ h1.digital {
 		font-size: 200%;
 	}
 }
-.jumbotron {
-	button {
-		margin-right: 15px;
+
+#escape-session {
+	.jumbotron {
+		padding: 10px 15px;
+
+		.major-buttons {
+			text-align: right;
+
+			button {width: 110px;}
+		}
 	}
 }
 .choices ul {
@@ -338,4 +349,10 @@ a {cursor: pointer;}
 			color: @brand-success;
 		}
 	}
+}
+
+#jigsaw {
+	text-align: center;
+
+	button {text-transform: uppercase;}
 }
