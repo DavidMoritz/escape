@@ -48,29 +48,29 @@ escapeApp.controller('SessionCtrl', [
 				$('.numberEntry').text('-----');
 				$s.q.jigsaw.guess = '';
 			});
-			$('#video-modal').on('show.bs.modal', function() {
-				videoWatched = true;
-				var wrapper = $(this).find('.video-wrapper');
-				var video = $('<iframe>', {
-					src: 'https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0&autoplay=1',
-					class: 'intro',
-					frameborder: '0'
-				});
-				var image = $('<img>', {
-					src: 'img/intro.jpg',
-					class: 'intro'
-				});
+			// $('#video-modal').on('show.bs.modal', function() {
+			// 	videoWatched = true;
+			// 	var wrapper = $(this).find('.video-wrapper');
+			// 	var video = $('<iframe>', {
+			// 		src: 'https://www.youtube.com/embed/92DvYD6hcVQ?rel=0&controls=0&showinfo=0&autoplay=1',
+			// 		class: 'intro',
+			// 		frameborder: '0'
+			// 	});
+			// 	var image = $('<img>', {
+			// 		src: 'img/intro.jpg',
+			// 		class: 'intro'
+			// 	});
 
-				wrapper.append(video);
+			// 	wrapper.append(video);
 
-				$s.videoTimer = $timeout(function() {
-					video.remove();
-					wrapper.append(image);
-				}, 55500);
-			}).on('hide.bs.modal', function() {
-				$timeout.cancel($s.videoTimer);
-				$('iframe.intro, img.intro').remove();
-			});
+			// 	$s.videoTimer = $timeout(function() {
+			// 		video.remove();
+			// 		wrapper.append(image);
+			// 	}, 55500);
+			// }).on('hide.bs.modal', function() {
+			// 	$timeout.cancel($s.videoTimer);
+			// 	$('iframe.intro, img.intro').remove();
+			// });
 			//	DDSlick - Dropdowns (selects) with images in them!
 			$('.ddslick').each(function eachSelect() {
 				$(this).ddslick({

@@ -37,7 +37,8 @@ html(ng-app='escapeApp')
 					.modal-header
 						h4.modal-title Introduction Video
 					.modal-body.video-wrapper
-						img.overlay(src='img/intro.jpg' hidden)
+						video(poster='img/intro.jpg' preload='auto') Your browswer does not support the video tag
+							source(src='img/introduction-hd.mp4' type='video/mp4')
 					.modal-footer
 						button.btn.btn-default(data-dismiss='modal') Done
 		#hintModal.modal.fade
