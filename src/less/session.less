@@ -45,7 +45,7 @@ ul {
 	}
 }
 .lockout-image {
-	margin: auto;
+	margin: -5px auto;
 }
 .medal {
 	width: 100px;
@@ -101,6 +101,31 @@ ul {
 		&.solved-list {
 			font-size: 140%;
 		}
+	}
+}
+.tab-pane {
+	.clue-head {
+		display: table;
+		width: 100%;
+		div {
+			display: table-cell;
+			&.icon {
+				vertical-align: top;
+				width: 17%;
+			}
+			&.title {
+				vertical-align: middle;
+				text-align: center;
+				width: 58%;
+			}
+			&.major-buttons {
+				vertical-align: top;
+				width: 25%;
+			}
+		}
+	}
+	h4 {
+		margin: 0;
 	}
 }
 .hidecollapsing.collapsing {
@@ -178,14 +203,18 @@ h1.digital {
 	.jumbotron {
 		padding: 10px 15px;
 		margin-bottom: 15px;
-
-		.major-buttons {
-			text-align: right;
-
-			button {width: 110px;}
-		}
 		p {
 			font-weight: 300;
+		}
+	}
+}
+.major-buttons {
+	text-align: right;
+
+	button {
+		width: 110px;
+		i {
+			font-size: 2em;
 		}
 	}
 }
@@ -215,6 +244,7 @@ h1.digital {
 	}
 	h3 {margin-top: 0;}
 	table.battleship {
+		margin-left: 60px;
 		th, td {
 			text-align: center;
 			padding: 2px 7px 3px;
@@ -223,6 +253,7 @@ h1.digital {
 		td.active {color: #c00;}
 	}
 	table.chess {
+		margin-left: 30px;
 		th, td {
 			text-align: center;
 			width: 40px;
