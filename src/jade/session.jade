@@ -7,12 +7,12 @@ html(ng-app='escapeApp')
 		meta(name='description', content='A game of escape')
 		meta(name='author', content='Moritz Company')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
-		meta(name="apple-mobile-web-app-capable" content="yes")
+		meta(name='apple-mobile-web-app-capable' content='yes')
 		title Control Panel - The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
 		link(rel='stylesheet', href='inc/escape.css')
 		script(src='inc/angular.js')
-	body#escape-session(ng-cloak, ng-controller='SessionCtrl', ng-class='{"locked-out": activeTeam && activeTeam.lockoutStarted}')
+	body#escape-session(ng-cloak, ng-controller='SessionCtrl', ng-class="{'locked-out': activeTeam && activeTeam.lockoutStarted}")
 		#previous-messages-modal.modal.fade
 			.modal-dialog
 				.modal-content
@@ -49,7 +49,7 @@ html(ng-app='escapeApp')
 			.modal-dialog.modal-sm
 				.modal-content
 					.modal-header
-						h4.modal-title Would you like to {{activeTeam.hints ? "use" : "request"}} a hint?
+						h4.modal-title Would you like to {{activeTeam.hints ? 'use' : 'request'}} a hint?
 					.modal-body
 						.medal.pull-right(ng-if='activeTeam')
 							img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
@@ -60,11 +60,11 @@ html(ng-app='escapeApp')
 							div(ng-show='activeTeam.status == status.length - 1')
 								p This will not affect your team's {{status[activeTeam.status].text}} status.
 						div(ng-show='activeTeam.hints')
-							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? "hints" : "hint"}} available for use. This will not affect your team's {{status[activeTeam.status].name}} status.
+							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? 'hints' : 'hint'}} available for use. This will not affect your team's {{status[activeTeam.status].name}} status.
 					.modal-footer
 						button.btn.btn-default.pull-left(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
 						button.btn.btn-success(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
-		.container-fluid
+		.container
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
@@ -72,7 +72,7 @@ html(ng-app='escapeApp')
 					+col(4, 2).medal(ng-if='activeTeam' ng-click='speak()')
 						p {{status[activeTeam.status].text}}
 						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
-					+col(10, 8)(ng-class='{"col-sm-offset-2": !activeTeam}')
+					+col(10, 8)(ng-class="{'col-sm-offset-2': !activeTeam}")
 						h1.digital.text-center
 							span(ng-hide='activeTeam') Loading
 								i.fa.fa-spinner.fa-pulse
@@ -86,17 +86,16 @@ html(ng-app='escapeApp')
 							li
 								button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]#[br] Messages
 							li
-								button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]#[br] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
-				.row(ng-show='activeTeam && !activeTeam.finished')
-					+col(null)(ng-if='!activeTeam.finished')
-						#jigsaw.hidden-xs
-							button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-sign-out] Escape the Room
-						.visible-xs-block.text-center
-							button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
-							button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
-							button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
-							button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
-						input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
+								button.btn(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]#[br] {{activeTeam.hints ? 'Use Hint' : 'Request Hint'}}
+				section(ng-show='activeTeam && !activeTeam.finished')
+					#jigsaw.hidden-xs
+						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-sign-out] Escape the Room
+					.visible-xs-block.text-center
+						button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
+						button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
+						button.btn(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
+						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
+					input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
 				#you-win(ng-if='activeTeam.finished')
 					.display-message.text-center
 						.text-center
@@ -104,7 +103,7 @@ html(ng-app='escapeApp')
 						h2 You win!#[br] You've escaped the room!
 						h4 You have completed your mission with #[strong {{status[activeTeam.status].text}}] status, escaping the room with #[strong {{moment(timeRemaining * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
 						h3 #[strong Congratulations!!]
-			#game(ng-if='activeTeam && !isSolved(q.jigsaw)' role='tabpanel')
+			#game(ng-if='activeTeam && !isSolved(q.jigsaw)')
 				#lockout(ng-show='activeTeam.lockoutStarted')
 					h3 Locked Out!
 					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
@@ -113,62 +112,57 @@ html(ng-app='escapeApp')
 					+col(null, 6)
 						h3 Team: {{activeTeam.name}}
 						ul.button-list.unsolved-list
-							li.unsolved(ng-repeat='(id, obj) in q' ng-if='id !== "jigsaw" && !isSolved(id) && isAvailable(obj)')
-								a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
+							li.unsolved(ng-repeat='(id, obj) in q' ng-if="id !== 'jigsaw' && !isSolved(id) && isAvailable(obj)")
+								a(ng-click='setActivePuzzle(id)')
 									+squaredIcon('obj.icon')
 						.clearfix
 						h4 Solved:
 						ul.button-list.solved-list
 							li.solved(ng-repeat='(id, obj) in q' ng-if='isSolved(id)')
-								a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
+								a(ng-click='setActivePuzzle(id)')
 									+squaredIcon('obj.icon')
 									i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id) && obj.track')
 						//- .clearfix
 						//- h4 Bonus:
 						//- ul.button-list
-						//- 	li(ng-repeat='(id, obj) in q' ng-show='id !== "jigsaw" && !obj.track' class='{{isSolved(id) ? "solved" : "unsolved"}}')
-						//- 		a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
+						//- 	li(ng-repeat='(id, obj) in q' ng-show="id !== 'jigsaw' && !obj.track" class="{{isSolved(id) ? 'solved' : 'unsolved'}}")
+						//- 		a(ng-click='setActivePuzzle(id)')
 						//- 			+squaredIcon('obj.icon')
 					.clearfix.visible-xs-block
 					hr.visible-xs-block
-					+col(null, 6).tab-content
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.operation.name)}}')
-							+clueHead('operation', 'What kind of Operation is this?')
+					+col(null, 6)
+						+clueHead('operation', 'What kind of Operation is this?')
 							div(ng-if='!isSolved(q.operation)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
 							+solvedSection('q.operation')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.monopoly.name)}}')
-							+clueHead('monopoly', 'What happened?')
+						+clueHead('monopoly', 'What happened?')
 							div(ng-if='!isSolved(q.monopoly)')
 								label Where did I stay?
 								input.form-control(type='text' ng-model='q.monopoly.splitGuess.property' placeholder='Where did I stay?')
 								label How much money did I have left?
 								input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
 							+solvedSection('q.monopoly')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.yahtzee.name)}}')
-							+clueHead('yahtzee', 'What did I roll?')
+						+clueHead('yahtzee', 'What did I roll?')
 							div(ng-if='!isSolved(q.yahtzee)')
 								label &nbsp;
 								ul.list-inline
 									li(ng-repeat='gDie in q.yahtzee.guessedDice track by $index')
-										img(ng-src='{{"img/dice/" + gDie + "c.gif"}}' ng-click='removeDie(q.yahtzee, $index)' alt='{{gDie}}')
+										img(ng-src="{{'img/dice/' + gDie + 'c.gif'}}" ng-click='removeDie(q.yahtzee, $index)' alt='{{gDie}}')
 									li(ng-repeat='num in _.range(0, (5 - q.yahtzee.guessedDice.length))') _____
 								p Choose all 5 dice that I rolled
 								.btn-group
 									button.btn.btn-info(
 										ng-repeat='die in q.yahtzee.dice',
 										ng-click='addDie(q.yahtzee, die)')
-										img(ng-src='{{"img/dice/" + die + "c.gif"}}' alt='{{die}}')
+										img(ng-src="{{'img/dice/' + die + 'c.gif'}}" alt='{{die}}')
 							+solvedSection('q.yahtzee')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.scrabble.name)}}')
-							+clueHead('scrabble', 'What SCRABBLE word did I spell?')
+						+clueHead('scrabble', 'What SCRABBLE word did I spell?')
 							div(ng-if='!isSolved(q.scrabble)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.scrabble.guess' placeholder='What SCRABBLE word did I spell?')
 							+solvedSection('q.scrabble')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.battleship.name)}}')
-							+clueHead('battleship', 'Battleship')
+						+clueHead('battleship', 'Battleship')
 							div(ng-if='!isSolved(q.battleship)')
 								table.battleship
 									thead
@@ -182,8 +176,7 @@ html(ng-app='escapeApp')
 												ng-class='{active: isCoordSelected(q.battleship, row + col)}',
 												ng-click='toggleCoordSelect(q.battleship, row + col)') #[i.fa.fa-circle]
 							+solvedSection('q.battleship')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.clue.name)}}')
-							+clueHead('clue', 'Who killed Mr. Boddy?')
+						+clueHead('clue', 'Who killed Mr. Boddy?')
 							div(ng-if='!isSolved(q.clue)')
 								label Who?
 								select.form-control(ng-model='q.clue.splitGuess.who' ng-options='who as who for who in q.clue.suspects')
@@ -195,14 +188,12 @@ html(ng-app='escapeApp')
 								select.form-control(ng-model='q.clue.splitGuess.where' ng-options='where as where for where in q.clue.rooms')
 									option(value='' disabled ng-if='!q.clue.splitGuess.where') Room...
 							+solvedSection('q.clue')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.guessWho.name)}}')
-							+clueHead('guessWho', 'Can you Guess Who I am?')
+						+clueHead('guessWho', 'Can you Guess Who I am?')
 							div(ng-if='!isSolved(q.guessWho)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.guessWho.guess' placeholder='Guess Who?')
 							+solvedSection('q.guessWho')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.chess.name)}}')
-							+clueHead('chess', 'Where should black move next?')
+						+clueHead('chess', 'Where should black move next?')
 							div(ng-if='!isSolved(q.chess)')
 								table.chess
 									tbody
@@ -216,14 +207,12 @@ html(ng-app='escapeApp')
 											th
 											th(ng-repeat='col in q.chess.columns') {{col}}
 							+solvedSection('q.chess')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.crossword.name)}}')
-							+clueHead('crossword', 'What is the secret code in the crossword (#8 Down)?')
+						+clueHead('crossword', 'What is the secret code in the crossword (#8 Down)?')
 							div(ng-if='!isSolved(q.crossword)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
 							+solvedSection('q.crossword')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.texasHoldEm.name)}}')
-							+clueHead('texasHoldEm', 'Who is the Big Winner?')
+						+clueHead('texasHoldEm', 'Who is the Big Winner?')
 							div(ng-if='!isSolved(q.texasHoldEm)')
 								label &nbsp;
 								.row
@@ -232,13 +221,11 @@ html(ng-app='escapeApp')
 									+col(6)
 										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2' placeholder='Last Name')
 							+solvedSection('q.texasHoldEm')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.connect4.name)}}')
-							+clueHead('connect4', 'Which column should Red choose?', true)
+						+clueHead('connect4', 'Which column should Red choose?', true)
 							div(ng-if='!isSolved(q.connect4)')
-								iframe.connect4game.collapse.in.centered(src="html/connect4.html" width="354px" height="354px" scrolling="no")
+								iframe.connect4game.collapse.in.centered(src='html/connect4.html' width='354px' height='354px' scrolling='no')
 							+solvedSection('q.connect4')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.fiveRoutes.name)}}')
-							+clueHead('fiveRoutes', 'Put the animals in order from the shortest route to the longest route')
+						+clueHead('fiveRoutes', 'Put the animals in order from the shortest route to the longest route')
 							div(ng-if='!isSolved(q.fiveRoutes)')
 								label &nbsp;
 								ul.list-inline
@@ -246,7 +233,7 @@ html(ng-app='escapeApp')
 										.panel.panel-info
 											.panel-heading #[.panel-title {{$index + 1}}]
 											.panel-body
-												img.invert-color(ng-src='{{"img/five-routes-" + oAnimal + ".png"}}' alt='{{oAnimal}}')
+												img.invert-color(ng-src="{{'img/five-routes-' + oAnimal + '.png'}}" alt='{{oAnimal}}')
 									li(ng-repeat='num in _.range(q.fiveRoutes.orderedAnimals.length, q.fiveRoutes.animals.length)')
 										.panel.panel-info
 											.panel-heading #[.panel-title {{num + 1}}]
@@ -256,10 +243,9 @@ html(ng-app='escapeApp')
 										ng-repeat='animal in q.fiveRoutes.animals',
 										ng-click='toggleAnimalSelect(q.fiveRoutes, animal)',
 										ng-class='{active: _.includes(q.fiveRoutes.orderedAnimals, animal)}')
-										img(ng-src='{{"img/five-routes-" + animal + ".png"}}' alt='{{animal}}')
+										img(ng-src="{{'img/five-routes-' + animal + '.png'}}" alt='{{animal}}')
 							+solvedSection('q.fiveRoutes')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.wordFind.name)}}')
-							+clueHead('wordFind', 'Answer the Word Find riddle below...')
+						+clueHead('wordFind', 'Answer the Word Find riddle below...')
 							div(ng-if='!isSolved(q.wordFind)')
 								label "Not European":
 								.row
@@ -268,14 +254,12 @@ html(ng-app='escapeApp')
 									+col(6)
 										input.form-control(type='text' ng-model='q.wordFind.splitGuess.word2' maxlength='{{q.wordFind.answers[0].split(\' \')[1].length}}')
 							+solvedSection('q.wordFind')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.taboo.name)}}')
-							+clueHead('taboo', 'Which word is Taboo?')
+						+clueHead('taboo', 'Which word is Taboo?')
 							div(ng-if='!isSolved(q.taboo)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.taboo.guess' placeholder='Which word is Taboo?')
 							+solvedSection('q.taboo')
-						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.sudoku.name)}}')
-							+clueHead('sudoku', 'What is the actual retail price?')
+						+clueHead('sudoku', 'What is the actual retail price?')
 							div(ng-if='!isSolved(q.sudoku)')
 								label &nbsp;
 								input.form-control(type='tel' ng-model='q.sudoku.guess' placeholder='Actual retail price')

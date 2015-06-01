@@ -246,6 +246,10 @@ escapeApp.controller('SessionCtrl', [
 			lockoutImages: EF.lockoutImages
 		});
 
+		$s.setActivePuzzle = function activePuzzle(id) {
+			$s.activePuzzle = id;
+		};
+
 		$s.speak = function speak() {
 			responsiveVoice.speak($s.curMsg.text, $s.activeTeam.voice);
 		};
