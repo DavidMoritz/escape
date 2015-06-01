@@ -70,9 +70,9 @@ ul {
 .alert-team {
 	background-color: @gray-lighter;
 
-	.digital.digital {color: #000;}
+	.digital.digital, p {color: #000;}
 }
-.buttonList {
+.button-list {
 	list-style-type: none;
 	list-style-position: inside;
 	padding-left: 0;
@@ -89,6 +89,17 @@ ul {
 			color: @near-black;
 			background: @gray-lighter;
 			border-radius: 50%;
+			@media (min-width: 768px) {
+				margin: 50px -25px;
+			}
+		}
+	}
+	@media(min-width: 768px) {
+		&.unsolved-list {
+			font-size: 170%;
+		}
+		&.solved-list {
+			font-size: 140%;
 		}
 	}
 }
@@ -166,6 +177,7 @@ h1.digital {
 #escape-session {
 	.jumbotron {
 		padding: 10px 15px;
+		margin-bottom: 15px;
 
 		.major-buttons {
 			text-align: right;
@@ -254,7 +266,7 @@ h1.digital {
 				opacity: 1;
 			}
 		}
-		@media(max-width: 768px) {
+		@media(min-width: 768px) {
 			font-size: 24px;
 		}
 	}
@@ -321,7 +333,10 @@ a {cursor: pointer;}
 
 #lockout {
 	&, & > * {text-align: center;}
-	h3 {text-transform: uppercase;}
+	h3 {
+		text-transform: uppercase;
+		margin: 0;
+	}
 	div {
 		height: 330px;
 
@@ -336,10 +351,13 @@ a {cursor: pointer;}
 			}
 		}
 	}
-	h4 strong {
-		display: block;
-		font-size: 5em;
-		color: @brand-info;
+	h4 {
+		margin: 0;
+		strong {
+			display: block;
+			font-size: 5em;
+			color: @brand-info;
+		}
 	}
 }
 
@@ -369,5 +387,17 @@ a {cursor: pointer;}
 #jigsaw {
 	text-align: center;
 
-	button {text-transform: uppercase;}
+	button {
+		text-transform: uppercase;
+		padding: 0 12px 10px;
+		margin-top: 0;
+		font-size: 15px;
+		font-weight: bold;
+
+		i.fa {
+			position: relative;
+			top: 5px;
+			font-size: 28px
+		}
+	}
 }

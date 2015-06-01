@@ -62,7 +62,7 @@ html(ng-app='escapeApp')
 						div(ng-show='activeTeam.hints')
 							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? "hints" : "hint"}} available for use. This will not affect your team's {{status[activeTeam.status].name}} status.
 					.modal-footer
-						button.btn.btn-default(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
+						button.btn.btn-default.pull-left(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
 						button.btn.btn-success(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
 		.container-fluid
 			header.hide
@@ -87,11 +87,11 @@ html(ng-app='escapeApp')
 								button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]#[br] Messages
 							li
 								button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]#[br] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
-				section(ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished' role='tabpanel' id='{{_.kebabCase(q.jigsaw.name)}}')
-					div.hidden-xs(ng-if='!isSolved(q.jigsaw)')
-						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal') #[i.fa.fa-2x.fa-sign-out] Escape the Room
+				section(ng-show='activeTeam && !activeTeam.lockoutStarted && !activeTeam.finished' role='tabpanel')
+					div#jigsaw.hidden-xs(ng-if='!isSolved(q.jigsaw)')
+						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal') #[i.fa.fa-sign-out] Escape the Room
 						input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-					div.visible-xs-block(ng-if='!isSolved(q.jigsaw)')
+					div.text-center.visible-xs-block(ng-if='!isSolved(q.jigsaw)')
 						button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
 						button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
 						button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
@@ -109,15 +109,29 @@ html(ng-app='escapeApp')
 					h3 Locked Out!
 					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
 					h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockoutTimeRemaining}}] seconds.
-				#questions(ng-hide='activeTeam.lockoutStarted')
-					h3 Team: {{activeTeam.name}}
-					ul.buttonList
-						li(ng-repeat='(id, obj) in q' ng-show='id !== "jigsaw" && isAvailable(obj)' class='{{isSolved(id) ? "solved" : "unsolved"}}')
-							a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
-								+squaredIcon('obj.icon')
-								i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id) && obj.track')
-					.clearfix
-					.row.tab-content
+				#questions.row(ng-hide='activeTeam.lockoutStarted')
+					+col(null, 6)
+						h3 Team: {{activeTeam.name}}
+						ul.button-list.unsolved-list
+							li.unsolved(ng-repeat='(id, obj) in q' ng-show='id !== "jigsaw" && !isSolved(id) && isAvailable(obj)')
+								a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
+									+squaredIcon('obj.icon')
+						.clearfix
+						h4 Solved:
+						ul.button-list.solved-list
+							li.solved(ng-repeat='(id, obj) in q' ng-show='isSolved(id) && obj.track')
+								a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
+									+squaredIcon('obj.icon')
+									i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id) && obj.track')
+						//- .clearfix
+						//- h4 Bonus:
+						//- ul.button-list
+						//- 	li(ng-repeat='(id, obj) in q' ng-show='id !== "jigsaw" && !obj.track' class='{{isSolved(id) ? "solved" : "unsolved"}}')
+						//- 		a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
+						//- 			+squaredIcon('obj.icon')
+					.clearfix.visible-xs-block
+					hr.visible-xs-block
+					+col(null, 6).tab-content
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.operation.name)}}')
 							h4 Question
 								+squaredIcon('q.operation.icon')
