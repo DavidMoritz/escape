@@ -87,17 +87,17 @@ html(ng-app='escapeApp')
 								button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]#[br] Messages
 							li
 								button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]#[br] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
-				section(ng-show='activeTeam && !activeTeam.finished' role='tabpanel')
-					div#jigsaw.hidden-xs(ng-if='!isSolved(q.jigsaw)')
-						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-sign-out] Escape the Room
+				.row(ng-show='activeTeam && !activeTeam.finished')
+					+col(null)(ng-if='!activeTeam.finished')
+						#jigsaw.hidden-xs
+							button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-sign-out] Escape the Room
+						.visible-xs-block.text-center
+							button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
+							button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
+							button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
+							button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
 						input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-					div.text-center.visible-xs-block(ng-if='!isSolved(q.jigsaw)')
-						button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
-						button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
-						button.btn(class='{{activeTeam.hints ? "btn-success" : "btn-danger"}}' data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
-						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
-						input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-				#you-win(ng-if='isSolved(q.jigsaw)')
+				#you-win(ng-if='activeTeam.finished')
 					.display-message.text-center
 						.text-center
 							img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
