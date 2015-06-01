@@ -39,3 +39,5 @@ mixin clueHead(name, text, hide)
 				strong(ng-show='!isSolved(q.#{name})') #{text}
 		.major-buttons
 			button.btn.btn-primary.pull-right(ng-click='submitGuess(q.#{name})' ng-show="#{hide}") #[i.fa.fa-lightbulb-o]#[br]Submit
+		if block
+			block
