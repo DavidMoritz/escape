@@ -28,7 +28,7 @@ html(ng-app='escapeApp')
 							input.form-control(type='text' ng-model='formFields.newTeamName' placeholder='Create New Team')
 							button.btn.btn-success(type='submit' ng-disabled='!formFields.newTeamName' data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-plus] Create Team
 			form(ng-if='activeTeam' ng-submit='addNewMessage()')
-				input.form-control.addMessageInput(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}' maxlength='38')
+				input.form-control.addMessageInput(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}' maxlength='66')
 				input.form-control(type='submit' ng-disabled='!formFields.newMessage' value='Add Message')
 			.alert.alert-warning.alert-flip(role='alert' ng-show='gauge >= 0.1') Yikes! You might want to give them a little nudge.
 			.alert.alert-danger.alert-flip(role='alert' ng-show='gauge >= 0.2') Running out of time! Help them out!

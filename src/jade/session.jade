@@ -113,13 +113,13 @@ html(ng-app='escapeApp')
 					+col(null, 6)
 						h3 Team: {{activeTeam.name}}
 						ul.button-list.unsolved-list
-							li.unsolved(ng-repeat='(id, obj) in q' ng-show='id !== "jigsaw" && !isSolved(id) && isAvailable(obj)')
+							li.unsolved(ng-repeat='(id, obj) in q' ng-if='id !== "jigsaw" && !isSolved(id) && isAvailable(obj)')
 								a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
 									+squaredIcon('obj.icon')
 						.clearfix
 						h4 Solved:
 						ul.button-list.solved-list
-							li.solved(ng-repeat='(id, obj) in q' ng-show='isSolved(id)')
+							li.solved(ng-repeat='(id, obj) in q' ng-if='isSolved(id)')
 								a(data-toggle='tab' href='{{"#" + _.kebabCase(id)}}')
 									+squaredIcon('obj.icon')
 									i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id) && obj.track')
@@ -170,7 +170,7 @@ html(ng-app='escapeApp')
 						.tab-pane(role='tabpanel' id='{{_.kebabCase(q.battleship.name)}}')
 							+clueHead('battleship', 'Battleship')
 							div(ng-if='!isSolved(q.battleship)')
-								table.battleship.centered
+								table.battleship
 									thead
 										tr
 											th
