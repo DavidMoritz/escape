@@ -27,16 +27,15 @@ mixin solvedSection(puzzleObj)
 
 mixin clueHead(name, text, hide)
 	- hide = hide ? "false" : "!isSolved(q." + name + ")"
-	section(ng-show="activePuzzle === '#{name}'")
-		.clue-head
-			.icon
-				h4
-					span.fa-stack.fa-2x
-						i.fa.fa-stack-2x.fa-square
-						i.fa.fa-stack-1x.text-white(class='fa-{{q.#{name}.icon}}')
-			.title
-				h4
-					em(ng-show='isSolved(q.#{name})') ({{q.#{name}.display || mc.camelToTitle(q.#{name}.name)}})
-					strong(ng-show='!isSolved(q.#{name})') #{text}
-			.major-buttons
-				button.btn.btn-primary.pull-right(ng-click='submitGuess(q.#{name})' ng-show="#{hide}") #[i.fa.fa-lightbulb-o]#[br]Submit
+	.clue-head(ng-show="activePuzzle === '#{name}'")
+		.icon
+			h4
+				span.fa-stack.fa-2x
+					i.fa.fa-stack-2x.fa-square
+					i.fa.fa-stack-1x.text-white(class='fa-{{q.#{name}.icon}}')
+		.title
+			h4
+				em(ng-show='isSolved(q.#{name})') ({{q.#{name}.display || mc.camelToTitle(q.#{name}.name)}})
+				strong(ng-show='!isSolved(q.#{name})') #{text}
+		.major-buttons
+			button.btn.btn-primary.pull-right(ng-click='submitGuess(q.#{name})' ng-show="#{hide}") #[i.fa.fa-lightbulb-o]#[br]Submit
