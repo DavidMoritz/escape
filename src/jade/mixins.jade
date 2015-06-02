@@ -20,11 +20,12 @@ mixin solvedSection(puzzleObj)
 	div(ng-if='isSolved(#{puzzleObj})')
 		h3 #[i.fa.fa-check] SOLVED!
 		.well
-			p.lead
+			p.lead.text-center
 				span.fa-stack.fa-2x
 					i.fa.fa-stack-2x.fa-circle.text-white
 					i.fa.fa-stack-1x.fa-inverse(class='fa-{{#{puzzleObj}.nextClue.lockIcon}}')
-				| Code: #[span.code {{#{puzzleObj}.nextClue.code}}]
+				br
+				span.code {{#{puzzleObj}.nextClue.code}}]
 
 mixin clueHead(name, text, hide)
 	- hide = hide ? "false" : "!isSolved(q." + name + ")"
