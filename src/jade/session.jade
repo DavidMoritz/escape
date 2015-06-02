@@ -212,12 +212,13 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
 						+clueHead('texasHoldEm', 'Who is the Big Winner?')
 							div(ng-if='!isSolved(q.texasHoldEm)')
-								label &nbsp;
 								.row
 									+col(6)
-										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word1' placeholder='First Name')
+										label First Name
+										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word1')
 									+col(6)
-										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2' placeholder='Last Name')
+										label Last Name
+										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2')
 						+clueHead('connect4', 'Which column should Red choose?', true)
 							div(ng-if='!isSolved(q.connect4)')
 								iframe.connect4game.collapse.in.centered(src='html/connect4.html' width='354px' height='354px' scrolling='no')
