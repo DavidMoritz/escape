@@ -342,7 +342,7 @@ escapeApp.controller('SessionCtrl', [
 			$s.activePuzzle = id;
 			$timeout(function () {
 				$('.blink').removeClass('blink');
-			}, 1000);
+			}, 500);
 		};
 
 		$s.speak = function speak() {
