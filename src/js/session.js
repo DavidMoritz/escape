@@ -325,7 +325,12 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.setActivePuzzle = function activePuzzle(id) {
+			$('.blink').removeClass('blink');
+			$('.'+id+'-icon').addClass('blink');
 			$s.activePuzzle = id;
+			$timeout(function () {
+				$('.blink').removeClass('blink');
+			}, 1000);
 		};
 
 		$s.speak = function speak() {

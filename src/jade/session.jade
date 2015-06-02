@@ -113,13 +113,13 @@ html(ng-app='escapeApp')
 					+col(null, 6, 6)
 						h3 Team: {{activeTeam.name}}
 						ul.button-list.unsolved-list.hide-cluebook
-							li.unsolved(ng-repeat='(id, obj) in q' ng-if="id !== 'jigsaw' && !isSolved(id) && isAvailable(obj)")
+							li(ng-repeat='(id, obj) in q' class='{{id}}-icon unsolved' ng-if="id !== 'jigsaw' && !isSolved(id) && isAvailable(obj)")
 								a(ng-click='setActivePuzzle(id)')
 									+squaredIcon('obj.icon')
 						.clearfix
 						h4 Solved:
 						ul.button-list.solved-list
-							li.solved(ng-repeat='(id, obj) in q' ng-if='isSolved(id)')
+							li(ng-repeat='(id, obj) in q' ng-if='isSolved(id)' class='{{id}}-icon solved')
 								a(ng-click='setActivePuzzle(id)')
 									+squaredIcon('obj.icon')
 									i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id) && obj.track')
