@@ -73,14 +73,14 @@ html(ng-app='escapeApp')
 					+col(4, 2, 2).medal(ng-if='activeTeam' ng-click='speak()')
 						p {{status[activeTeam.status].text}}
 						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
-					+col(10, 8, 8)(ng-class="{'col-sm-offset-2': !activeTeam}")
+					+col(10, 7, 8)(ng-class="{'col-sm-offset-2': !activeTeam}")
 						h1.digital.text-center
 							span(ng-hide='activeTeam') Loading
 								i.fa.fa-spinner.fa-pulse
 							span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 						.display-message
 							h3(ng-if='curMsg') {{curMsg.display}}
-					+col(2).major-buttons.hidden-xs(ng-if='!isSolved(q.jigsaw)')
+					+col(2, 3, 2).major-buttons.hidden-xs.visible-ms-block(ng-if='!isSolved(q.jigsaw)')
 						ul
 							li
 								button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]#[br] Intro Video
@@ -91,7 +91,7 @@ html(ng-app='escapeApp')
 				section(ng-show='activeTeam && !activeTeam.finished')
 					#jigsaw.hidden-xs
 						button.btn.btn-warning.hide-cluebook(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-sign-out] Escape the Room
-					.visible-xs-block.text-center
+					.visible-xs-block.visible-xs-only.text-center
 						button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
 						button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
 						button.btn.hide-cluebook(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
