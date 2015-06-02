@@ -479,8 +479,9 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		document.body.addEventListener('touchmove', function(event) {
-			if ($(document).width() >= 768)
+			if ($(document).width() >= 768) {
 				event.preventDefault();
+			}
 		}, false);
 	}
 ]);
