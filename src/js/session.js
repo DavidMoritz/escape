@@ -83,10 +83,16 @@ escapeApp.controller('SessionCtrl', [
 			videoWatched = !!$s.activeTeam.timerStarted;
 
 			checkSolvedLocks();
+
+			document.body.addEventListener('touchmove', function(event) {
+				if ($(document).width() >= 768) {
+					event.preventDefault();
+				}
+			}, false);
 		}
 
 		function checkSolvedLocks() {
-			_.forEach($s.q, function(q, id) {
+			_.forEach($s.q, function eachLock(q, id) {
 				if($s.isSolved(q) && !q.nextClue) {
 					nextClue(q);
 				}
@@ -179,11 +185,15 @@ escapeApp.controller('SessionCtrl', [
 					break;
 				case 'crossword':
 					var correctAnswer = q.answers[0];
-					var correctlyGuessedLettersCount = 0;
-					_.forEach(q.guess.split(''), function eachLetter(letter, index) {
-						correctlyGuessedLettersCount += (letter === correctAnswer[index]) ? 1 : 0;
+					var correctAnswerArray = correctAnswer.split('');
+					_.forEach(q.guess.split(''), function eachLetter(letter) {
+						var loc = correctAnswerArray.indexOf(letter);
+						if(loc !== -1) {
+							correctAnswerArray.splice(loc, 1);
+						}
 					});
-					if (correctlyGuessedLettersCount >= correctAnswer.length - 1) {
+					// '3' indicates the number of missing/incorrect values allowed
+					if (correctAnswerArray.length <= 3) {
 						q.guess = correctAnswer;
 					}
 			}
@@ -196,8 +206,8 @@ escapeApp.controller('SessionCtrl', [
 
 		function countTracks() {
 			var total = 0;
-			_.forEach($s.activeTeam.tracks, function(track, key) {
-				_.forEach(track, function() {
+			_.forEach($s.activeTeam.tracks, function eachTrack(track, key) {
+				_.forEach(track, function eachGame() {
 					total++;
 				});
 			});
@@ -247,16 +257,18 @@ escapeApp.controller('SessionCtrl', [
 				if (!videoWatched) {
 					$('#video-modal').modal('show');
 				}
-				// if administrator "Unsolves" Jigsaw manually, this needs to update.
-				if ($s.activeTeam.finished && !$s.isSolved($s.q.jigsaw)) {
-					delete $s.activeTeam.finished;
-				}
 
 				// convertTimer
 				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
 				var current = $s.activeTeam.finished ? moment($s.activeTeam.finished, timeFormat) : moment();
 
 				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
+
+				if(!$s.activeTeam.finished && $s.timeRemaining <= 0) {
+					$s.timeRemaining = 0;
+					$s.timesUp = true;
+					$s.activeTeam.finished = moment().format(timeFormat);
+				}
 
 				$s.updateLockoutTimeRemaining();
 
@@ -330,7 +342,7 @@ escapeApp.controller('SessionCtrl', [
 			$s.activePuzzle = id;
 			$timeout(function () {
 				$('.blink').removeClass('blink');
-			}, 1000);
+			}, 500);
 		};
 
 		$s.speak = function speak() {
@@ -438,9 +450,11 @@ escapeApp.controller('SessionCtrl', [
 					}
 				}
 			});
-			EF.getFB('checkSolvedLocks').on('value', function attemptingConnect4() {
+			EF.getFB('syncSolvedLocks').on('value', function syncSolvedLocks() {
 				checkSolvedLocks();
-				EF.setFB('checkSolvedLocks', null);
+				$timeout(function() {
+					EF.setFB('syncSolvedLocks', 'synced');
+				}, 500);
 			});
 		});
 
@@ -482,11 +496,5 @@ escapeApp.controller('SessionCtrl', [
 		$s.removeDie = function removeDie(q, dieIndex) {
 			_.pullAt(q.guessedDice, dieIndex);
 		};
-
-		document.body.addEventListener('touchmove', function(event) {
-			if ($(document).width() >= 768) {
-				event.preventDefault();
-			}
-		}, false);
 	}
 ]);

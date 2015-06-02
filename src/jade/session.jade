@@ -29,6 +29,8 @@ html(ng-app='escapeApp')
 			.modal-dialog.modal-sm
 				.modal-content
 					.modal-header
+						button.close(data-dismiss='modal' aria-label='close')
+							span(aria-hidden='true') &times;
 						h4.modal-title Enter the correct code to escape
 					.modal-body
 					.modal-footer
@@ -97,14 +99,18 @@ html(ng-app='escapeApp')
 						button.btn.hide-cluebook(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
 						button.btn.btn-warning.hide-cluebook(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
 					input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-				#you-win(ng-if='activeTeam.finished')
+				#you-win(ng-if='activeTeam.finished && !timesUp')
 					.display-message.text-center
 						.text-center
 							img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 						h2 You win!#[br] You've escaped the room!
 						h4 You have completed your mission with #[strong {{status[activeTeam.status].text}}] status, escaping the room with #[strong {{moment(timeRemaining * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
 						h3 #[strong Congratulations!!]
-			#game(ng-if='activeTeam && !isSolved(q.jigsaw)')
+				#times-up(ng-if='timesUp')
+					.display-message.text-center
+						h2 Time's Up!#[br] You didn't escaped the room
+						h4 Thanks for playing and we hope you enjoyed#[br] The Game Escape
+			#game(ng-if='activeTeam && !isSolved(q.jigsaw) && !timesUp')
 				#lockout(ng-show='activeTeam.lockoutStarted')
 					h3 Locked Out!
 					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
@@ -135,13 +141,13 @@ html(ng-app='escapeApp')
 						+clueHead('operation', 'What kind of Operation is this?')
 							div(ng-if='!isSolved(q.operation)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
+								input.form-control(type='text' ng-model='q.operation.guess')
 						+clueHead('monopoly', 'What happened?')
 							div(ng-if='!isSolved(q.monopoly)')
 								label Where did I stay?
-								input.form-control(type='text' ng-model='q.monopoly.splitGuess.property' placeholder='Where did I stay?')
+								input.form-control(type='text' ng-model='q.monopoly.splitGuess.property')
 								label How much money did I have left?
-								input.form-control(type='tel' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
+								input.form-control(type='tel' ng-model='q.monopoly.splitGuess.money')
 						+clueHead('yahtzee', 'What did I roll?')
 							div(ng-if='!isSolved(q.yahtzee)')
 								label &nbsp;
@@ -158,7 +164,7 @@ html(ng-app='escapeApp')
 						+clueHead('scrabble', 'What SCRABBLE word did I spell?')
 							div(ng-if='!isSolved(q.scrabble)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.scrabble.guess' placeholder='What SCRABBLE word did I spell?')
+								input.form-control(type='text' ng-model='q.scrabble.guess')
 						+clueHead('battleship', 'Battleship')
 							div(ng-if='!isSolved(q.battleship)')
 								table.battleship
@@ -186,7 +192,7 @@ html(ng-app='escapeApp')
 						+clueHead('guessWho', 'Can you Guess Who I am?')
 							div(ng-if='!isSolved(q.guessWho)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.guessWho.guess' placeholder='Guess Who?')
+								input.form-control(type='text' ng-model='q.guessWho.guess')
 						+clueHead('chess', 'Where should black move next?')
 							div(ng-if='!isSolved(q.chess)')
 								table.chess
@@ -206,12 +212,13 @@ html(ng-app='escapeApp')
 								input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
 						+clueHead('texasHoldEm', 'Who is the Big Winner?')
 							div(ng-if='!isSolved(q.texasHoldEm)')
-								label &nbsp;
 								.row
 									+col(6)
-										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word1' placeholder='First Name')
+										label First Name
+										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word1')
 									+col(6)
-										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2' placeholder='Last Name')
+										label Last Name
+										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2')
 						+clueHead('connect4', 'Which column should Red choose?', true)
 							div(ng-if='!isSolved(q.connect4)')
 								iframe.connect4game.collapse.in.centered(src='html/connect4.html' width='354px' height='354px' scrolling='no')
@@ -245,11 +252,11 @@ html(ng-app='escapeApp')
 						+clueHead('taboo', 'Which word is Taboo?')
 							div(ng-if='!isSolved(q.taboo)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.taboo.guess' placeholder='Which word is Taboo?')
+								input.form-control(type='text' ng-model='q.taboo.guess')
 						+clueHead('sudoku', 'What is the actual retail price?')
 							div(ng-if='!isSolved(q.sudoku)')
 								label &nbsp;
-								input.form-control(type='tel' ng-model='q.sudoku.guess' placeholder='Actual retail price')
+								input.form-control(type='tel' ng-model='q.sudoku.guess')
 							div(ng-if='isSolved(q.sudoku)')
 								h3 #[i.fa.fa-check] SOLVED!
 								h5 The team was awarded a free hint!
