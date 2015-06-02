@@ -49,6 +49,26 @@ module.exports = function exportReplace(grunt) {
 				}
 			]
 		},
+		cluebook: {
+			options: {
+				patterns: [
+					{
+						match: /escape-session/g,
+						replacement: 'cluebook-session'
+					}
+				]
+			},
+			files: [
+				{
+					expand: true,
+					flatten: true,
+					src: [
+						'<%= distRoot %>/cluebook.html'
+					],
+					dest: '<%= distRoot %>/'
+				}
+			]
+		},
 		prod: {
 			options: {
 				patterns: [

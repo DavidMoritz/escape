@@ -10,7 +10,17 @@ module.exports = function exportJade(grunt) {
 					return destBase + destPath.replace(/\.jade$/, '.html');
 				}
 			})
-
+		},
+		cluebook: {
+			options: {
+				pretty: true
+			},
+			files: grunt.file.expandMapping(['session.jade'], 'dist/', {
+				cwd: 'src/jade',
+				rename: function(destBase) {
+					return destBase + 'cluebook.html';
+				}
+			})
 		}
 	});
 

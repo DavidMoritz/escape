@@ -45,6 +45,7 @@ module.exports = function(grunt) {
 		'less:dev',
 		'copy:dev',
 		'replace:dev',
+		'replace:cluebook',
 		'pleeease:dev',
 		'concat:dev',
 		'copy:tests',

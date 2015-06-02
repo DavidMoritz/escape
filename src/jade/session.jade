@@ -87,15 +87,15 @@ html(ng-app='escapeApp')
 							li
 								button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]#[br] Messages
 							li
-								button.btn(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]#[br] {{activeTeam.hints ? 'Use Hint' : 'Request Hint'}}
+								button.btn.hide-cluebook(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]#[br] {{activeTeam.hints ? 'Use Hint' : 'Request Hint'}}
 				section(ng-show='activeTeam && !activeTeam.finished')
 					#jigsaw.hidden-xs
-						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-sign-out] Escape the Room
+						button.btn.btn-warning.hide-cluebook(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-sign-out] Escape the Room
 					.visible-xs-block.text-center
 						button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
 						button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
-						button.btn(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
-						button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
+						button.btn.hide-cluebook(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
+						button.btn.btn-warning.hide-cluebook(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
 					input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
 				#you-win(ng-if='activeTeam.finished')
 					.display-message.text-center
@@ -112,7 +112,7 @@ html(ng-app='escapeApp')
 				#questions.row(ng-hide='activeTeam.lockoutStarted')
 					+col(null, 6, 6)
 						h3 Team: {{activeTeam.name}}
-						ul.button-list.unsolved-list
+						ul.button-list.unsolved-list.hide-cluebook
 							li.unsolved(ng-repeat='(id, obj) in q' ng-if="id !== 'jigsaw' && !isSolved(id) && isAvailable(obj)")
 								a(ng-click='setActivePuzzle(id)')
 									+squaredIcon('obj.icon')
@@ -125,7 +125,7 @@ html(ng-app='escapeApp')
 									i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id) && obj.track')
 						//- .clearfix
 						//- h4 Bonus:
-						//- ul.button-list
+						//- ul.button-list.hide-cluebook
 						//- 	li(ng-repeat='(id, obj) in q' ng-show="id !== 'jigsaw' && !obj.track" class="{{isSolved(id) ? 'solved' : 'unsolved'}}")
 						//- 		a(ng-click='setActivePuzzle(id)')
 						//- 			+squaredIcon('obj.icon')

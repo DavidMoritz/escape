@@ -49,7 +49,7 @@ html(ng-app='escapeApp')
 				button.btn.btn-info(data-toggle='modal' data-target='#hint-modal' ng-hide='activeTeam.status == status.length - 1') #[i.fa.fa-question-circle] {{activeTeam.hints ? "Use Hint" : "Request Hint"}}
 			p The Game Escape is an interactive, cooperative, challenging experience that helps demonstrate teamwork and our various telents and strenghts when working in a group. Perfect as a team-building work activity, family experiment, or testing your friends; The Game Escape will stretch you mentally and emotionally. Success is not guaranteed. Will your team get out in time? Will you maintain your {{status[activeTeam.status].text}} status? You'd better move quickly, only have {{moment(public.timeRemaining * 1000).format('mm')}} minutes left.
 			hr
-			a.btn.btn-success(href='session.html') #[i.fa.fa-book] CodeBook
+			a.btn.btn-success(href='cluebook.html') #[i.fa.fa-book] CodeBook
 			//a.btn.btn-warning(href='admin.html') Admin?
 			//hr
 			//.row
