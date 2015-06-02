@@ -3,7 +3,8 @@ escapeApp.controller('SessionCtrl', [
 	'$timeout',
 	'$interval',
 	'EscapeFactory',
-	function SessionCtrl($s, $timeout, $interval, EF) {
+	'MethodFactory',
+	function SessionCtrl($s, $timeout, $interval, EF, MF) {
 		'use strict';
 
 		function init() {
@@ -193,6 +194,49 @@ escapeApp.controller('SessionCtrl', [
 			introVideo.load();
 		}
 
+		function countTracks() {
+			var total = 0;
+			_.forEach($s.activeTeam.tracks, function(track, key) {
+				_.forEach(track, function() {
+					total++;
+				});
+			});
+			return total;
+		}
+
+		function mastermindClue(guess, answer) {
+			if(_.size($s.activeTeam.solvedQuestions) >= countTracks()) {
+				var arrGuess = guess.split('');
+				var answerArr = answer.split('');
+				var tempAnswer = [];
+				var tempGuess = [];
+				var locations = 0;
+				var total = 0;
+				var message = 'You entered ';
+
+				for(var i = 0; i < 5; i++) {
+					if(arrGuess[i] == answerArr[i]) {
+						locations++;
+					} else {
+						tempAnswer.push(answerArr[i]);
+						tempGuess.push(arrGuess[i]);
+					}
+				}
+				for(i = 0; i < tempGuess.length; i++) {
+					var index = tempAnswer.indexOf(tempGuess[i]);
+					if(index !== -1) {
+						total++;
+						delete tempAnswer[index];
+					}
+				}
+				total += locations;
+				locations = locations === 0 ? 'none' : locations;
+				message += total + ' correct digits, ' + locations + ' of which ';
+				message += locations === 1 ? 'was in the right place.' : 'were in the right places.';
+				$s.addNewMessage(message);
+			}
+		}
+
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
 		var videoWatched;
@@ -246,6 +290,40 @@ escapeApp.controller('SessionCtrl', [
 			lockoutImages: EF.lockoutImages
 		});
 
+
+		$s.addNewMessage = function addNewMessage(message) {
+			var stoMsgs = EF.getFBArray('teams/' + $s.activeTeam.$id + '/storedMessages');
+			stoMsgs.$add({
+				text: message,
+				time: moment().format(timeFormat)
+			});
+		};
+
+		$s.isSolved = function isSolved(puz) {
+			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
+
+			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
+		};
+
+		$s.isAvailable = function isAvailable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			if(!track) {
+				return true;
+			}
+			for(var i = 0, result; i < track.length; i++) {
+				if(puz.name == track[i]) {
+					result = true;
+					break;
+				}
+				if(!$s.isSolved(track[i])) {
+					result = false;
+					break;
+				}
+			}
+			return result;
+		};
+
 		$s.setActivePuzzle = function activePuzzle(id) {
 			$s.activePuzzle = id;
 		};
@@ -293,7 +371,7 @@ escapeApp.controller('SessionCtrl', [
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				//console.log('SESS> afterTeamLoaded');
 				$timeout(init, 0);
-				if(firstLoad) {
+				if(firstLoad && bindMessaging) {
 					bindMessaging();
 				}
 			});
@@ -323,36 +401,16 @@ escapeApp.controller('SessionCtrl', [
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
 				nextClue(q);
 			} else {
-				$s.activeTeam.lockoutStarted = currentTime;
 				if(++$s.activeTeam.lockoutIndex == $s.lockoutImages.length) {
 					$s.activeTeam.lockoutIndex = 0;
 				}
+				if(q.name === 'jigsaw') {
+					mastermindClue(q.guess + '', q.answers[0] + '');
+				} 		
+				$timeout(function() {
+					$s.activeTeam.lockoutStarted = currentTime;
+				}, 10);
 			}
-		};
-
-		$s.isSolved = function isSolved(puz) {
-			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
-
-			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
-		};
-
-		$s.isAvailable = function isAvailable(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
-
-			if(!track) {
-				return true;
-			}
-			for(var i = 0, result; i < track.length; i++) {
-				if(puz.name == track[i]) {
-					result = true;
-					break;
-				}
-				if(!$s.isSolved(track[i])) {
-					result = false;
-					break;
-				}
-			}
-			return result;
 		};
 
 		$s.allTeams = EF.getFBArray('teams');

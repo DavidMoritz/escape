@@ -3,7 +3,8 @@ escapeApp.controller('AdminCtrl', [
 	'$timeout',
 	'$interval',
 	'EscapeFactory',
-	function AdminCtrl($s, $timeout, $interval, EF) {
+	'MethodFactory',
+	function AdminCtrl($s, $timeout, $interval, EF, MF) {
 		'use strict';
 
 		function getTotalPoints() {
@@ -38,21 +39,6 @@ escapeApp.controller('AdminCtrl', [
 			}
 		}, 1000);
 
-		$s.chooseTeam = function chooseTeam(teamId) {
-			//console.log('ADMIN> chooseTeam id: ' + teamId);
-
-			if (activeTeamFBObj) {
-				activeTeamFBObj.$destroy();
-				//console.log('ADMIN> activeTeam is destroyed');
-			}
-			//	activate the chosen team
-			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
-			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function atThen() {
-				EF.setFB('activeTeamId', teamId);
-				$s.activeTeam.solvedPoints = $s.activeTeam.solvedPoints || 0;
-			});
-		};
-
 		$s.addNewMessage = function addNewMessage(message) {
 			if (!$s.activeTeam) {
 				return false;
@@ -75,10 +61,49 @@ escapeApp.controller('AdminCtrl', [
 			$('.addMessageInput').focus();
 		};
 
+		$s.isSolved = function isSolved(puz) {
+			var puzzleName = _.has(puz, 'name') ? puz.name : puz;
+
+			return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
+		};
+
+		$s.isAvailable = function isAvailable(puz) {
+			var track = $s.activeTeam.tracks[puz.track];
+
+			if(!track) {
+				return true;
+			}
+			for(var i = 0, result; i < track.length; i++) {
+				if(puz.name == track[i]) {
+					result = true;
+					break;
+				}
+				if(!$s.isSolved(track[i])) {
+					result = false;
+					break;
+				}
+			}
+			return result;
+		};
+
+		$s.chooseTeam = function chooseTeam(teamId) {
+			//console.log('ADMIN> chooseTeam id: ' + teamId);
+
+			if (activeTeamFBObj) {
+				activeTeamFBObj.$destroy();
+				//console.log('ADMIN> activeTeam is destroyed');
+			}
+			//	activate the chosen team
+			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
+			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function atThen() {
+				EF.setFB('activeTeamId', teamId);
+				$s.activeTeam.solvedPoints = $s.activeTeam.solvedPoints || 0;
+			});
+		};
+
 		$s.createTeam = function createTeam() {
 			//console.log('ADMIN> createTeam() called');
 			var currentTime = moment().format(timeFormat);
-			var password = prompt('Team password');
 
 			$s.allTeams.$add({
 				createdDate: currentTime,
@@ -89,7 +114,7 @@ escapeApp.controller('AdminCtrl', [
 				lockoutPeriod: EF.defaultLockoutPeriod,
 				status: 0,
 				lockoutIndex: -1,
-				password: password,
+				password: 'admin123',
 				passwordRequired: false,
 				tracks: EF.tracks,
 				totalPoints: getTotalPoints(),
@@ -194,25 +219,6 @@ escapeApp.controller('AdminCtrl', [
 			var track = $s.activeTeam.tracks[puz.track];
 
 			return !$s.isAvailable(puz) && !$s.isSolved(track[track.length - 1]) && !$s.isBypassable(puz);
-		};
-
-		$s.isAvailable = function isAvailable(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
-
-			if(!track) {
-				return true;
-			}
-			for(var i = 0, result; i < track.length; i++) {
-				if(puz.name == track[i]) {
-					result = true;
-					break;
-				}
-				if(!$s.isSolved(track[i])) {
-					result = false;
-					break;
-				}
-			}
-			return result;
 		};
 
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {
