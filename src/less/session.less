@@ -253,7 +253,6 @@ h1.digital {
 	}
 	h3 {margin-top: 0;}
 	table.battleship {
-		margin-left: 60px;
 		th, td {
 			text-align: center;
 			padding: 2px 7px 3px;
@@ -262,10 +261,8 @@ h1.digital {
 		td.active {color: #c00;}
 	}
 	.connect4game {
-		margin-left: 40px;
 	}
 	table.chess {
-		margin-left: 30px;
 		th, td {
 			text-align: center;
 			width: 40px;
@@ -294,6 +291,10 @@ h1.digital {
 		background-color: @gray-dark
 	}
 }
+.code {
+	font-family: messageFont, monospace;
+	font-size: 30px;
+}
 .display-message {
 	h3 {
 		display: none;
@@ -319,6 +320,7 @@ h1.digital {
 	.list-inline > li {
 		float: left;
 		padding: 0;
+		margin-right: 3px;
 
 		&:first-child {padding-left: 5px;}
 		.panel-heading {text-align: center;}
@@ -326,10 +328,17 @@ h1.digital {
 			text-align: center;
 			padding: 5px;
 			height: 45px;
+			@media (min-width: @screen-md) {
+				min-width: 79px;
+				height: 70px;
+			}
 		}
 	}
 	img {
 		height: 35px;
+		@media (min-width: @screen-md) {
+			height: 60px;
+		}
 
 		&.invert-color {filter: invert(100%);}
 	}

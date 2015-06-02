@@ -24,12 +24,12 @@ mixin solvedSection(puzzleObj)
 				span.fa-stack.fa-2x
 					i.fa.fa-stack-2x.fa-circle.text-white
 					i.fa.fa-stack-1x.fa-inverse(class='fa-{{#{puzzleObj}.nextClue.lockIcon}}')
-				| Code: {{#{puzzleObj}.nextClue.code}}
+				| Code: #[span.code {{#{puzzleObj}.nextClue.code}}]
 
 mixin clueHead(name, text, hide)
 	- hide = hide ? "false" : "!isSolved(q." + name + ")"
 	- extra = 'q.' + name
-	section(ng-show="activePuzzle === '#{name}'")
+	section(ng-show="activePuzzle === '#{name}'" id="{{_.kebabCase('#{name}')}}")
 		.clue-head
 			.icon
 				h4

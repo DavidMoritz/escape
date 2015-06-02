@@ -78,7 +78,7 @@ html(ng-app='escapeApp')
 								i.fa.fa-spinner.fa-pulse
 							span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 						.display-message
-							h3.digital(ng-if='curMsg') {{curMsg.display}}
+							h3(ng-if='curMsg') {{curMsg.display}}
 					+col(2).major-buttons.hidden-xs(ng-if='!isSolved(q.jigsaw)')
 						ul
 							li
@@ -133,7 +133,7 @@ html(ng-app='escapeApp')
 					+col(null, 6, 6)
 						+clueHead('operation', 'What kind of Operation is this?')
 							div(ng-if='!isSolved(q.operation)')
-								label
+								label &nbsp;
 								input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
 						+clueHead('monopoly', 'What happened?')
 							div(ng-if='!isSolved(q.monopoly)')
