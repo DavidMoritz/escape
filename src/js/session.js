@@ -406,7 +406,7 @@ escapeApp.controller('SessionCtrl', [
 				}
 				if(q.name === 'jigsaw') {
 					mastermindClue(q.guess + '', q.answers[0] + '');
-				} 		
+				}
 				$timeout(function() {
 					$s.activeTeam.lockoutStarted = currentTime;
 				}, 10);
@@ -477,5 +477,10 @@ escapeApp.controller('SessionCtrl', [
 		$s.removeDie = function removeDie(q, dieIndex) {
 			_.pullAt(q.guessedDice, dieIndex);
 		};
+
+		document.body.addEventListener('touchmove', function(event) {
+			if ($(document).width() >= 768)
+				event.preventDefault();
+		}, false);
 	}
 ]);

@@ -6,8 +6,9 @@ html(ng-app='escapeApp')
 		meta(charset='UTF-8')
 		meta(name='description', content='A game of escape')
 		meta(name='author', content='Moritz Company')
-		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
 		meta(name='apple-mobile-web-app-capable' content='yes')
+		meta(name='apple-touch-fullscreen' content='yes')
 		title Control Panel - The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
 		link(rel='stylesheet', href='inc/escape.css')
@@ -140,7 +141,7 @@ html(ng-app='escapeApp')
 								label Where did I stay?
 								input.form-control(type='text' ng-model='q.monopoly.splitGuess.property' placeholder='Where did I stay?')
 								label How much money did I have left?
-								input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
+								input.form-control(type='tel' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
 						+clueHead('yahtzee', 'What did I roll?')
 							div(ng-if='!isSolved(q.yahtzee)')
 								label &nbsp;
