@@ -83,6 +83,12 @@ escapeApp.controller('SessionCtrl', [
 			videoWatched = !!$s.activeTeam.timerStarted;
 
 			checkSolvedLocks();
+
+			document.body.addEventListener('touchmove', function(event) {
+				if ($(document).width() >= 768) {
+					event.preventDefault();
+				}
+			}, false);
 		}
 
 		function checkSolvedLocks() {
@@ -446,7 +452,9 @@ escapeApp.controller('SessionCtrl', [
 			});
 			EF.getFB('checkSolvedLocks').on('value', function checkSolvedLocks() {
 				checkSolvedLocks();
-				EF.setFB('checkSolvedLocks', 'checked');
+				$timeout(function() {
+					EF.setFB('checkSolvedLocks', 'checked');
+				}, 500);
 			});
 		});
 
@@ -488,11 +496,5 @@ escapeApp.controller('SessionCtrl', [
 		$s.removeDie = function removeDie(q, dieIndex) {
 			_.pullAt(q.guessedDice, dieIndex);
 		};
-
-		document.body.addEventListener('touchmove', function(event) {
-			if ($(document).width() >= 768) {
-				event.preventDefault();
-			}
-		}, false);
 	}
 ]);
