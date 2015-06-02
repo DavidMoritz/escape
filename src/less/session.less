@@ -86,8 +86,13 @@ ul {
 	list-style-position: inside;
 	padding-left: 0;
 	li {
+		transition: all ease 0.2s;
 		float: left;
 		margin-left: 10px;
+		&:hover {
+			transform: scale(2);
+			box-shadow: 0 0 10px rgba(255,255,255,0.5);
+		}
 		&.solved a {
 			color: @brand-info;
 		}
