@@ -29,7 +29,7 @@ mixin solvedSection(puzzleObj)
 mixin clueHead(name, text, hide)
 	- hide = hide ? "false" : "!isSolved(q." + name + ")"
 	- extra = 'q.' + name
-	section(ng-show="activePuzzle === '#{name}'" id="{{_.kebabCase('#{name}')}}")
+	section.clue-section(ng-show="activePuzzle === '#{name}'" id="{{_.kebabCase('#{name}')}}")
 		.clue-head
 			.icon
 				h4

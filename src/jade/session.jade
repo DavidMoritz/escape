@@ -129,8 +129,8 @@ html(ng-app='escapeApp')
 						//- 	li(ng-repeat='(id, obj) in q' ng-show="id !== 'jigsaw' && !obj.track" class="{{isSolved(id) ? 'solved' : 'unsolved'}}")
 						//- 		a(ng-click='setActivePuzzle(id)')
 						//- 			+squaredIcon('obj.icon')
-					.clearfix.visible-xs-block
-					hr.visible-xs-block
+					.clearfix.visible-xs-block.visible-xs-only
+					hr.visible-xs-block.visible-xs-only
 					+col(null, 6, 6)
 						+clueHead('operation', 'What kind of Operation is this?')
 							div(ng-if='!isSolved(q.operation)')
