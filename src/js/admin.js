@@ -119,7 +119,7 @@ escapeApp.controller('AdminCtrl', [
 				tracks: EF.tracks,
 				totalPoints: getTotalPoints(),
 				voice: 'UK English Male',
-				checkSolvedLocks: 'checked'
+				syncSolvedLocks: 'synced'
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
@@ -199,7 +199,7 @@ escapeApp.controller('AdminCtrl', [
 			$s.activeTeam.solvedPoints += puz.points;
 			$s.activeTeam.solvedQuestions[puz.name] = moment().format(timeFormat);
 			$timeout(function() {
-				EF.setFB('checkSolvedLocks', 'now');
+				EF.setFB('syncSolvedLocks', 'now');
 			}, 100);
 
 		};

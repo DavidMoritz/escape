@@ -450,10 +450,10 @@ escapeApp.controller('SessionCtrl', [
 					}
 				}
 			});
-			EF.getFB('checkSolvedLocks').on('value', function checkSolvedLocks() {
+			EF.getFB('syncSolvedLocks').on('value', function syncSolvedLocks() {
 				checkSolvedLocks();
 				$timeout(function() {
-					EF.setFB('checkSolvedLocks', 'checked');
+					EF.setFB('syncSolvedLocks', 'synced');
 				}, 500);
 			});
 		});
