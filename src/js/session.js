@@ -255,6 +255,7 @@ escapeApp.controller('SessionCtrl', [
 				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
 
 				if(!$s.activeTeam.finished && $s.timeRemaining <= 0) {
+					$s.timeRemaining = 0;
 					$s.timesUp = true;
 					$s.activeTeam.finished = moment().format(timeFormat);
 				}
@@ -439,9 +440,9 @@ escapeApp.controller('SessionCtrl', [
 					}
 				}
 			});
-			EF.getFB('checkSolvedLocks').on('value', function attemptingConnect4() {
+			EF.getFB('checkSolvedLocks').on('value', function checkSolvedLocks() {
 				checkSolvedLocks();
-				EF.setFB('checkSolvedLocks', null);
+				EF.setFB('checkSolvedLocks', 'checked');
 			});
 		});
 
