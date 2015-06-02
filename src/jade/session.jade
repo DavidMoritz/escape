@@ -141,13 +141,13 @@ html(ng-app='escapeApp')
 						+clueHead('operation', 'What kind of Operation is this?')
 							div(ng-if='!isSolved(q.operation)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.operation.guess'none})
+								input.form-control(type='text' ng-model='q.operation.guess')
 						+clueHead('monopoly', 'What happened?')
 							div(ng-if='!isSolved(q.monopoly)')
 								label Where did I stay?
-								input.form-control(type='text' ng-model='q.monopoly.splitGuess.property'none})
+								input.form-control(type='text' ng-model='q.monopoly.splitGuess.property')
 								label How much money did I have left?
-								input.form-control(type='tel' ng-model='q.monopoly.splitGuess.money'none})
+								input.form-control(type='tel' ng-model='q.monopoly.splitGuess.money')
 						+clueHead('yahtzee', 'What did I roll?')
 							div(ng-if='!isSolved(q.yahtzee)')
 								label &nbsp;
@@ -164,7 +164,7 @@ html(ng-app='escapeApp')
 						+clueHead('scrabble', 'What SCRABBLE word did I spell?')
 							div(ng-if='!isSolved(q.scrabble)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.scrabble.guess'none})
+								input.form-control(type='text' ng-model='q.scrabble.guess')
 						+clueHead('battleship', 'Battleship')
 							div(ng-if='!isSolved(q.battleship)')
 								table.battleship
@@ -192,7 +192,7 @@ html(ng-app='escapeApp')
 						+clueHead('guessWho', 'Can you Guess Who I am?')
 							div(ng-if='!isSolved(q.guessWho)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.guessWho.guess'none})
+								input.form-control(type='text' ng-model='q.guessWho.guess')
 						+clueHead('chess', 'Where should black move next?')
 							div(ng-if='!isSolved(q.chess)')
 								table.chess
@@ -252,11 +252,11 @@ html(ng-app='escapeApp')
 						+clueHead('taboo', 'Which word is Taboo?')
 							div(ng-if='!isSolved(q.taboo)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.taboo.guess'none})
+								input.form-control(type='text' ng-model='q.taboo.guess')
 						+clueHead('sudoku', 'What is the actual retail price?')
 							div(ng-if='!isSolved(q.sudoku)')
 								label &nbsp;
-								input.form-control(type='tel' ng-model='q.sudoku.guess'none})
+								input.form-control(type='tel' ng-model='q.sudoku.guess')
 							div(ng-if='isSolved(q.sudoku)')
 								h3 #[i.fa.fa-check] SOLVED!
 								h5 The team was awarded a free hint!
