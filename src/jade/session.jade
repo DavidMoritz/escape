@@ -29,6 +29,8 @@ html(ng-app='escapeApp')
 			.modal-dialog.modal-sm
 				.modal-content
 					.modal-header
+						button.close(data-dismiss='modal' aria-label='close')
+							span(aria-hidden='true') &times;
 						h4.modal-title Enter the correct code to escape
 					.modal-body
 					.modal-footer
@@ -97,14 +99,18 @@ html(ng-app='escapeApp')
 						button.btn.hide-cluebook(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
 						button.btn.btn-warning.hide-cluebook(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
 					input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-				#you-win(ng-if='activeTeam.finished')
+				#you-win(ng-if='activeTeam.finished && !timesUp')
 					.display-message.text-center
 						.text-center
 							img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 						h2 You win!#[br] You've escaped the room!
 						h4 You have completed your mission with #[strong {{status[activeTeam.status].text}}] status, escaping the room with #[strong {{moment(timeRemaining * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
 						h3 #[strong Congratulations!!]
-			#game(ng-if='activeTeam && !isSolved(q.jigsaw)')
+				#times-up(ng-if='timesUp')
+					.display-message.text-center
+						h2 Time's Up!#[br] You didn't escaped the room
+						h4 Thanks for playing and we hope you enjoyed#[br] The Game Escape
+			#game(ng-if='activeTeam && !isSolved(q.jigsaw) && !timesUp')
 				#lockout(ng-show='activeTeam.lockoutStarted')
 					h3 Locked Out!
 					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')

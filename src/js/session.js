@@ -247,16 +247,17 @@ escapeApp.controller('SessionCtrl', [
 				if (!videoWatched) {
 					$('#video-modal').modal('show');
 				}
-				// if administrator "Unsolves" Jigsaw manually, this needs to update.
-				if ($s.activeTeam.finished && !$s.isSolved($s.q.jigsaw)) {
-					delete $s.activeTeam.finished;
-				}
 
 				// convertTimer
 				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
 				var current = $s.activeTeam.finished ? moment($s.activeTeam.finished, timeFormat) : moment();
 
 				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
+
+				if(!$s.activeTeam.finished && $s.timeRemaining <= 0) {
+					$s.timesUp = true;
+					$s.activeTeam.finished = moment().format(timeFormat);
+				}
 
 				$s.updateLockoutTimeRemaining();
 
