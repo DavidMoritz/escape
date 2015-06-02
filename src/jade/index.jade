@@ -53,7 +53,7 @@ html(ng-app='escapeApp')
 			//a.btn.btn-warning(href='admin.html') Admin?
 			//hr
 			//.row
-				+col(null, 3)(ng-show='activeTeam')
+				+col(null, 3, 3)(ng-show='activeTeam')
 					h3 Team: {{activeTeam.name}}
 					h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
 					h5 Hints: {{activeTeam.hints}}
@@ -62,9 +62,9 @@ html(ng-app='escapeApp')
 					h5 Time Allowed: {{activeTeam.timeAllowed / 60}} minutes
 						i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", 60)')
 						i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", -60)')
-				+col(null, 3)
+				+col(null, 3, 3)
 					#performance-gauge(just-gage value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
-				+col(null, 6).controls
+				+col(null, 6, 6).controls
 					label.block(for='advancedControls')
 						h3 Controls: #[input(type='checkbox' ng-model='advancedControls' id='advancedControls')]
 					button.btn.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse" ng-hide='activeTeam') #[i.fa.fa-user-times] Choose Team

@@ -69,10 +69,10 @@ html(ng-app='escapeApp')
 				h1 Control Panel - The Game Escape
 			.jumbotron
 				.row(ng-if='curMsg')
-					+col(4, 2).medal(ng-if='activeTeam' ng-click='speak()')
+					+col(4, 2, 2).medal(ng-if='activeTeam' ng-click='speak()')
 						p {{status[activeTeam.status].text}}
 						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
-					+col(10, 8)(ng-class="{'col-sm-offset-2': !activeTeam}")
+					+col(10, 8, 8)(ng-class="{'col-sm-offset-2': !activeTeam}")
 						h1.digital.text-center
 							span(ng-hide='activeTeam') Loading
 								i.fa.fa-spinner.fa-pulse
@@ -109,7 +109,7 @@ html(ng-app='escapeApp')
 					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
 					h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockoutTimeRemaining}}] seconds.
 				#questions.row(ng-hide='activeTeam.lockoutStarted')
-					+col(null, 6)
+					+col(null, 6, 6)
 						h3 Team: {{activeTeam.name}}
 						ul.button-list.unsolved-list
 							li.unsolved(ng-repeat='(id, obj) in q' ng-if="id !== 'jigsaw' && !isSolved(id) && isAvailable(obj)")
@@ -130,19 +130,17 @@ html(ng-app='escapeApp')
 						//- 			+squaredIcon('obj.icon')
 					.clearfix.visible-xs-block
 					hr.visible-xs-block
-					+col(null, 6)
+					+col(null, 6, 6)
 						+clueHead('operation', 'What kind of Operation is this?')
 							div(ng-if='!isSolved(q.operation)')
-								label &nbsp;
+								label
 								input.form-control(type='text' ng-model='q.operation.guess' placeholder='What kind of Operation is this?')
-							+solvedSection('q.operation')
 						+clueHead('monopoly', 'What happened?')
 							div(ng-if='!isSolved(q.monopoly)')
 								label Where did I stay?
 								input.form-control(type='text' ng-model='q.monopoly.splitGuess.property' placeholder='Where did I stay?')
 								label How much money did I have left?
 								input.form-control(type='text' ng-model='q.monopoly.splitGuess.money' placeholder='How much money did I have left?')
-							+solvedSection('q.monopoly')
 						+clueHead('yahtzee', 'What did I roll?')
 							div(ng-if='!isSolved(q.yahtzee)')
 								label &nbsp;
@@ -156,12 +154,10 @@ html(ng-app='escapeApp')
 										ng-repeat='die in q.yahtzee.dice',
 										ng-click='addDie(q.yahtzee, die)')
 										img(ng-src="{{'img/dice/' + die + 'c.gif'}}" alt='{{die}}')
-							+solvedSection('q.yahtzee')
 						+clueHead('scrabble', 'What SCRABBLE word did I spell?')
 							div(ng-if='!isSolved(q.scrabble)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.scrabble.guess' placeholder='What SCRABBLE word did I spell?')
-							+solvedSection('q.scrabble')
 						+clueHead('battleship', 'Battleship')
 							div(ng-if='!isSolved(q.battleship)')
 								table.battleship
@@ -175,7 +171,6 @@ html(ng-app='escapeApp')
 											td(ng-repeat='col in q.battleship.columns',
 												ng-class='{active: isCoordSelected(q.battleship, row + col)}',
 												ng-click='toggleCoordSelect(q.battleship, row + col)') #[i.fa.fa-circle]
-							+solvedSection('q.battleship')
 						+clueHead('clue', 'Who killed Mr. Boddy?')
 							div(ng-if='!isSolved(q.clue)')
 								label Who?
@@ -187,12 +182,10 @@ html(ng-app='escapeApp')
 								label Where?
 								select.form-control(ng-model='q.clue.splitGuess.where' ng-options='where as where for where in q.clue.rooms')
 									option(value='' disabled ng-if='!q.clue.splitGuess.where') Room...
-							+solvedSection('q.clue')
 						+clueHead('guessWho', 'Can you Guess Who I am?')
 							div(ng-if='!isSolved(q.guessWho)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.guessWho.guess' placeholder='Guess Who?')
-							+solvedSection('q.guessWho')
 						+clueHead('chess', 'Where should black move next?')
 							div(ng-if='!isSolved(q.chess)')
 								table.chess
@@ -206,12 +199,10 @@ html(ng-app='escapeApp')
 										tr
 											th
 											th(ng-repeat='col in q.chess.columns') {{col}}
-							+solvedSection('q.chess')
 						+clueHead('crossword', 'What is the secret code in the crossword (#8 Down)?')
 							div(ng-if='!isSolved(q.crossword)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
-							+solvedSection('q.crossword')
 						+clueHead('texasHoldEm', 'Who is the Big Winner?')
 							div(ng-if='!isSolved(q.texasHoldEm)')
 								label &nbsp;
@@ -220,11 +211,9 @@ html(ng-app='escapeApp')
 										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word1' placeholder='First Name')
 									+col(6)
 										input.form-control(type='text' ng-model='q.texasHoldEm.splitGuess.word2' placeholder='Last Name')
-							+solvedSection('q.texasHoldEm')
 						+clueHead('connect4', 'Which column should Red choose?', true)
 							div(ng-if='!isSolved(q.connect4)')
 								iframe.connect4game.collapse.in.centered(src='html/connect4.html' width='354px' height='354px' scrolling='no')
-							+solvedSection('q.connect4')
 						+clueHead('fiveRoutes', 'Put the animals in order from the shortest route to the longest route')
 							div(ng-if='!isSolved(q.fiveRoutes)')
 								label &nbsp;
@@ -244,7 +233,6 @@ html(ng-app='escapeApp')
 										ng-click='toggleAnimalSelect(q.fiveRoutes, animal)',
 										ng-class='{active: _.includes(q.fiveRoutes.orderedAnimals, animal)}')
 										img(ng-src="{{'img/five-routes-' + animal + '.png'}}" alt='{{animal}}')
-							+solvedSection('q.fiveRoutes')
 						+clueHead('wordFind', 'Answer the Word Find riddle below...')
 							div(ng-if='!isSolved(q.wordFind)')
 								label "Not European":
@@ -253,12 +241,10 @@ html(ng-app='escapeApp')
 										input.form-control(type='text' ng-model='q.wordFind.splitGuess.word1' maxlength='{{q.wordFind.answers[0].split(\' \')[0].length}}')
 									+col(6)
 										input.form-control(type='text' ng-model='q.wordFind.splitGuess.word2' maxlength='{{q.wordFind.answers[0].split(\' \')[1].length}}')
-							+solvedSection('q.wordFind')
 						+clueHead('taboo', 'Which word is Taboo?')
 							div(ng-if='!isSolved(q.taboo)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.taboo.guess' placeholder='Which word is Taboo?')
-							+solvedSection('q.taboo')
 						+clueHead('sudoku', 'What is the actual retail price?')
 							div(ng-if='!isSolved(q.sudoku)')
 								label &nbsp;

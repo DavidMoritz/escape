@@ -35,9 +35,9 @@ html(ng-app='escapeApp')
 			.alert.alert-danger.alert-flip(ng-show='activeTeam.hintInProgress') Hint has been requested.
 				button.btn.btn-success(ng-click='remove("hintInProgress")') #[i.fa.fa-check-circle] Resolved
 			.row
-				+col(null, 6)
+				+col(null, 6, 6)
 					.row
-						+col(null, 6)(ng-show='activeTeam')
+						+col(null, 6, 6)(ng-show='activeTeam')
 							h3 Team: {{activeTeam.name}}
 							h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
 							h5 Hints: {{activeTeam.hints}}
@@ -47,14 +47,14 @@ html(ng-app='escapeApp')
 								i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", 60)')
 								i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", -60)')
 							h5 Solved Points: {{activeTeam.solvedPoints}} / {{activeTeam.totalPoints}}
-						+col(null, 6)
+						+col(null, 6, 6)
 							#performance-gauge(just-gage value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 					.row.tracks(ng-show='advancedControls')
-						+col(null, 4)(ng-repeat='(k, track) in activeTeam.tracks')
+						+col(null, 4, 4)(ng-repeat='(k, track) in activeTeam.tracks')
 							h5 Track #[span.upper {{k}}]:
 							ul
 								li(ng-repeat='game in track') {{game}}
-				+col(null, 6).controls
+				+col(null, 6, 6).controls
 					label.block(for='advancedControls')
 						h3 Controls: #[input(type='checkbox' ng-model='advancedControls' id='advancedControls')]
 					button.btn.btn-float.btn-primary.collapse.in.chooseTeamSection(data-target=".chooseTeamSection" data-toggle="collapse" ng-hide='activeTeam') #[i.fa.fa-user-times] Choose Team
