@@ -4,25 +4,25 @@ escapeApp.controller('SignUpCtrl', [
 	function EscapeCtrl($s, EF) {
 		'use strict';
 
-		//	initialize scoped variables
-		var initialSessions = [
-			'2015-06-19 18:00',
-			'2015-06-19 19:00',
-			'2015-06-19 20:00',
-			'2015-06-19 21:00',
+		$s.maxSlotsPerSession = 10;
+		$s.initialSessions = [
+			'2015-06-19_18-00',
+			'2015-06-19_19-00',
+			'2015-06-19_20-00',
+			'2015-06-19_21-00',
 
-			'2015-06-20 10:00',
-			'2015-06-20 11:00',
-			'2015-06-20 12:00',
+			'2015-06-20_10-00',
+			'2015-06-20_11-00',
+			'2015-06-20_12-00',
 
-			'2015-06-20 14:00',
-			'2015-06-20 15:00',
-			'2015-06-20 16:00',
+			'2015-06-20_14-00',
+			'2015-06-20_15-00',
+			'2015-06-20_16-00',
 
-			'2015-06-20 18:00',
-			'2015-06-20 19:00',
-			'2015-06-20 20:00',
-			'2015-06-20 21:00'
+			'2015-06-20_18-00',
+			'2015-06-20_19-00',
+			'2015-06-20_20-00',
+			'2015-06-20_21-00'
 		];
 
 		$s.fbSessions = EF.getFBArray('sessions');
@@ -31,24 +31,38 @@ escapeApp.controller('SignUpCtrl', [
 			console.log($s.fbSessions);
 		});
 
-		$s.doTheCodez = function doTheCodez() {
-			// var fbRef = EF.getFB('sessions');
-			// _.forEach(initialSessions, function eachSession(sess) {
-			// 	var newSession = fbRef.push();
-			// 	newSession.startTime = sess.startTime;
-			// 	console.log('new id for this session is ' + newSession.key());
-			// 	console.log(newSession);
-			// });
+		$s.addPlayer = function addPlayer(sessionId, slotId, playerName) {
+			EF.getFB('sessions/' + sessionId + '/slots/' + slotId).set({name: playerName});
+			console.log('Player ' + playerName + ' was added to the game at ' + sessionId + ' in slot #' + slotId + '!');
+		};
+
+			// All of this stuff was used to initially create the sessions in the database...
+		$s.setInitialSessions = function setInitialSessions() {
+			var initialSessions = [
+				'2015-06-19_18-00',
+				'2015-06-19_19-00',
+				'2015-06-19_20-00',
+				'2015-06-19_21-00',
+
+				'2015-06-20_10-00',
+				'2015-06-20_11-00',
+				'2015-06-20_12-00',
+
+				'2015-06-20_14-00',
+				'2015-06-20_15-00',
+				'2015-06-20_16-00',
+
+				'2015-06-20_18-00',
+				'2015-06-20_19-00',
+				'2015-06-20_20-00',
+				'2015-06-20_21-00'
+			];
 
 			_.forEach(initialSessions, function eachSession(sess) {
-				$s.fbSessions.$add(sess).then(function addSessionThen(newSess) {
-					console.log('new session created with id: ' + newSess.key());
-
-					_.forEach(_.range(1, 11), function eachNum(i) {
-						newSess.child('slots/' + i).set({
-							id: i,
-							name: null
-						});
+				_.forEach(_.range(1, 11), function eachNum(i) {
+					theSessions.child(sess + '/slots/' + i).set({
+						id: i,
+						name: null
 					});
 				});
 			});
