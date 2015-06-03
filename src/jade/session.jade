@@ -83,7 +83,7 @@ html(ng-app='escapeApp')
 								i.fa.fa-spinner.fa-pulse
 							span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 						.display-message
-							h3(ng-if='curMsg') {{curMsg.display}}
+							h3(ng-if='curMsg' ng-show='activeTeam') #[i.fa.fa-volume-up(ng-click='speak()')] {{curMsg.display}}
 					+col(2, 3, 2).major-buttons.hidden-xs.visible-ms-block(ng-if='!isSolved(q.jigsaw)')
 						ul
 							li
