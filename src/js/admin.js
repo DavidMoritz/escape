@@ -123,11 +123,6 @@ escapeApp.controller('AdminCtrl', [
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
-				newTeam.child('storedMessages').push({
-					time: currentTime,
-					text: 'We are about to begin'
-				});
-
 				$s.chooseTeam(newTeam.key());
 			});
 		};
@@ -136,11 +131,12 @@ escapeApp.controller('AdminCtrl', [
 			if((options.confirm && !confirm(options.confirm)) || !$s.activeTeam) {
 				return;
 			}
+			var value = options.value || true;
 			//console.log('ADMIN> set time for ' + attribute);
 			if(options.toggle) {
 				$s.activeTeam[attribute] = !$s.activeTeam[attribute];
 			} else {
-				$s.activeTeam[attribute] = options.time ? moment().format(timeFormat) : true;
+				$s.activeTeam[attribute] = options.time ? moment().format(timeFormat) : value;
 			}
 
 			if(options.message) {

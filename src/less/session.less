@@ -81,6 +81,48 @@ ul {
 
 	.digital.digital, p {color: #000;}
 }
+
+#you-win,
+#times-up,
+#start-game {
+	&, > * {text-align: center;}
+	h2 {
+		color: @brand-info;
+		text-transform: uppercase;
+		font-size: 40px;
+		margin: 30px auto;
+	}
+	h3 {
+		font-size: 60px;
+		margin: 30px auto;
+	}
+	h4 {
+		font-size: 25px;
+		margin: 20px auto;
+
+		strong {
+			text-transform: uppercase;
+			color: @brand-success;
+		}
+	}
+}
+#start-game {
+	.start-button {
+		font-size: 88px;
+		padding: 20px;
+		border-radius: 30px;
+		width: 30%;
+	}
+	display: none;
+}
+.not-started {
+	#start-game {
+		display: block;
+	}
+	.times-up-hide {
+		display: none;
+	}
+}
 .times-up-show,
 .times-up-show-inline {
 	display: none;
@@ -108,10 +150,10 @@ ul {
 		margin-left: 10px;
 		transition: all ease 0.2s;
 		transform: scale(1);
-		&.blink {
+		&:hover {
 			position: relative;
 			z-index: 20;
-			transform: scale(2);
+			transform: scale(1.5);
 		}
 		&.solved a {
 			color: @brand-info;
@@ -189,13 +231,17 @@ ul {
 		background: @gray-light;
 	}
 	.keypad-key, .keypad-special {
-		width: 65px;
-		height: 65px;
+		width: 85px;
+		height: 80px;
 		padding: 2px;
 		background: @gray;
 		color: @mk-String;
 		font-size: 3em;
 		margin: 4px;
+		line-height: 5px;
+		i {
+			font-size: 93%;
+		}
 	}
 	.keypad-key-down {
 		padding-left: 6px;
@@ -275,6 +321,17 @@ h1.digital {
 	color: @mk-String;
 }
 
+.modal-dialog {
+	width: 425px;
+	font-size: 150%;
+	h4 {font-size: 110%}
+	&.modal-sm {
+		@media(min-width: @screen-sm) {
+			width: 425px;
+		}
+	}
+}
+
 .container {
 	.fa-inverse {
 		color: @gray-dark;
@@ -285,9 +342,13 @@ h1.digital {
 	}
 	h3 {margin-top: 0;}
 	table.battleship {
+		font-size: 135%;
 		th, td {
 			text-align: center;
 			padding: 2px 7px 3px;
+			@media(min-width: @screen-md) {
+				padding: 2px 9px 0;
+			}
 		}
 		th {color: #6af;}
 		td.active {color: #c00;}
@@ -325,7 +386,7 @@ h1.digital {
 }
 .code {
 	font-family: messageFont, monospace;
-	font-size: 30px;
+	font-size: 45px;
 }
 .display-message {
 	h3 {
@@ -443,30 +504,6 @@ a {cursor: pointer;}
 			display: block;
 			font-size: 5em;
 			color: @brand-info;
-		}
-	}
-}
-
-#you-win,
-#times-up {
-	&, > * {text-align: center;}
-	h2 {
-		color: @brand-info;
-		text-transform: uppercase;
-		font-size: 40px;
-		margin: 30px auto;
-	}
-	h3 {
-		font-size: 60px;
-		margin: 30px auto;
-	}
-	h4 {
-		font-size: 25px;
-		margin: 20px auto;
-
-		strong {
-			text-transform: uppercase;
-			color: @brand-success;
 		}
 	}
 }

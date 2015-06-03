@@ -53,6 +53,7 @@ escapeApp.controller('SessionCtrl', [
 			$('#video-modal').on('show.bs.modal', function(e) {
 				introVideo.play();
 				$('.after-video').hide();
+				videoWatched = true;
 			}).on('hide.bs.modal', function() {
 				introVideo.pause();
 			});
@@ -99,10 +100,12 @@ escapeApp.controller('SessionCtrl', [
 			});
 		}
 
-		function typeOutMessage() {
+		function typeOutMessage(mute) {
 			//console.log('SESS> typeOutMessage() called');
 			$s.curMsg.display = '';
-			$s.speak();
+			if(!mute) {
+				$s.speak();
+			}
 
 			var curMsgArray = $s.curMsg.text.split('');
 			var curPos = 0;
@@ -123,7 +126,7 @@ escapeApp.controller('SessionCtrl', [
 						display: ''
 					};
 
-					typeOutMessage();
+					typeOutMessage(true);
 				}
 			}, true);
 			$s.$watch('activeTeam.latestSolved', function updateLocks() {
@@ -304,6 +307,11 @@ escapeApp.controller('SessionCtrl', [
 			lockoutImages: EF.lockoutImages
 		});
 
+		$s.startGame = function startGame() {
+			videoWatched = true;
+			$s.activeTeam.timerStarted = moment().format(timeFormat);
+			$('#video-modal').modal('show');
+		};
 
 		$s.addNewMessage = function addNewMessage(message) {
 			var stoMsgs = EF.getFBArray('teams/' + $s.activeTeam.$id + '/storedMessages');
@@ -339,12 +347,7 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.setActivePuzzle = function activePuzzle(id) {
-			$('.blink').removeClass('blink');
-			$('.'+id+'-icon').addClass('blink');
 			$s.activePuzzle = id;
-			$timeout(function () {
-				$('.blink').removeClass('blink');
-			}, 500);
 		};
 
 		$s.speak = function speak() {
@@ -389,6 +392,7 @@ escapeApp.controller('SessionCtrl', [
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				//console.log('SESS> afterTeamLoaded');
+				$s.activeTeam.timesUp = false;
 				$timeout(init, 0);
 				if(firstLoad && bindMessaging) {
 					bindMessaging();

@@ -11,9 +11,9 @@ html(ng-app='escapeApp')
 		meta(name='apple-touch-fullscreen' content='yes')
 		title Control Panel - The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
-		link(rel='stylesheet', href='inc/escape.css')
+		link(rel='stylesheet', href='inc/escape.css?v=17')
 		script(src='inc/angular.js')
-	body#escape-session(ng-cloak, ng-controller='SessionCtrl', ng-class="{'locked-out': activeTeam && activeTeam.lockoutStarted, 'times-up': timesUp}")
+	body#escape-session(ng-cloak, ng-controller='SessionCtrl', ng-class="{'locked-out': activeTeam && activeTeam.lockoutStarted, 'times-up': timesUp, 'not-started': activeTeam && !activeTeam.timerStarted}")
 		#previous-messages-modal.modal.fade
 			.modal-dialog
 				.modal-content
@@ -24,7 +24,7 @@ html(ng-app='escapeApp')
 					.modal-body
 						p(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
 					.modal-footer
-						button.btn.btn-default(data-dismiss='modal') Close
+						button.btn.btn-lg.btn-default(data-dismiss='modal') Close
 		#keypad-modal.modal.fade
 			.modal-dialog.modal-sm
 				.modal-content
@@ -34,7 +34,7 @@ html(ng-app='escapeApp')
 						h4.modal-title Enter the correct code to escape
 					.modal-body
 					.modal-footer
-						button.btn.btn-default(data-dismiss='modal') Close
+						button.btn.btn-lg.btn-default(data-dismiss='modal') Close
 		#video-modal.modal.fade
 			.modal-dialog.modal-lg
 				.modal-content
@@ -47,11 +47,13 @@ html(ng-app='escapeApp')
 						video#intro-video(poster='img/intro.jpg' preload='auto') Your browswer does not support the video tag
 							source(src='img/intro-video.mp4' type='video/mp4')
 					.modal-footer
-						button.btn.btn-default(data-dismiss='modal') Done
+						button.btn.btn-lg.btn-default(data-dismiss='modal') Done
 		#hint-modal.modal.fade
 			.modal-dialog.modal-sm
 				.modal-content
 					.modal-header
+						button.close(data-dismiss='modal' aria-label='close')
+							span(aria-hidden='true') &times;
 						h4.modal-title Would you like to {{activeTeam.hints ? 'use' : 'request'}} a hint?
 					.modal-body
 						.medal.pull-right(ng-if='activeTeam')
@@ -65,24 +67,24 @@ html(ng-app='escapeApp')
 						div(ng-show='activeTeam.hints')
 							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? 'hints' : 'hint'}} available for use. This will not affect your team's {{status[activeTeam.status].name}} status.
 					.modal-footer
-						button.btn.btn-default.pull-left(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
-						button.btn.btn-success(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
+						button.btn.btn-default.btn-lg.pull-left(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
+						button.btn.btn-success.btn-lg(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
 		.container
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
-				.row(ng-if='curMsg')
+				.row.times-up-hide(ng-if='curMsg')
 					+col(4, 2, 2).medal(ng-if='activeTeam' ng-click='speak()')
-						p.times-up-hide {{status[activeTeam.status].text}}
-						img.img-responsive.times-up-hide(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
+						p {{status[activeTeam.status].text}}
+						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 					+col(10, 7, 8)(ng-class="{'col-sm-offset-2': !activeTeam}")
 						h1.digital.text-center
 							span(ng-hide='activeTeam') Loading
 								i.fa.fa-spinner.fa-pulse
 							span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 						.display-message
-							h3.times-up-hide(ng-if='curMsg') {{curMsg.display}}
-					+col(2, 3, 2).major-buttons.hidden-xs.visible-ms-block.times-up-hide(ng-if='!isSolved(q.jigsaw)')
+							h3(ng-if='curMsg') {{curMsg.display}}
+					+col(2, 3, 2).major-buttons.hidden-xs.visible-ms-block(ng-if='!isSolved(q.jigsaw)')
 						ul
 							li
 								button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]#[br] Intro Video
@@ -94,7 +96,7 @@ html(ng-app='escapeApp')
 					#jigsaw.hidden-xs
 						button.btn.btn-warning.hide-cluebook(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-sign-out] Escape the Room
 					.visible-xs-block.visible-xs-only.text-center
-						button.btn.btn-success.times-up-hide(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
+						button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]
 						button.btn.btn-info(data-toggle='modal' data-target='#previous-messages-modal' ng-show='activeTeam') #[i.fa.fa-2x.fa-comments-o]
 						button.btn.hide-cluebook(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
 						button.btn.btn-warning.hide-cluebook(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
@@ -105,16 +107,25 @@ html(ng-app='escapeApp')
 							img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 						h2 You win!#[br] You've escaped the room!
 						h4 You have completed your mission with #[strong {{status[activeTeam.status].text}}] status, escaping the room with #[strong {{moment(timeRemaining * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
-						h3 #[strong Congratulations!!]
+						h3 #[strong Congratulations {{activeTeam.name}}!!]
 				#times-up.times-up-show
+					h1.digital.text-center
+						span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 					.display-message.text-center
-						h2 Time's Up!#[br] You didn't escaped the room
+						h2 Time's Up {{activeTeam.name}}!#[br] You didn't escaped the room
 						h4 Thanks for playing and we hope you enjoyed#[br] The Game Escape
+				#start-game
+					.display-message.text-center
+						h2 Welcome {{activeTeam.name}}!
+						.start-button.btn.btn-success(ng-click='startGame()') #[i.fa.fa-youtube-play]
 			#game.times-up-hide(ng-if='activeTeam && !isSolved(q.jigsaw)')
 				#lockout(ng-show='activeTeam.lockoutStarted')
 					h3 Locked Out!
-					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
-					h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockoutTimeRemaining}}] seconds.
+					.row
+						+col(null, 6, null, 6)
+							img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
+						+col(null, 6, null, 6)
+							h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockoutTimeRemaining}}] seconds.
 				#questions.row(ng-hide='activeTeam.lockoutStarted')
 					+col(null, 6, 6)
 						h3 Team: {{activeTeam.name}}
