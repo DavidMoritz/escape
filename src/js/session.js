@@ -349,6 +349,7 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.speak = function speak() {
+			$('.fa-volume-up').focus();
 			responsiveVoice.speak($s.curMsg.text, $s.activeTeam.voice);
 		};
 
