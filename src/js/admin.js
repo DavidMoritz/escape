@@ -119,7 +119,7 @@ escapeApp.controller('AdminCtrl', [
 				tracks: EF.tracks,
 				totalPoints: getTotalPoints(),
 				voice: 'UK English Male',
-				syncSolvedLocks: 'synced'
+				latestSolved: 'none'
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
@@ -169,6 +169,7 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.unsolve = function unsolve(puz) {
+			$s.activeTeam.latestSolved = 'none';
 			delete $s.activeTeam.solvedQuestions[puz.name];
 		};
 
@@ -198,10 +199,7 @@ escapeApp.controller('AdminCtrl', [
 			}
 			$s.activeTeam.solvedPoints += puz.points;
 			$s.activeTeam.solvedQuestions[puz.name] = moment().format(timeFormat);
-			$timeout(function() {
-				EF.setFB('syncSolvedLocks', 'now');
-			}, 100);
-
+			$s.activeTeam.latestSolved = puz.name;
 		};
 
 		$s.isSolved = function isSolved(puz) {

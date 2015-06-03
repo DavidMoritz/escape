@@ -84,7 +84,7 @@ escapeApp.controller('SessionCtrl', [
 
 			checkSolvedLocks();
 
-			document.body.addEventListener('touchmove', function(event) {
+			window.addEventListener('touchmove', function(event) {
 				if ($(document).width() >= 768) {
 					event.preventDefault();
 				}
@@ -125,6 +125,9 @@ escapeApp.controller('SessionCtrl', [
 
 					typeOutMessage();
 				}
+			}, true);
+			$s.$watch('activeTeam.latestSolved', function updateLocks() {
+				checkSolvedLocks();
 			}, true);
 		}
 
@@ -264,10 +267,9 @@ escapeApp.controller('SessionCtrl', [
 
 				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
 
-				if(!$s.activeTeam.finished && $s.timeRemaining <= 0) {
+				if($s.timeRemaining <= 0) {
 					$s.timeRemaining = 0;
 					$s.timesUp = true;
-					$s.activeTeam.finished = moment().format(timeFormat);
 				}
 
 				$s.updateLockoutTimeRemaining();
@@ -415,6 +417,7 @@ escapeApp.controller('SessionCtrl', [
 					$s.activeTeam.solvedQuestions = {};
 				}
 				$s.activeTeam.solvedPoints += q.points;
+				$s.activeTeam.latestSolved = q.name;
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
 				nextClue(q);
 			} else {
@@ -449,12 +452,6 @@ escapeApp.controller('SessionCtrl', [
 						$s.submitGuess($s.q.connect4);
 					}
 				}
-			});
-			EF.getFB('syncSolvedLocks').on('value', function syncSolvedLocks() {
-				checkSolvedLocks();
-				$timeout(function() {
-					EF.setFB('syncSolvedLocks', 'synced');
-				}, 500);
 			});
 		});
 
