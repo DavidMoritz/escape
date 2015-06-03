@@ -53,6 +53,7 @@ escapeApp.controller('SessionCtrl', [
 			$('#video-modal').on('show.bs.modal', function(e) {
 				introVideo.play();
 				$('.after-video').hide();
+				videoWatched = true;
 			}).on('hide.bs.modal', function() {
 				introVideo.pause();
 			});
@@ -84,7 +85,7 @@ escapeApp.controller('SessionCtrl', [
 
 			checkSolvedLocks();
 
-			document.body.addEventListener('touchmove', function(event) {
+			window.addEventListener('touchmove', function(event) {
 				if ($(document).width() >= 768) {
 					event.preventDefault();
 				}
@@ -99,10 +100,12 @@ escapeApp.controller('SessionCtrl', [
 			});
 		}
 
-		function typeOutMessage() {
+		function typeOutMessage(mute) {
 			//console.log('SESS> typeOutMessage() called');
 			$s.curMsg.display = '';
-			$s.speak();
+			if(!mute) {
+				$s.speak();
+			}
 
 			var curMsgArray = $s.curMsg.text.split('');
 			var curPos = 0;
@@ -123,8 +126,11 @@ escapeApp.controller('SessionCtrl', [
 						display: ''
 					};
 
-					typeOutMessage();
+					typeOutMessage(true);
 				}
+			}, true);
+			$s.$watch('activeTeam.latestSolved', function updateLocks() {
+				checkSolvedLocks();
 			}, true);
 		}
 
@@ -264,10 +270,9 @@ escapeApp.controller('SessionCtrl', [
 
 				$s.timeRemaining = $s.activeTeam.timeAllowed - current.diff(gameStart, 'seconds');
 
-				if(!$s.activeTeam.finished && $s.timeRemaining <= 0) {
+				if($s.timeRemaining <= 0) {
 					$s.timeRemaining = 0;
 					$s.timesUp = true;
-					$s.activeTeam.finished = moment().format(timeFormat);
 				}
 
 				$s.updateLockoutTimeRemaining();
@@ -302,6 +307,11 @@ escapeApp.controller('SessionCtrl', [
 			lockoutImages: EF.lockoutImages
 		});
 
+		$s.startGame = function startGame() {
+			videoWatched = true;
+			$s.activeTeam.timerStarted = moment().format(timeFormat);
+			$('#video-modal').modal('show');
+		};
 
 		$s.addNewMessage = function addNewMessage(message) {
 			var stoMsgs = EF.getFBArray('teams/' + $s.activeTeam.$id + '/storedMessages');
@@ -337,12 +347,7 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.setActivePuzzle = function activePuzzle(id) {
-			$('.blink').removeClass('blink');
-			$('.'+id+'-icon').addClass('blink');
 			$s.activePuzzle = id;
-			$timeout(function () {
-				$('.blink').removeClass('blink');
-			}, 500);
 		};
 
 		$s.speak = function speak() {
@@ -387,6 +392,7 @@ escapeApp.controller('SessionCtrl', [
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				//console.log('SESS> afterTeamLoaded');
+				$s.activeTeam.timesUp = false;
 				$timeout(init, 0);
 				if(firstLoad && bindMessaging) {
 					bindMessaging();
@@ -415,6 +421,7 @@ escapeApp.controller('SessionCtrl', [
 					$s.activeTeam.solvedQuestions = {};
 				}
 				$s.activeTeam.solvedPoints += q.points;
+				$s.activeTeam.latestSolved = q.name;
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
 				nextClue(q);
 			} else {
@@ -449,12 +456,6 @@ escapeApp.controller('SessionCtrl', [
 						$s.submitGuess($s.q.connect4);
 					}
 				}
-			});
-			EF.getFB('syncSolvedLocks').on('value', function syncSolvedLocks() {
-				checkSolvedLocks();
-				$timeout(function() {
-					EF.setFB('syncSolvedLocks', 'synced');
-				}, 500);
 			});
 		});
 

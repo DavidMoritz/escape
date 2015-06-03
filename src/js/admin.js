@@ -119,14 +119,9 @@ escapeApp.controller('AdminCtrl', [
 				tracks: EF.tracks,
 				totalPoints: getTotalPoints(),
 				voice: 'UK English Male',
-				syncSolvedLocks: 'synced'
+				latestSolved: 'none'
 			}).then(function(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
-
-				newTeam.child('storedMessages').push({
-					time: currentTime,
-					text: 'We are about to begin'
-				});
 
 				$s.chooseTeam(newTeam.key());
 			});
@@ -136,11 +131,12 @@ escapeApp.controller('AdminCtrl', [
 			if((options.confirm && !confirm(options.confirm)) || !$s.activeTeam) {
 				return;
 			}
+			var value = options.value || true;
 			//console.log('ADMIN> set time for ' + attribute);
 			if(options.toggle) {
 				$s.activeTeam[attribute] = !$s.activeTeam[attribute];
 			} else {
-				$s.activeTeam[attribute] = options.time ? moment().format(timeFormat) : true;
+				$s.activeTeam[attribute] = options.time ? moment().format(timeFormat) : value;
 			}
 
 			if(options.message) {
@@ -169,6 +165,7 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.unsolve = function unsolve(puz) {
+			$s.activeTeam.latestSolved = 'none';
 			delete $s.activeTeam.solvedQuestions[puz.name];
 		};
 
@@ -198,10 +195,7 @@ escapeApp.controller('AdminCtrl', [
 			}
 			$s.activeTeam.solvedPoints += puz.points;
 			$s.activeTeam.solvedQuestions[puz.name] = moment().format(timeFormat);
-			$timeout(function() {
-				EF.setFB('syncSolvedLocks', 'now');
-			}, 100);
-
+			$s.activeTeam.latestSolved = puz.name;
 		};
 
 		$s.isSolved = function isSolved(puz) {
