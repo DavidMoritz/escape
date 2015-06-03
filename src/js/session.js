@@ -100,12 +100,10 @@ escapeApp.controller('SessionCtrl', [
 			});
 		}
 
-		function typeOutMessage(mute) {
+		function typeOutMessage() {
 			//console.log('SESS> typeOutMessage() called');
 			$s.curMsg.display = '';
-			if(!mute) {
-				$s.speak();
-			}
+			$s.speak();
 
 			var curMsgArray = $s.curMsg.text.split('');
 			var curPos = 0;
@@ -126,7 +124,7 @@ escapeApp.controller('SessionCtrl', [
 						display: ''
 					};
 
-					typeOutMessage(true);
+					typeOutMessage();
 				}
 			}, true);
 			$s.$watch('activeTeam.latestSolved', function updateLocks() {
@@ -392,7 +390,7 @@ escapeApp.controller('SessionCtrl', [
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function afterTeamLoaded() {
 				//console.log('SESS> afterTeamLoaded');
-				$s.activeTeam.timesUp = false;
+				$s.timesUp = false;
 				$timeout(init, 0);
 				if(firstLoad && bindMessaging) {
 					bindMessaging();
