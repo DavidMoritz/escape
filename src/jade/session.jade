@@ -11,7 +11,7 @@ html(ng-app='escapeApp')
 		meta(name='apple-touch-fullscreen' content='yes')
 		title Control Panel - The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
-		link(rel='stylesheet', href='inc/escape.css?v=17')
+		link(rel='stylesheet', href='inc/escape.css?v=19')
 		script(src='inc/angular.js')
 	body#escape-session(ng-cloak, ng-controller='SessionCtrl', ng-class="{'locked-out': activeTeam && activeTeam.lockoutStarted, 'times-up': timesUp, 'not-started': activeTeam && !activeTeam.timerStarted}")
 		#previous-messages-modal.modal.fade
@@ -121,11 +121,8 @@ html(ng-app='escapeApp')
 			#game.times-up-hide(ng-if='activeTeam && !isSolved(q.jigsaw)')
 				#lockout(ng-show='activeTeam.lockoutStarted')
 					h3 Locked Out!
-					.row
-						+col(null, 6, null, 6)
-							img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
-						+col(null, 6, null, 6)
-							h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockoutTimeRemaining}}] seconds.
+					img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[activeTeam.lockoutIndex]}}')
+					h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockoutTimeRemaining}}] seconds.
 				#questions.row(ng-hide='activeTeam.lockoutStarted')
 					+col(null, 6, 6)
 						h3 Team: {{activeTeam.name}}
