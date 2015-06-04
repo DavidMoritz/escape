@@ -266,7 +266,8 @@ escapeApp.controller('SessionCtrl', [
 		var videoWatched;
 		var allowScrolling;
 		var introVideo = $('#intro-video')[0];
-		var sound = new Audio('img/beep.wav');
+		var sound = new Audio('img/alert.mp3');
+		sound.currentTime = 0.65;
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
@@ -296,6 +297,10 @@ escapeApp.controller('SessionCtrl', [
 					$timeout(function removeAlert() {
 						$('body').removeClass('alert-team');
 					}, 500);
+					$timeout(function removeSound() {
+						sound.pause();
+						sound.currentTime = 0.65;
+					}, 3000);
 				}
 			} else {
 				$s.timeRemaining = 0;
