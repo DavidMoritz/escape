@@ -103,7 +103,7 @@ escapeApp.controller('SessionCtrl', [
 		function typeOutMessage() {
 			//console.log('SESS> typeOutMessage() called');
 			$s.curMsg.display = '';
-			$s.speak();
+			$('.fa-volume-up').click();
 
 			var curMsgArray = $s.curMsg.text.split('');
 			var curPos = 0;

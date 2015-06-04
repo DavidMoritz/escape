@@ -120,7 +120,7 @@ escapeApp.controller('AdminCtrl', [
 				totalPoints: getTotalPoints(),
 				voice: 'UK English Male',
 				latestSolved: 'none'
-			}).then(function(newTeam) {
+			}).then(function newTeamCreatedThen(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
 				$s.chooseTeam(newTeam.key());
