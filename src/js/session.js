@@ -109,7 +109,9 @@ escapeApp.controller('SessionCtrl', [
 		function typeOutMessage() {
 			//console.log('SESS> typeOutMessage() called');
 			$s.curMsg.display = '';
-			$('.fa-volume-up').click();
+			$timeout(function() {
+				$('.fa-volume-up').click();
+			}, 1);
 
 			var curMsgArray = $s.curMsg.text.split('');
 			var curPos = 0;
@@ -356,7 +358,7 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.speak = function speak() {
-			$('.fa-volume-up').focus();
+			//$('.fa-volume-up').focus();
 			responsiveVoice.speak($s.curMsg.text, $s.activeTeam.voice);
 		};
 
@@ -412,7 +414,9 @@ escapeApp.controller('SessionCtrl', [
 				return ans.toLowerCase();
 			});
 			parseGuess(q);
-
+			if (!$s.activeTeam.attempts) {
+				$s.activeTeam.attempts = [];
+			}
 			$s.activeTeam.attempts.push({
 				puzzle: q.name,
 				guess: q.guess,

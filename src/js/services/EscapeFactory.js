@@ -65,8 +65,7 @@ escapeApp.factory('EscapeFactory', [
 					'battleship',
 					'clue',
 					'guessWho',
-					'chess',
-					'crossword'
+					'chess'
 				],
 				c: [
 					'texasHoldEm',

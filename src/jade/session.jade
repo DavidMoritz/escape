@@ -261,11 +261,4 @@ html(ng-app='escapeApp')
 							div(ng-if='!isSolved(q.taboo)')
 								label &nbsp;
 								input.form-control(type='text' ng-model='q.taboo.guess')
-						+clueHead('sudoku', 'What is the actual retail price?')
-							div(ng-if='!isSolved(q.sudoku)')
-								label &nbsp;
-								input.form-control(type='tel' ng-model='q.sudoku.guess')
-							div(ng-if='isSolved(q.sudoku)')
-								h3 #[i.fa.fa-check] SOLVED!
-								h5 The team was awarded a free hint!
 		| @@javascriptReplaceFiles

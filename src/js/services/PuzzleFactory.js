@@ -58,7 +58,7 @@ escapeApp.factory('PuzzleFactory', [
 				coords: [],
 				columns: _.range(1, 11),
 				rows: 'abcdefghij'.split(''),
-				answers: ['g6&i6', 'g6&h6&i6'],
+				answers: ['g6&i6', 'g6&h6&i6', 'c7&d7'],
 				points: 40,
 				track: 'b'
 			},
@@ -128,16 +128,16 @@ escapeApp.factory('PuzzleFactory', [
 				points: 20,
 				track: 'b'
 			},
-			crossword: {
-				name: 'crossword',
-				dropdown: '(b) - Crossword',
-				available: false,
-				icon: 'newspaper-o',
-				guess: '',
-				answers: ['drmcnordtsieooluon'],
-				points: 40,
-				track: 'b'
-			},
+			// crossword: {
+			// 	name: 'crossword',
+			// 	dropdown: '(b) - Crossword',
+			// 	available: false,
+			// 	icon: 'newspaper-o',
+			// 	guess: '',
+			// 	answers: ['drmcnordtsieooluon'],
+			// 	points: 40,
+			// 	track: 'b'
+			// },
 			texasHoldEm: {
 				name: 'texasHoldEm',
 				dropdown: '(c) - Texas Hold Em',
@@ -207,17 +207,17 @@ escapeApp.factory('PuzzleFactory', [
 				points: 30,
 				track: 'c'
 			},
-			sudoku: {
-				name: 'sudoku',
-				display: 'The Price is Right Home Game',
-				dropdown: '(d) - Sudoku',
-				available: true,
-				icon: 'dollar',
-				guess: '',
-				answers: ['278954613'],
-				hints: 1,
-				points: 0
-			},
+			// sudoku: {
+			// 	name: 'sudoku',
+			// 	display: 'The Price is Right Home Game',
+			// 	dropdown: '(d) - Sudoku',
+			// 	available: true,
+			// 	icon: 'dollar',
+			// 	guess: '',
+			// 	answers: ['278954613'],
+			// 	hints: 1,
+			// 	points: 0
+			// },
 			jigsaw: {
 				name: 'jigsaw',
 				dropdown: '(d) - Jigsaw',
