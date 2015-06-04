@@ -113,6 +113,7 @@ escapeApp.controller('AdminCtrl', [
 				timeAllowed: EF.initialTimeAllowed,
 				lockoutPeriod: EF.defaultLockoutPeriod,
 				status: 0,
+				attempts: [],
 				lockoutIndex: -1,
 				password: 'admin123',
 				passwordRequired: false,

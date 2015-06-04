@@ -57,6 +57,12 @@ escapeApp.controller('SessionCtrl', [
 			}).on('hide.bs.modal', function() {
 				introVideo.pause();
 			});
+			// show video when modal opens, pause when closed
+			$('#previous-messages-modal').on('show.bs.modal', function(e) {
+				allowScrolling = true;
+			}).on('hide.bs.modal', function() {
+				allowScrolling = false;
+			});
 			// this is just a fall-back
 			$('#intro-video').on('ended', function() {
 				endVideo();
@@ -86,7 +92,7 @@ escapeApp.controller('SessionCtrl', [
 			checkSolvedLocks();
 
 			window.addEventListener('touchmove', function(event) {
-				if ($(document).width() >= 768) {
+				if ($(document).width() >= 768 && !allowScrolling) {
 					event.preventDefault();
 				}
 			}, false);
@@ -254,6 +260,7 @@ escapeApp.controller('SessionCtrl', [
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
 		var videoWatched;
+		var allowScrolling;
 		var introVideo = $('#intro-video')[0];
 
 		$interval(function everySecond() {
@@ -406,7 +413,8 @@ escapeApp.controller('SessionCtrl', [
 			});
 			parseGuess(q);
 
-			q.attempts.push({
+			$s.activeTeam.attempts.push({
+				puzzle: q.name,
 				guess: q.guess,
 				time: currentTime
 			});

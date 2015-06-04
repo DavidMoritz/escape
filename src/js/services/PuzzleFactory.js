@@ -10,7 +10,6 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'stethoscope',
 				guess: '',
 				answers: ['risky'],
-				attempts: [],
 				points: 30,
 				track: 'a'
 			},
@@ -25,7 +24,6 @@ escapeApp.factory('PuzzleFactory', [
 					money: ''
 				},
 				answers: ['Illinois10'],
-				attempts: [],
 				points: 40,
 				track: 'a'
 			},
@@ -38,7 +36,6 @@ escapeApp.factory('PuzzleFactory', [
 				dice: _.range(1, 7),
 				guessedDice: [5],
 				answers: ['4-5-5-5-6'],
-				attempts: [],
 				points: 50,
 				track: 'a'
 			},
@@ -49,7 +46,6 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'th-large',
 				guess: '',
 				answers: ['frustrate'],
-				attempts: [],
 				points: 50,
 				track: 'a'
 			},
@@ -63,7 +59,6 @@ escapeApp.factory('PuzzleFactory', [
 				columns: _.range(1, 11),
 				rows: 'abcdefghij'.split(''),
 				answers: ['g6&i6', 'g6&h6&i6'],
-				attempts: [],
 				points: 40,
 				track: 'b'
 			},
@@ -106,7 +101,6 @@ escapeApp.factory('PuzzleFactory', [
 					'Billiard Room'
 				],
 				answers: ['Mrs. Peacock&Lead Pipe&Lounge'],
-				attempts: [],
 				points: 10,
 				track: 'b'
 			},
@@ -118,7 +112,6 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'users',
 				guess: '',
 				answers: ['alex'],
-				attempts: [],
 				points: 10,
 				track: 'b'
 			},
@@ -132,7 +125,6 @@ escapeApp.factory('PuzzleFactory', [
 				columns: 'abcdefgh'.split('').reverse(),
 				rows: _.range(1, 9),
 				answers: ['h4'],
-				attempts: [],
 				points: 20,
 				track: 'b'
 			},
@@ -143,7 +135,6 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'newspaper-o',
 				guess: '',
 				answers: ['drmcnordtsieooluon'],
-				attempts: [],
 				points: 40,
 				track: 'b'
 			},
@@ -159,7 +150,6 @@ escapeApp.factory('PuzzleFactory', [
 					word2: ''
 				},
 				answers: ['Daniel Craig', 'Craig Daniel'],
-				attempts: [],
 				points: 50,
 				track: 'c'
 			},
@@ -171,7 +161,6 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'table',
 				guess: '',
 				answers: ['Winner!'],
-				attempts: [],
 				points: 30,
 				track: 'c'
 			},
@@ -191,7 +180,6 @@ escapeApp.factory('PuzzleFactory', [
 				orderedAnimals: [],
 				guess: '',
 				answers: ['elephant-lion-zebra-gorilla-giraffe'],
-				attempts: [],
 				points: 40,
 				track: 'c'
 			},
@@ -206,7 +194,6 @@ escapeApp.factory('PuzzleFactory', [
 					word2: ''
 				},
 				answers: ['milton bradley'],
-				attempts: [],
 				points: 50,
 				track: 'c'
 			},
@@ -217,7 +204,6 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'ban',
 				guess: '',
 				answers: ['fly'],
-				attempts: [],
 				points: 30,
 				track: 'c'
 			},
@@ -229,7 +215,6 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'dollar',
 				guess: '',
 				answers: ['278954613'],
-				attempts: [],
 				hints: 1,
 				points: 0
 			},
@@ -240,7 +225,6 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'puzzle-piece',
 				guess: '',
 				answers: ['75679'],
-				attempts: [],
 				points: 40
 			}
 		};
