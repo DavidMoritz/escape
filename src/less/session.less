@@ -76,24 +76,6 @@ ul {
 		}
 	}
 }
-.alert-team {
-	background-color: @gray-light;
-	.jumbotron { background-color: @gray-lighter; }
-	.modal-content { background-color: @near-white; }
-	h1, h2, h3, h4, h5, h6, span, div, p { color: @near-black !important; }
-	img { filter: grayscale(100%); }
-	.btn {
-		color: @near-white !important;
-		border-color: @gray-dark !important;
-		background-color: @gray-dark !important;
-	}
-	.form-control {
-		box-shadow: none !important;
-		border-color: @near-white !important;
-		background-color: @near-white !important;
-		color: @near-black !important;
-	}
-}
 
 #you-win,
 #times-up,
@@ -536,5 +518,23 @@ a {cursor: pointer;}
 			top: 5px;
 			font-size: 28px
 		}
+	}
+}
+.alert-team {
+	background-color: @gray-light;
+	.jumbotron, .well { background-color: @gray-lighter; }
+	.modal-content { background-color: @near-white; }
+	h1, h2, h3, h4, h5, h6, span, div, p { color: @near-black !important; }
+	img { filter: grayscale(100%); }
+	.btn {
+		color: @near-white !important;
+		border-color: @gray-dark !important;
+		background-color: @gray-dark !important;
+	}
+	.form-control {
+		box-shadow: none !important;
+		border-color: @near-white !important;
+		background-color: @near-white !important;
+		color: @near-black !important;
 	}
 }
