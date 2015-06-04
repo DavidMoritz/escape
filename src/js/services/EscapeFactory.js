@@ -8,7 +8,7 @@ escapeApp.factory('EscapeFactory', [
 		var FB = null;
 
 		return {
-			initialTimeAllowed: 60 * 60,
+			initialTimeAllowed: 60 * 30,
 
 			bufferTime: 60 * 5,
 
@@ -65,14 +65,14 @@ escapeApp.factory('EscapeFactory', [
 					'battleship',
 					'clue',
 					'guessWho',
-					'chess'
+					'chess',
+					'taboo'
 				],
 				c: [
 					'texasHoldEm',
 					'connect4',
 					'fiveRoutes',
-					'wordFind',
-					'taboo'
+					'wordFind'
 				]
 			},
 

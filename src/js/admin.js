@@ -129,6 +129,7 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.setAttribute = function setAttribute(attribute, options) {
+			options = options || {};
 			if((options.confirm && !confirm(options.confirm)) || !$s.activeTeam) {
 				return;
 			}

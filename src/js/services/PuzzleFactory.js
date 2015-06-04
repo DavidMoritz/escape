@@ -15,7 +15,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			monopoly: {
 				name: 'monopoly',
-				dropdown: '(a) - Monopoly',
+				dropdown: '(a) - MadGab/Monopoly',
 				available: false,
 				icon: 'building-o',
 				guess: '',
@@ -128,6 +128,16 @@ escapeApp.factory('PuzzleFactory', [
 				points: 20,
 				track: 'b'
 			},
+			taboo: {
+				name: 'taboo',
+				dropdown: '(c) - Taboo',
+				available: false,
+				icon: 'ban',
+				guess: '',
+				answers: ['fly'],
+				points: 30,
+				track: 'b'
+			},
 			// crossword: {
 			// 	name: 'crossword',
 			// 	dropdown: '(b) - Crossword',
@@ -155,7 +165,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			connect4: {
 				name: 'connect4',
-				dropdown: '(c) - Connect Four',
+				dropdown: '(c) - Snakes/Connect Four',
 				display: 'Connect Four',
 				available: false,
 				icon: 'table',
@@ -195,16 +205,6 @@ escapeApp.factory('PuzzleFactory', [
 				},
 				answers: ['milton bradley'],
 				points: 50,
-				track: 'c'
-			},
-			taboo: {
-				name: 'taboo',
-				dropdown: '(c) - Taboo',
-				available: false,
-				icon: 'ban',
-				guess: '',
-				answers: ['fly'],
-				points: 30,
 				track: 'c'
 			},
 			// sudoku: {

@@ -30,8 +30,12 @@ html(ng-app='escapeApp')
 			form(ng-if='activeTeam' ng-submit='addNewMessage()')
 				input.form-control.addMessageInput(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}' maxlength='66')
 				input.form-control(type='submit' ng-disabled='!formFields.newMessage' value='Add Message')
-			.alert.alert-warning.alert-flip(role='alert' ng-show='gauge >= 0.1') Yikes! You might want to give them a little nudge.
+			.alert.alert-warning.alert-flip(role='alert' ng-show='gauge >= 0.1') Yikes! You might want to give them a little nudge. 
+				button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+					span(aria-hidden="true")&times;
 			.alert.alert-danger.alert-flip(role='alert' ng-show='gauge >= 0.2') Running out of time! Help them out!
+				button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+					span(aria-hidden="true")&times;
 			.alert.alert-danger.alert-flip(ng-show='activeTeam.hintInProgress') Hint has been requested.
 				button.btn.btn-success(ng-click='remove("hintInProgress")') #[i.fa.fa-check-circle] Resolved
 			.row
@@ -65,6 +69,7 @@ html(ng-app='escapeApp')
 						span(ng-show='advancedControls')
 							button.btn.btn-float.btn-info(ng-click='setAttribute("lockoutStarted", {time: true, seconds: 45})' ng-hide='activeTeam.lockoutStarted') #[i.fa.fa-lock] Lockout
 							button.btn.btn-float.btn-primary.collapse.in.chooseTeamSection.inline-block(data-target=".chooseTeamSection" data-toggle="collapse") #[i.fa.fa-user-times] Change Teams
+							button.btn.btn-float.btn-danger(ng-click='setAttribute("refresh")') #[i.fa.fa-repeat] Force Refresh
 							button.btn.btn-float.btn-warning(ng-click='setAttribute("timerStarted", {time: true, confirm: "Are you sure?", message: "Timer restarted"})' ng-show='activeTeam.timerStarted') #[i.fa.fa-clock-o] Restart Timer
 							//button.btn.btn-float.last.btn-success(ng-click='setAttribute("finished", {time: true, confirm: "Finish Game?", message: "Congratulations!"})' ng-show='activeTeam.timerStarted && !activeTeam.finished') #[i.fa.fa-star] Finish
 							.clearfix

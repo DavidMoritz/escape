@@ -8,6 +8,8 @@ escapeApp.controller('SessionCtrl', [
 		'use strict';
 
 		function init() {
+			$s.activeTeam.refresh = false;
+
 			//	initKeypad
 			$('.numeric-keypad').keypad({
 				separator: '|',
@@ -270,6 +272,9 @@ escapeApp.controller('SessionCtrl', [
 				if (!videoWatched) {
 					$('#video-modal').modal('show');
 				}
+				if ($s.activeTeam.refresh) {
+					location.reload();
+				}
 
 				// convertTimer
 				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
@@ -285,9 +290,9 @@ escapeApp.controller('SessionCtrl', [
 				$s.updateLockoutTimeRemaining();
 
 				if ($s.activeTeam.alert) {
-					$('.jumbotron').addClass('alert-team');
+					$('body').addClass('alert-team');
 					$timeout(function removeAlert() {
-						$('.jumbotron').removeClass('alert-team');
+						$('body').removeClass('alert-team');
 					}, 500);
 				}
 			} else {
@@ -391,6 +396,7 @@ escapeApp.controller('SessionCtrl', [
 
 			if (activeTeamFBObj) {
 				activeTeamFBObj.$destroy();
+				$s.curMsg.display = '';
 				//console.log('SESS> activeTeam is destroyed');
 			} else {
 				var firstLoad = true;
@@ -433,6 +439,8 @@ escapeApp.controller('SessionCtrl', [
 				}
 				$s.activeTeam.solvedPoints += q.points;
 				$s.activeTeam.latestSolved = q.name;
+				// add 3 minutes to the clock!
+				$s.activeTeam.timeAllowed += 60 * 3;
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
 				nextClue(q);
 			} else {

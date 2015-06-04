@@ -46,10 +46,16 @@ escapeApp.factory('LockFactory', [
 			box: 'Rush Hour'
 		}, {
 			track: 'b',
-			lockIcon: 'birthday-cake',
-			code: '30 - 38 - 24',
-			opens: 'crossword',
-			box: 'Tripoley'
+			lockIcon: 'rocket',
+			code: '36 - 11 - 37',
+			opens: 'taboo',
+			box: 'Pictionary'
+		// }, {
+		// 	track: 'b',
+		// 	lockIcon: 'birthday-cake',
+		// 	code: '30 - 38 - 24',
+		// 	opens: 'crossword',
+		// 	box: 'Tripoley'
 		}, {
 			track: 'b',
 			lockIcon: 'globe',
@@ -74,12 +80,6 @@ escapeApp.factory('LockFactory', [
 			code: '16 - 21 - 39',
 			opens: 'wordFind',
 			box: 'Blurt'
-		}, {
-			track: 'c',
-			lockIcon: 'rocket',
-			code: '36 - 11 - 37',
-			opens: 'taboo',
-			box: 'Pictionary'
 		}, {
 			track: 'c',
 			lockIcon: 'ticket',
