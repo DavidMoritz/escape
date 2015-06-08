@@ -27,6 +27,16 @@ escapeApp.factory('PuzzleFactory', [
 				points: 40,
 				track: 'a'
 			},
+			// gameJumble: {
+			// 	name: 'gameJumble',
+			// 	dropdown: '(b) - Game Jumble',
+			// 	available: false,
+			// 	icon: 'th-list',
+			// 	guess: '',
+			// 	answers: ['parkerbros'],
+			// 	points: 40,
+			// 	track: 'a'
+			// },
 			yahtzee: {
 				name: 'yahtzee',
 				dropdown: '(a) - Yahtzee',
@@ -138,16 +148,6 @@ escapeApp.factory('PuzzleFactory', [
 				points: 30,
 				track: 'b'
 			},
-			// crossword: {
-			// 	name: 'crossword',
-			// 	dropdown: '(b) - Crossword',
-			// 	available: false,
-			// 	icon: 'newspaper-o',
-			// 	guess: '',
-			// 	answers: ['drmcnordtsieooluon'],
-			// 	points: 40,
-			// 	track: 'b'
-			// },
 			texasHoldEm: {
 				name: 'texasHoldEm',
 				dropdown: '(c) - Texas Hold Em',

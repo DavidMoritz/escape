@@ -58,6 +58,7 @@ escapeApp.factory('EscapeFactory', [
 				a: [
 					'operation',
 					'monopoly',
+					//'gameJumble',
 					'yahtzee',
 					'scrabble'
 				],

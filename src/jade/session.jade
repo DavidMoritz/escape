@@ -214,10 +214,10 @@ html(ng-app='escapeApp')
 										tr
 											th
 											th(ng-repeat='col in q.chess.columns') {{col}}
-						//- +clueHead('crossword', 'What is the secret code in the crossword (#8 Down)?')
-						//- 	div(ng-if='!isSolved(q.crossword)')
+						//- +clueHead('wordJumble', 'What company was founded in 1883?')
+						//- 	div(ng-if='!isSolved(q.wordJumble)')
 						//- 		label &nbsp;
-						//- 		input.form-control(type='text' ng-model='q.crossword.guess' maxlength='{{q.crossword.answers[0].length}}')
+						//- 		input.form-control(type='text' ng-model='q.wordJumble.guess' maxlength='{{q.wordJumble.answers[0].length}}')
 						+clueHead('texasHoldEm', 'Who is the Big Winner?')
 							div(ng-if='!isSolved(q.texasHoldEm)')
 								.row
