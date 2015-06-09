@@ -127,7 +127,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			chess: {
 				name: 'chess',
-				dropdown: '(b) - Chess',
+				dropdown: '(b) - Snakes/Chess',
 				available: false,
 				icon: 'delicious',
 				guess: '',
@@ -165,7 +165,7 @@ escapeApp.factory('PuzzleFactory', [
 			},
 			connect4: {
 				name: 'connect4',
-				dropdown: '(c) - Snakes/Connect Four',
+				dropdown: '(c) - Connect Four',
 				display: 'Connect Four',
 				available: false,
 				icon: 'table',
