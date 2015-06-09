@@ -438,19 +438,16 @@ escapeApp.controller('SessionCtrl', [
 
 			if (_.contains(lowerCaseAnswers, q.guess.toLowerCase())) {
 				//	correct!
-				if(_.isUndefined($s.activeTeam.solvedPoints)) {
-					$s.activeTeam.solvedPoints = 0;
-				}
 				if (_.isUndefined($s.activeTeam.solvedQuestions)) {
 					$s.activeTeam.solvedQuestions = {};
 				}
-				$s.activeTeam.solvedPoints += q.points;
 				$s.activeTeam.latestSolved = q.name;
-				// add 3 minutes to the clock!
-				$s.activeTeam.timeAllowed += 60 * 3;
+				// add 2 minutes to the clock!
+				$s.activeTeam.timeAllowed += 60 * 2;
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
 				nextClue(q);
 			} else {
+				$s.activeTeam.lockoutIndex = $s.activeTeam.lockoutIndex || 0;
 				if(++$s.activeTeam.lockoutIndex == $s.lockoutImages.length) {
 					$s.activeTeam.lockoutIndex = 0;
 				}

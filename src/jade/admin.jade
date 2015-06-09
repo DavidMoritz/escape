@@ -30,10 +30,10 @@ html(ng-app='escapeApp')
 			form(ng-if='activeTeam' ng-submit='addNewMessage()')
 				input.form-control.addMessageInput(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}' maxlength='66')
 				input.form-control(type='submit' ng-disabled='!formFields.newMessage' value='Add Message')
-			.alert.alert-warning.alert-flip(role='alert' ng-show='gauge >= 0.1') Yikes! You might want to give them a little nudge. 
+			.alert.alert-warning.alert-flip(role='alert' ng-show='gauge >= 0.25') Yikes! You might want to give them a little nudge. 
 				button(type="button" class="close" data-dismiss="alert" aria-label="Close")
 					span(aria-hidden="true")&times;
-			.alert.alert-danger.alert-flip(role='alert' ng-show='gauge >= 0.2') Running out of time! Help them out!
+			.alert.alert-danger.alert-flip(role='alert' ng-show='gauge >= 0.4') Running out of time! Help them out!
 				button(type="button" class="close" data-dismiss="alert" aria-label="Close")
 					span(aria-hidden="true")&times;
 			.alert.alert-danger.alert-flip(ng-show='activeTeam.hintInProgress') Hint has been requested.
@@ -41,7 +41,7 @@ html(ng-app='escapeApp')
 			.row
 				+col(null, 6, 6)
 					.row
-						+col(null, 6, 6)(ng-show='activeTeam')
+						+col(null, 6, 6)(ng-if='activeTeam')
 							h3 Team: {{activeTeam.name}}
 							h5 Started: {{activeTeam.timerStarted ? moment(activeTeam.timerStarted, 'YYYY-MM-DD HH:mm:ss').format('h:mm a') : "false"}}
 							h5 Hints: {{activeTeam.hints}}
@@ -50,9 +50,9 @@ html(ng-app='escapeApp')
 							h5 Time Allowed: {{activeTeam.timeAllowed / 60}} minutes
 								i.fa.fa-plus-circle.text-success.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", 60)')
 								i.fa.fa-minus-circle.text-danger.pointer.btn-icon(ng-click='adjustAttribute("timeAllowed", -60)')
-							h5 Solved Points: {{activeTeam.solvedPoints}} / {{activeTeam.totalPoints}}
+							h5 Solved Points: {{getSolvedPoints()}} / {{getTotalPoints()}}
 						+col(null, 6, 6)
-							#performance-gauge(just-gage value="gauge" min="-0.2" max="0.3" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
+							#performance-gauge(just-gage value="gauge" min="0" max="0.5" title hide-min-max="true" hide-value="true" gauge-width-scale="2.6" gauge-color="gray")
 					.row.tracks(ng-show='advancedControls')
 						+col(null, 4, 4)(ng-repeat='(k, track) in activeTeam.tracks')
 							h5 Track #[span.upper {{k}}]:

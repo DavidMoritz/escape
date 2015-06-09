@@ -7,12 +7,6 @@ escapeApp.controller('AdminCtrl', [
 	function AdminCtrl($s, $timeout, $interval, EF, MF) {
 		'use strict';
 
-		function getTotalPoints() {
-			return _.reduce(EF.questions, function(result, q) {
-				return result + q.points;
-			}, 0);
-		}
-
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
 
@@ -33,7 +27,7 @@ escapeApp.controller('AdminCtrl', [
 				// gauge
 				var gameStart = moment($s.activeTeam.timerStarted, timeFormat);
 				var percentageTimeUsed = (moment().diff(gameStart, 'seconds') + EF.bufferTime) / $s.activeTeam.timeAllowed;
-				var solvedPercentage = $s.activeTeam.solvedPoints / $s.activeTeam.totalPoints;
+				var solvedPercentage = $s.getSolvedPoints() / $s.getTotalPoints();
 
 				$s.gauge = (percentageTimeUsed - solvedPercentage).toFixed(4);
 			}
@@ -97,7 +91,6 @@ escapeApp.controller('AdminCtrl', [
 			activeTeamFBObj = EF.getFBObject('teams/' + teamId);
 			activeTeamFBObj.$bindTo($s, 'activeTeam').then(function atThen() {
 				EF.setFB('activeTeamId', teamId);
-				$s.activeTeam.solvedPoints = $s.activeTeam.solvedPoints || 0;
 			});
 		};
 
@@ -118,13 +111,13 @@ escapeApp.controller('AdminCtrl', [
 				password: 'admin123',
 				passwordRequired: false,
 				tracks: EF.tracks,
-				totalPoints: getTotalPoints(),
 				voice: 'UK English Male',
 				latestSolved: 'none'
 			}).then(function newTeamCreatedThen(newTeam) {
 				//console.log('new team created with id: ' + newTeam.key());
 
 				$s.chooseTeam(newTeam.key());
+				$s.addNewMessage('Can you escape?');
 			});
 		};
 
@@ -132,6 +125,9 @@ escapeApp.controller('AdminCtrl', [
 			options = options || {};
 			if((options.confirm && !confirm(options.confirm)) || !$s.activeTeam) {
 				return;
+			}
+			if(attribute === 'lockoutStarted') {
+				$s.activeTeam.lockoutIndex++;
 			}
 			var value = options.value || true;
 			//console.log('ADMIN> set time for ' + attribute);
@@ -175,7 +171,6 @@ escapeApp.controller('AdminCtrl', [
 			var track = $s.activeTeam.tracks[puz.track];
 
 			_.pull(track, puz.name);
-			$s.activeTeam.totalPoints -= puz.points;
 		};
 
 		$s.install = function install(puz) {
@@ -183,19 +178,14 @@ escapeApp.controller('AdminCtrl', [
 
 			if($s.isInstallable(puz)) {
 				track.push(puz.name);
-				$s.activeTeam.totalPoints += puz.points;
 			}
 		};
 
 		$s.solve = function solve(puz) {
 			//	auto-solve
-			if(_.isUndefined($s.activeTeam.solvedPoints)) {
-				$s.activeTeam.solvedPoints = 0;
-			}
 			if (_.isUndefined($s.activeTeam.solvedQuestions)) {
 				$s.activeTeam.solvedQuestions = {};
 			}
-			$s.activeTeam.solvedPoints += puz.points;
 			$s.activeTeam.solvedQuestions[puz.name] = moment().format(timeFormat);
 			$s.activeTeam.latestSolved = puz.name;
 		};
@@ -220,6 +210,22 @@ escapeApp.controller('AdminCtrl', [
 
 		$s.getUnfinishedTeams = function getUnfinishedTeams() {
 			return _.where($s.allTeams, {finished: false});
+		};
+
+		$s.getTotalPoints = function getTotalPoints() {
+			return _.reduce(EF.questions, function(result, q) {
+				return result + q.points;
+			}, 0);
+		};
+
+		$s.getSolvedPoints = function getSolvedPoints() {
+			if ($s.activeTeam.solvedQuestions) {
+				return _.reduce($s.activeTeam.solvedQuestions, function(result, n, game) {
+					result.total += $s.q[game].points;
+					return result;
+				}, {total:0}).total;
+			}
+			return 0;			
 		};
 
 		$s.allTeams = EF.getFBArray('teams');

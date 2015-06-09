@@ -55,7 +55,7 @@ escapeApp.factory('LockFactory', [
 		// lockIcon: 'umbrella',
 		// code: '1 - 15 - 0',
 		// 	opens: 'gameJumble',
-		// 	box: 'Tripoley'
+		// 	box: 'Scattergories'
 		}, {
 			track: 'b',
 			lockIcon: 'globe',

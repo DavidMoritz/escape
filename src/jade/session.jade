@@ -73,7 +73,7 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
-				.row.times-up-hide(ng-if='curMsg')
+				.row.times-up-hide(ng-if='curMsg && activeTeam && !activeTeam.finished')
 					+col(4, 2, 2).medal(ng-if='activeTeam' ng-click='speak()')
 						p {{status[activeTeam.status].text}}
 						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
@@ -101,10 +101,10 @@ html(ng-app='escapeApp')
 						button.btn.hide-cluebook(class="{{activeTeam.hints ? 'btn-success' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-show='activeTeam && !activeTeam.hintInProgress') #[i.fa.fa-2x.fa-question-circle]
 						button.btn.btn-warning.hide-cluebook(data-toggle='modal' data-target='#keypad-modal' ng-show='!activeTeam.lockoutStarted') #[i.fa.fa-2x.fa-sign-out]
 					input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
-				#you-win.times-up-hide(ng-if='activeTeam.finished')
-					.display-message.text-center
-						.text-center
-							img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
+				#you-win.times-up-hide.row(ng-if='activeTeam.finished')
+					+col(null, 4, null, 4)
+						img.img-responsive.centered(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
+					+col(null, 8, null, 8).display-message.text-center
 						h2 You win!#[br] You've escaped the room!
 						h4 You have completed your mission with #[strong {{status[activeTeam.status].text}}] status, escaping the room with #[strong {{moment(timeRemaining * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
 						h3 #[strong Congratulations {{activeTeam.name}}!!]
