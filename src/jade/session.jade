@@ -73,14 +73,14 @@ html(ng-app='escapeApp')
 			header.hide
 				h1 Control Panel - The Game Escape
 			.jumbotron
+				h1.digital.text-center(ng-hide='activeTeam')
+					span Loading #[i.fa.fa-spinner.fa-pulse]
 				.row.times-up-hide(ng-if='curMsg && activeTeam && !activeTeam.finished')
 					+col(4, 2, 2).medal(ng-if='activeTeam' ng-click='speak()')
 						p {{status[activeTeam.status].text}}
 						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
 					+col(10, 7, 8)(ng-class="{'col-sm-offset-2': !activeTeam}")
 						h1.digital.text-center
-							span(ng-hide='activeTeam') Loading
-								i.fa.fa-spinner.fa-pulse
 							span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 						.display-message
 							h3(ng-if='curMsg' ng-show='activeTeam') #[i.fa.fa-volume-up.btn.btn-danger(ng-click='speak()')] {{curMsg.display}}
@@ -214,10 +214,10 @@ html(ng-app='escapeApp')
 										tr
 											th
 											th(ng-repeat='col in q.chess.columns') {{col}}
-						+clueHead('wordJumble', 'What company was founded in 1883?')
-							div(ng-if='!isSolved(q.wordJumble)')
+						+clueHead('gameJumble', 'What company was founded in 1883?')
+							div(ng-if='!isSolved(q.gameJumble)')
 								label &nbsp;
-								input.form-control(type='text' ng-model='q.wordJumble.guess' maxlength='{{q.wordJumble.answers[0].length}}')
+								input.form-control(type='text' ng-model='q.gameJumble.guess' maxlength='{{q.gameJumble.answers[0].length}}')
 						+clueHead('texasHoldEm', 'Who is the Big Winner?')
 							div(ng-if='!isSolved(q.texasHoldEm)')
 								.row

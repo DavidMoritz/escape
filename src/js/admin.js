@@ -117,7 +117,6 @@ escapeApp.controller('AdminCtrl', [
 				//console.log('new team created with id: ' + newTeam.key());
 
 				$s.chooseTeam(newTeam.key());
-				$s.addNewMessage('Can you escape?');
 			});
 		};
 
@@ -225,7 +224,7 @@ escapeApp.controller('AdminCtrl', [
 					return result;
 				}, {total:0}).total;
 			}
-			return 0;			
+			return 0;
 		};
 
 		$s.allTeams = EF.getFBArray('teams');

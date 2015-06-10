@@ -370,7 +370,6 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.speak = function speak() {
-			//$('.fa-volume-up').focus();
 			responsiveVoice.speak($s.curMsg.text, $s.activeTeam.voice);
 		};
 
@@ -415,6 +414,12 @@ escapeApp.controller('SessionCtrl', [
 				//console.log('SESS> afterTeamLoaded');
 				$s.timesUp = false;
 				$timeout(init, 0);
+				if(!$s.curMsg.text) {
+					$s.curMsg = {
+						text: 'Can you escape?',
+						display: 'Can you escape?'
+					};
+				}
 				if(firstLoad && bindMessaging) {
 					bindMessaging();
 				}

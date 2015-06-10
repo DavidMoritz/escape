@@ -33,7 +33,7 @@ escapeApp.factory('PuzzleFactory', [
 				available: false,
 				icon: 'th-list',
 				guess: '',
-				answers: ['parkerbrothers', 'parkerbros'],
+				answers: ['parker brothers', 'parkerbrothers', 'parker bros', 'parkerbros'],
 				points: 40,
 				track: 'a'
 			},
