@@ -50,12 +50,12 @@ escapeApp.factory('LockFactory', [
 			code: '14 - 29 - 11',
 			opens: 'taboo',
 			box: 'Pictionary'
-		// }, {
-		// 	track: 'b',
-		// lockIcon: 'umbrella',
-		// code: '1 - 15 - 0',
-		// 	opens: 'gameJumble',
-		// 	box: 'Scattergories'
+		}, {
+			track: 'b',
+			lockIcon: 'umbrella',
+			code: '1 - 15 - 0',
+			opens: 'gameJumble',
+			box: 'Scattergories'
 		}, {
 			track: 'b',
 			lockIcon: 'globe',

@@ -27,16 +27,16 @@ escapeApp.factory('PuzzleFactory', [
 				points: 40,
 				track: 'a'
 			},
-			// gameJumble: {
-			// 	name: 'gameJumble',
-			// 	dropdown: '(b) - Game Jumble',
-			// 	available: false,
-			// 	icon: 'th-list',
-			// 	guess: '',
-			// 	answers: ['parkerbros'],
-			// 	points: 40,
-			// 	track: 'a'
-			// },
+			gameJumble: {
+				name: 'gameJumble',
+				dropdown: '(b) - Game Jumble',
+				available: false,
+				icon: 'th-list',
+				guess: '',
+				answers: ['parkerbrothers', 'parkerbros'],
+				points: 40,
+				track: 'a'
+			},
 			yahtzee: {
 				name: 'yahtzee',
 				dropdown: '(a) - Yahtzee',
