@@ -11,7 +11,7 @@ module.exports = function exportConcat(grunt) {
 			files: {
 				'<%= distPath %>lib.js': [
 					'lib/jquery/dist/jquery.min.js',
-					'lib/jquery-ui/jquery-ui-min.js',
+					'lib/jquery-ui/jquery-ui.min.js',
 					'lib/bootstrap/dist/js/bootstrap.min.js',
 					'lib/lodash/lodash.min.js',
 					'lib/firebase/firebase.js',
