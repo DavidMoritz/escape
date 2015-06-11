@@ -11,6 +11,7 @@ module.exports = function exportConcat(grunt) {
 			files: {
 				'<%= distPath %>lib.js': [
 					'lib/jquery/dist/jquery.js',
+					'lib/jquery-ui/jquery-ui-min.js',
 					'lib/bootstrap/dist/js/bootstrap.js',
 					'lib/lodash/lodash.js',
 					'lib/firebase/firebase.js',
@@ -18,6 +19,7 @@ module.exports = function exportConcat(grunt) {
 					'lib/moment/moment.js',
 					'lib/keypad/jquery.plugin.min.js',
 					'lib/keypad/jquery.keypad.min.js',
+					'lib/touch-punch/jquery.ui.touch-punch.min.js',
 					'lib/ng-keyboard/src/ngDraggable/ngDraggable.js',
 					'lib/ng-keyboard/src/ngKeypad/ngKey.js',
 					'lib/ng-keyboard/src/ngKeypad/ngKeypad.js',
