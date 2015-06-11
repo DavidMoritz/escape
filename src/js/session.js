@@ -267,7 +267,9 @@ escapeApp.controller('SessionCtrl', [
 		var allowScrolling;
 		var introVideo = $('#intro-video')[0];
 		var sound = new Audio('img/alert.mp3');
-		sound.currentTime = 0.65;
+		$('body').on('loadedmetadata', function() {
+			sound.currentTime = 0.65;
+		});
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
