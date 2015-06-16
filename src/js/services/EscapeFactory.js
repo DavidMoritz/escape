@@ -58,22 +58,19 @@ escapeApp.factory('EscapeFactory', [
 				a: [
 					'operation',
 					'monopoly',
+					'guessWho',
 					'gameJumble',
-					'yahtzee',
-					'scrabble'
 				],
 				b: [
 					'battleship',
 					'clue',
-					'guessWho',
 					'chess',
 					'taboo'
 				],
 				c: [
 					'texasHoldEm',
 					'connect4',
-					'fiveRoutes',
-					'wordFind'
+					'fiveRoutes'
 				]
 			},
 

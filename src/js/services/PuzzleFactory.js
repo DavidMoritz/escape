@@ -10,8 +10,7 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'stethoscope',
 				guess: '',
 				answers: ['risky'],
-				points: 30,
-				track: 'a'
+				points: 30
 			},
 			monopoly: {
 				name: 'monopoly',
@@ -24,8 +23,7 @@ escapeApp.factory('PuzzleFactory', [
 					money: ''
 				},
 				answers: ['Illinois10'],
-				points: 40,
-				track: 'a'
+				points: 40
 			},
 			gameJumble: {
 				name: 'gameJumble',
@@ -34,8 +32,7 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'th-list',
 				guess: '',
 				answers: ['parker brothers', 'parkerbrothers', 'parker bros', 'parkerbros'],
-				points: 40,
-				track: 'a'
+				points: 40
 			},
 			yahtzee: {
 				name: 'yahtzee',
@@ -46,8 +43,7 @@ escapeApp.factory('PuzzleFactory', [
 				dice: _.range(1, 7),
 				guessedDice: [5],
 				answers: ['4-5-5-5-6'],
-				points: 50,
-				track: 'a'
+				points: 50
 			},
 			scrabble: {
 				name: 'scrabble',
@@ -56,8 +52,7 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'th-large',
 				guess: '',
 				answers: ['frustrate'],
-				points: 50,
-				track: 'a'
+				points: 50
 			},
 			battleship: {
 				name: 'battleship',
@@ -69,8 +64,7 @@ escapeApp.factory('PuzzleFactory', [
 				columns: _.range(1, 11),
 				rows: 'abcdefghij'.split(''),
 				answers: ['g6&i6', 'g6&h6&i6', 'c7&d7'],
-				points: 40,
-				track: 'b'
+				points: 40
 			},
 			clue: {
 				name: 'clue',
@@ -111,8 +105,7 @@ escapeApp.factory('PuzzleFactory', [
 					'Billiard Room'
 				],
 				answers: ['Mrs. Peacock&Lead Pipe&Lounge'],
-				points: 10,
-				track: 'b'
+				points: 10
 			},
 			guessWho: {
 				name: 'guessWho',
@@ -122,8 +115,7 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'users',
 				guess: '',
 				answers: ['alex'],
-				points: 10,
-				track: 'b'
+				points: 10
 			},
 			chess: {
 				name: 'chess',
@@ -135,8 +127,7 @@ escapeApp.factory('PuzzleFactory', [
 				columns: 'abcdefgh'.split('').reverse(),
 				rows: _.range(1, 9),
 				answers: ['h4'],
-				points: 20,
-				track: 'b'
+				points: 20
 			},
 			taboo: {
 				name: 'taboo',
@@ -145,8 +136,7 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'ban',
 				guess: '',
 				answers: ['fly'],
-				points: 30,
-				track: 'b'
+				points: 30
 			},
 			texasHoldEm: {
 				name: 'texasHoldEm',
@@ -160,8 +150,7 @@ escapeApp.factory('PuzzleFactory', [
 					word2: ''
 				},
 				answers: ['Daniel Craig', 'Craig Daniel'],
-				points: 50,
-				track: 'c'
+				points: 50
 			},
 			connect4: {
 				name: 'connect4',
@@ -171,8 +160,7 @@ escapeApp.factory('PuzzleFactory', [
 				icon: 'table',
 				guess: '',
 				answers: ['Winner!'],
-				points: 30,
-				track: 'c'
+				points: 30
 			},
 			fiveRoutes: {
 				name: 'fiveRoutes',
@@ -190,8 +178,7 @@ escapeApp.factory('PuzzleFactory', [
 				orderedAnimals: [],
 				guess: '',
 				answers: ['elephant-lion-zebra-gorilla-giraffe'],
-				points: 40,
-				track: 'c'
+				points: 40
 			},
 			wordFind: {
 				name: 'wordFind',
@@ -204,8 +191,7 @@ escapeApp.factory('PuzzleFactory', [
 					word2: ''
 				},
 				answers: ['milton bradley'],
-				points: 50,
-				track: 'c'
+				points: 50
 			},
 			// sudoku: {
 			// 	name: 'sudoku',

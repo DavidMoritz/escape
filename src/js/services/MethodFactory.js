@@ -29,25 +29,6 @@ escapeApp.factory('MethodFactory', [
 				var puzzleName = _.has(puz, 'name') ? puz.name : puz;
 
 				return $s.activeTeam && $s.activeTeam.solvedQuestions && _.contains(_.keys($s.activeTeam.solvedQuestions), puzzleName);
-			},
-
-			isAvailable: function isAvailable(puz) {
-				var track = $s.activeTeam.tracks[puz.track];
-
-				if(!track) {
-					return true;
-				}
-				for(var i = 0, result; i < track.length; i++) {
-					if(puz.name == track[i]) {
-						result = true;
-						break;
-					}
-					if(!$s.isSolved(track[i])) {
-						result = false;
-						break;
-					}
-				}
-				return result;
 			}
 		};
 	}

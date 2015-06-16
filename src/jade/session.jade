@@ -11,7 +11,7 @@ html(ng-app='escapeApp')
 		meta(name='apple-touch-fullscreen' content='yes')
 		title Control Panel - The Game Escape
 		link(rel='shortcut icon', href='favicon.ico')
-		link(rel='stylesheet', href='inc/escape.css?v=19')
+		link(rel='stylesheet', href='inc/escape.css?v=21')
 		script(src='inc/angular.js')
 	body#escape-session(ng-cloak, ng-controller='SessionCtrl', ng-class="{'locked-out': activeTeam && activeTeam.lockoutStarted, 'times-up': timesUp, 'not-started': activeTeam && !activeTeam.timerStarted}")
 		#previous-messages-modal.modal.fade
@@ -56,16 +56,10 @@ html(ng-app='escapeApp')
 							span(aria-hidden='true') &times;
 						h4.modal-title Would you like to {{activeTeam.hints ? 'use' : 'request'}} a hint?
 					.modal-body
-						.medal.pull-right(ng-if='activeTeam')
-							img(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
-							p.medal-title {{status[activeTeam.status].text}}
 						div(ng-hide='activeTeam.hints')
-							div(ng-hide='activeTeam.status == status.length - 1')
-								p Your team is currently holding {{status[activeTeam.status].text}} status. Requesting a hint will bring your team to {{status[activeTeam.status + 1].text}} status.
-							div(ng-show='activeTeam.status == status.length - 1')
-								p This will not affect your team's {{status[activeTeam.status].text}} status.
+							p Your team currently has {{moment(timeRemaining * 1000).format('m')}} minutes left. Requesting a hint will remove 2 minutes from your clock.
 						div(ng-show='activeTeam.hints')
-							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? 'hints' : 'hint'}} available for use. This will not affect your team's {{status[activeTeam.status].name}} status.
+							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? 'hints' : 'hint'}} available for use. Would you like to use one of your hints?
 					.modal-footer
 						button.btn.btn-default.btn-lg.pull-left(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
 						button.btn.btn-success.btn-lg(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
@@ -76,15 +70,12 @@ html(ng-app='escapeApp')
 				h1.digital.text-center(ng-hide='activeTeam')
 					span Loading #[i.fa.fa-spinner.fa-pulse]
 				.row.times-up-hide(ng-if='curMsg && activeTeam && !activeTeam.finished')
-					+col(4, 2, 2).medal(ng-if='activeTeam' ng-click='speak()')
-						p {{status[activeTeam.status].text}}
-						img.img-responsive(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
-					+col(10, 7, 8)(ng-class="{'col-sm-offset-2': !activeTeam}")
+					+col(null, 9, 10)(ng-class="{'col-sm-offset-2': !activeTeam}")
 						h1.digital.text-center
 							span(ng-show='activeTeam') {{moment(timeRemaining * 1000).format('mm:ss')}}
 						.display-message
 							h3(ng-if='curMsg' ng-show='activeTeam') #[i.fa.fa-volume-up.btn.btn-danger(ng-click='speak()')] {{curMsg.display}}
-					+col(2, 3, 2).major-buttons.hidden-xs.visible-ms-block(ng-if='!isSolved(q.jigsaw)')
+					+col(null, 3, 2).major-buttons.hidden-xs.visible-ms-block(ng-if='!isSolved(q.jigsaw)')
 						ul
 							li
 								button.btn.btn-success(data-toggle='modal' data-target='#video-modal' ng-show='activeTeam && activeTeam.timerStarted') #[i.fa.fa-2x.fa-video-camera]#[br] Intro Video
@@ -103,10 +94,10 @@ html(ng-app='escapeApp')
 					input.numeric-keypad.form-control(type='text' ng-model='q.jigsaw.guess' name='jigsaw' maxlength='5' hidden)
 				#you-win.times-up-hide.row(ng-if='activeTeam.finished')
 					+col(null, 4, null, 4)
-						img.img-responsive.centered(ng-src='{{status[activeTeam.status].path}}' title='{{status[activeTeam.status].text}}')
+						img.img-responsive.centered(ng-src='{{status[0].path}}' title='{{status[0].text}}')
 					+col(null, 8, null, 8).display-message.text-center
 						h2 You win!#[br] You've escaped the room!
-						h4 You have completed your mission with #[strong {{status[activeTeam.status].text}}] status, escaping the room with #[strong {{moment(timeRemaining * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
+						h4 You have completed your mission with #[strong {{status[0].text}}] status, escaping the room with #[strong {{moment((timeRemaining - 2) * 1000).format('m')}}] minutes and #[strong {{moment(timeRemaining * 1000).format('s')}}] seconds remaining.
 						h3 #[strong Congratulations {{activeTeam.name}}!!]
 				#times-up.times-up-show
 					h1.digital.text-center
@@ -116,7 +107,7 @@ html(ng-app='escapeApp')
 						h4 Thanks for playing and we hope you enjoyed#[br] The Game Escape
 				#start-game
 					.display-message.text-center
-						h2 Welcome {{activeTeam.name}}!
+						h2(ng-click='demo()') Welcome {{activeTeam.name}}!
 						.start-button.btn.btn-success(ng-click='startGame()') #[i.fa.fa-youtube-play]
 			#game.times-up-hide(ng-if='activeTeam && !isSolved(q.jigsaw)')
 				#lockout(ng-show='activeTeam.lockoutStarted')
@@ -136,13 +127,7 @@ html(ng-app='escapeApp')
 							li(ng-repeat='(id, obj) in q' ng-if='isSolved(id)' class='{{id}}-icon solved')
 								a(ng-click='setActivePuzzle(id)')
 									+squaredIcon('obj.icon')
-									i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id) && obj.track')
-						//- .clearfix
-						//- h4 Bonus:
-						//- ul.button-list.hide-cluebook
-						//- 	li(ng-repeat='(id, obj) in q' ng-show="id !== 'jigsaw' && !obj.track" class="{{isSolved(id) ? 'solved' : 'unsolved'}}")
-						//- 		a(ng-click='setActivePuzzle(id)')
-						//- 			+squaredIcon('obj.icon')
+									i(class='fa fa-{{obj.nextClue.lockIcon}} tiny-icon' ng-show='isSolved(id)')
 					.clearfix.visible-xs-block.visible-xs-only
 					hr.visible-xs-block.visible-xs-only
 					+col(null, 6, 6)

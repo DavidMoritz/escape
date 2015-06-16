@@ -80,7 +80,11 @@ escapeApp.controller('EscapeCtrl', [
 				$s.pauseSeconds(10);
 			} else {
 				var total = correct + locations;
-				typeOutMessage('Incorrect. The number you entered had ' + total + ' numbers correct and ' + locations + ' of those correct numbers were also in the correct position.');
+				locations = locations || 'none';
+				var extra = locations === 1 ? 'was in the right place.' : 'were in the right places.';
+				$s.lockoutIndex++;
+				$s.lockout = 10;
+				typeOutMessage('You entered ' + total + ' correct digits, ' + locations + ' of which ' + extra);
 				$s.pauseSeconds(10);
 			}
 		}
@@ -125,22 +129,36 @@ escapeApp.controller('EscapeCtrl', [
 		$interval(function everySecond() {
 			if(!$s.pause) {
 				switch($s.public.timeRemaining % 40) {
-					case 20:
-						typeOutMessage('Welcome to The Game Escape.');
-						break;
-					case 10:
-						typeOutMessage('Will your team get out in time?');
-						break;
 					case 0:
-						typeOutMessage('Sign up for June 19th or June 20th');
+						typeOutMessage('Messages come sparatically and are very important.');
 						break;
-					case 30:
-						typeOutMessage('Hurry, before it\'s too late...');
+					case 20:
+						typeOutMessage('Do not ignore them.');
 						break;
 				}
 			}
 			$s.public.timeRemaining -= 1;
+			$s.lockout--;
 		}, 1000);
+
+		$s.start = function() {
+			window.location = 'http://gameescape.net/session.html';
+		};
+
+		$s.setCheckers = function() {
+			$s.activePuzzle = 'checkers';
+		};
+
+		$s.submitCheckerGuess = function() {
+			if($s.checkers.coords.indexOf('b6') !== -1) {
+				$s.checkers.solved = true;
+				$s.public.timeRemaining += 2 * 60;
+			} else {
+				$s.activePuzzle = '';
+				$s.lockout = 5;
+				$s.lockoutIndex++;
+			}
+		};
 
 		$s.pauseSeconds = function(seconds) {
 			if($s.unpause) {
@@ -153,14 +171,38 @@ escapeApp.controller('EscapeCtrl', [
 		};
 
 		$s.requestHint = function() {
-			if($s.activeTeam.status < $s.status.length) {
-				$s.activeTeam.status++;
+			switch($s.hints) {
+				case 2:
+					$s.hints--;
+					typeOutMessage('Try looking for a double jump!');
+					break;
+				case 1:
+					$s.hints--;
+					typeOutMessage('Have you tried moving it to b6?');
+					break;
+				default:
+					$s.public.timeRemaining -= 2 * 60;
+					typeOutMessage('Make sure to read aloud every clue sent!');
+					break;
 			}
-			var guess1 = getGuess();
-			var guess2 = getGuess(guess1);
-
-			typeOutMessage('The answer contains a ' + guess1 + ' and a ' + guess2 + '.');
 			$s.pauseSeconds(6);
+		};
+
+		$s.isCoordSelected = function isCoordSelected(q, coord) {
+			return _.contains(q.coords, coord);
+		};
+
+		$s.toggleCoordSelect = function toggleCoordSelect(q, coord) {
+			if (q.name === 'checkers') {
+				q.coords = [];	//	reset array
+			}
+
+			if ($s.isCoordSelected(q, coord)) {
+				_.pull(q.coords, coord);
+			} else {
+				q.coords.push(coord);
+			}
+			q.coords = _.sortBy(q.coords);
 		};
 
 		$s.isSolved = function(puz) {
@@ -173,7 +215,7 @@ escapeApp.controller('EscapeCtrl', [
 		//	initialize scoped variables
 		_.assign($s, {
 			public: {
-				timeRemaining: 45 * 60
+				timeRemaining: 30 * 60
 			},
 			activeTeam: {
 				password: 'nothing',
@@ -183,7 +225,12 @@ escapeApp.controller('EscapeCtrl', [
 			status: EF.statuses,
 			answer: getNewAnswer(),
 			pause: false,
-			typingInterval: 0
+			typingInterval: 0,
+			checkers: EF.questions.chess,
+			lockoutImages: EF.lockoutImages,
+			lockoutIndex: 0,
+			lockout: -1,
+			hints: 2
 		});
 
 		init();

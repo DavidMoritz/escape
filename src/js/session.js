@@ -142,27 +142,32 @@ escapeApp.controller('SessionCtrl', [
 			}, true);
 		}
 
-		function nextClue(q) {
-			if(!q.track) {
-				if(q.name === 'jigsaw' ) {
-					$s.activeTeam.finished = moment().format(timeFormat);
+		function findTrack(puz) {
+			return _.reduce($s.activeTeam.tracks, function(puzzleName, track) {
+				if(track.indexOf(puzzleName) !== -1) {
+					return track;
 				} else {
-					$s.activeTeam.hints += q.hints;
+					return puzzleName;
 				}
+			}, puz.name);
+		}
+
+		function nextClue(q) {
+			if(q.name === 'jigsaw') {
+				$s.activeTeam.finished = moment().format(timeFormat);
 				return false;
 			}
-			var track = $s.activeTeam.tracks[q.track];
+			var track = findTrack(q);
 			var index = track.indexOf(q.name) + 1;
 
 			if(index === track.length) {
 				// no more in the track
 				q.nextClue = _.findWhere(EF.locks, {
-					track: q.track,
+					track: _.findKey($s.activeTeam.tracks, track),
 					opens: 'jigsaw'
 				});
 			} else {
 				q.nextClue = _.findWhere(EF.locks, {
-					track: q.track,
 					opens: track[index]
 				});
 			}
@@ -267,7 +272,9 @@ escapeApp.controller('SessionCtrl', [
 		var allowScrolling;
 		var introVideo = $('#intro-video')[0];
 		var sound = new Audio('img/alert.mp3');
-		sound.currentTime = 0.65;
+		$('body').on('loadedmetadata', function() {
+			sound.currentTime = 0.65;
+		});
 
 		$interval(function everySecond() {
 			if ($s.activeTeam && $s.activeTeam.timerStarted) {
@@ -326,6 +333,10 @@ escapeApp.controller('SessionCtrl', [
 			lockoutImages: EF.lockoutImages
 		});
 
+		$s.demo = function demo() {
+			window.location = 'http://gameescape.com/demo.html';
+		};
+
 		$s.startGame = function startGame() {
 			videoWatched = true;
 			$s.activeTeam.timerStarted = moment().format(timeFormat);
@@ -347,13 +358,13 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.isAvailable = function isAvailable(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
+			var track = findTrack(puz);
 
 			if(!track) {
 				return true;
 			}
 			for(var i = 0, result; i < track.length; i++) {
-				if(puz.name == track[i]) {
+				if(puz.name === track[i]) {
 					result = true;
 					break;
 				}
@@ -380,6 +391,8 @@ escapeApp.controller('SessionCtrl', [
 				if ($s.activeTeam.status != EF.statuses.length) {
 					$s.activeTeam.status++;
 				}
+				// remove 2 minutes from the clock!
+				$s.activeTeam.timeAllowed -= 60 * 2;
 			}
 			$s.activeTeam.hintInProgress = true;
 		};
@@ -447,8 +460,10 @@ escapeApp.controller('SessionCtrl', [
 					$s.activeTeam.solvedQuestions = {};
 				}
 				$s.activeTeam.latestSolved = q.name;
-				// add 2 minutes to the clock!
-				$s.activeTeam.timeAllowed += 60 * 2;
+				if(q.name !== 'jigsaw') {
+					// add 2 minutes to the clock!
+					$s.activeTeam.timeAllowed += 60 * 2;
+				}
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
 				nextClue(q);
 			} else {

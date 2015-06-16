@@ -7,6 +7,16 @@ escapeApp.controller('AdminCtrl', [
 	function AdminCtrl($s, $timeout, $interval, EF, MF) {
 		'use strict';
 
+		function findTrack(puz) {
+			return _.reduce($s.activeTeam.tracks, function(puzzleName, track) {
+				if(track.indexOf(puzzleName) !== -1) {
+					return track;
+				} else {
+					return puzzleName;
+				}
+			}, puz.name);
+		}
+
 		var timeFormat = 'YYYY-MM-DD HH:mm:ss';
 		var activeTeamFBObj;
 
@@ -62,13 +72,13 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.isAvailable = function isAvailable(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
+			var track = findTrack(puz);
 
-			if(!track) {
+			if(track === puz.name) {
 				return true;
 			}
 			for(var i = 0, result; i < track.length; i++) {
-				if(puz.name == track[i]) {
+				if(puz.name === track[i]) {
 					result = true;
 					break;
 				}
@@ -101,7 +111,7 @@ escapeApp.controller('AdminCtrl', [
 			$s.allTeams.$add({
 				createdDate: currentTime,
 				name: $s.formFields.newTeamName,
-				hints: 0,
+				hints: 3,
 				finished: false,
 				timeAllowed: EF.initialTimeAllowed,
 				lockoutPeriod: EF.defaultLockoutPeriod,
@@ -167,13 +177,13 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.bypass = function bypass(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
+			var track = findTrack(puz);
 
 			_.pull(track, puz.name);
 		};
 
-		$s.install = function install(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
+		$s.install = function install(puz, trackName) {
+			var track = $s.activeTeam.tracks[trackName];
 
 			if($s.isInstallable(puz)) {
 				track.push(puz.name);
@@ -196,13 +206,13 @@ escapeApp.controller('AdminCtrl', [
 		};
 
 		$s.isBypassable = function isBypassable(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
+			var track = findTrack(puz);
 
 			return !$s.isAvailable(puz) && track.indexOf(puz.name) !== -1;
 		};
 
 		$s.isInstallable = function isInstallable(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
+			var track = findTrack(puz);
 
 			return !$s.isAvailable(puz) && !$s.isSolved(track[track.length - 1]) && !$s.isBypassable(puz);
 		};

@@ -369,6 +369,31 @@ h1.digital {
 		}
 		td.active {background-color: #c00 !important;}
 	}
+	table.chess.checkers {
+		tr {
+			&:nth-child(even) {
+				td:nth-child(even) {
+					border: solid yellow 2px;
+					background-color: #444;
+				}
+				td:nth-child(odd) {
+					border: solid yellow 2px;
+					background-color: #d33;
+				}
+			}
+			&:nth-child(odd) {
+				td:nth-child(odd) {
+					border: solid yellow 2px;
+					background-color: #444;
+				}
+				td:nth-child(even) {
+					border: solid yellow 2px;
+					background-color: #d33;
+				}
+			}
+		}
+		td.active {background-color: #4a4 !important;}
+	}
 	.btn-group.connect4 {
 		width: 100%;
 

@@ -36,7 +36,7 @@ module.exports = function exportCopy(grunt) {
 
 				// copy Angular for head
 				{
-					src: 'lib/angular/angular.js',
+					src: 'lib/angular/angular.min.js',
 					dest: '<%= distPath %>angular.js'
 				},
 
