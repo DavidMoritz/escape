@@ -142,27 +142,32 @@ escapeApp.controller('SessionCtrl', [
 			}, true);
 		}
 
-		function nextClue(q) {
-			if(!q.track) {
-				if(q.name === 'jigsaw' ) {
-					$s.activeTeam.finished = moment().format(timeFormat);
+		function findTrack(puz) {
+			return _.reduce($s.activeTeam.tracks, function(puzzleName, track) {
+				if(track.indexOf(puzzleName) !== -1) {
+					return track;
 				} else {
-					$s.activeTeam.hints += q.hints;
+					return puzzleName;
 				}
+			}, puz.name);
+		}
+
+		function nextClue(q) {
+			if(q.name === 'jigsaw') {
+				$s.activeTeam.finished = moment().format(timeFormat);
 				return false;
 			}
-			var track = $s.activeTeam.tracks[q.track];
+			var track = findTrack(q);
 			var index = track.indexOf(q.name) + 1;
 
 			if(index === track.length) {
 				// no more in the track
 				q.nextClue = _.findWhere(EF.locks, {
-					track: q.track,
+					track: _.findKey($s.activeTeam.tracks, track),
 					opens: 'jigsaw'
 				});
 			} else {
 				q.nextClue = _.findWhere(EF.locks, {
-					track: q.track,
 					opens: track[index]
 				});
 			}
@@ -349,13 +354,13 @@ escapeApp.controller('SessionCtrl', [
 		};
 
 		$s.isAvailable = function isAvailable(puz) {
-			var track = $s.activeTeam.tracks[puz.track];
+			var track = findTrack(puz);
 
 			if(!track) {
 				return true;
 			}
 			for(var i = 0, result; i < track.length; i++) {
-				if(puz.name == track[i]) {
+				if(puz.name === track[i]) {
 					result = true;
 					break;
 				}

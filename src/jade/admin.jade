@@ -30,7 +30,7 @@ html(ng-app='escapeApp')
 			form(ng-if='activeTeam' ng-submit='addNewMessage()')
 				input.form-control.addMessageInput(type='text' ng-model='formFields.newMessage' placeholder='Send a Message to {{activeTeam.name}}' maxlength='66')
 				input.form-control(type='submit' ng-disabled='!formFields.newMessage' value='Add Message')
-			.alert.alert-warning.alert-flip(role='alert' ng-show='gauge >= 0.25') Yikes! You might want to give them a little nudge. 
+			.alert.alert-warning.alert-flip(role='alert' ng-show='gauge >= 0.25') Yikes! You might want to give them a little nudge.
 				button(type="button" class="close" data-dismiss="alert" aria-label="Close")
 					span(aria-hidden="true")&times;
 			.alert.alert-danger.alert-flip(role='alert' ng-show='gauge >= 0.4') Running out of time! Help them out!
@@ -75,7 +75,7 @@ html(ng-app='escapeApp')
 							.clearfix
 							.input-group
 								span#puzzleLabel.input-group-addon Puzzle:
-								select.form-control(ng-model='formFields.puzzle' ng-options='puzzle.dropdown group by puzzle.track for (key, puzzle) in q')
+								select.form-control(ng-model='formFields.puzzle' ng-options='puzzle.dropdown for (key, puzzle) in q')
 									option(value='' selected) -- choose puzzle --
 								span.input-group-btn
 									button.btn.btn-info(type='button' ng-click='bypass(formFields.puzzle)' ng-if='formFields.puzzle && isBypassable(formFields.puzzle)') #[i.fa.fa-exclamation-triangle] Bypass
