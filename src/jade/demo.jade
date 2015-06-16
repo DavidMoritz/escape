@@ -1,0 +1,144 @@
+include mixins
+
+doctype html
+html(ng-app='escapeApp')
+	head
+		meta(charset='UTF-8')
+		meta(name='description', content='A game of escape')
+		meta(name='author', content='Moritz Company')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+		meta(name='apple-mobile-web-app-capable' content='yes')
+		meta(name='apple-touch-fullscreen' content='yes')
+		title Control Panel - The Game Escape
+		link(rel='shortcut icon', href='favicon.ico')
+		link(rel='stylesheet', href='inc/escape.css?v=21')
+		script(src='inc/angular.js')
+	body(ng-cloak, ng-controller='EscapeCtrl')
+		#previous-messages-modal.modal.fade
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss='modal' aria-label='close')
+							span(aria-hidden='true') &times;
+						h4.modal-title All Messages
+					.modal-body
+						p(ng-repeat='message in activeTeam.storedMessages') {{message.text}}
+					.modal-footer
+						button.btn.btn-lg.btn-default(data-dismiss='modal') Close
+		#keypad-modal.modal.fade
+			.modal-dialog.modal-sm
+				.modal-content
+					.modal-header
+						button.close(data-dismiss='modal' aria-label='close')
+							span(aria-hidden='true') &times;
+						h4.modal-title Enter the correct code to escape
+					.modal-body
+					.modal-footer
+						button.btn.btn-lg.btn-default(data-dismiss='modal') Close
+		#video-modal.modal.fade
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						button.close(data-dismiss='modal' aria-label='close')
+							span(aria-hidden='true') &times;
+						h4.modal-title Introduction Video
+					.modal-body.video-wrapper
+						img.after-video(src='img/intro.jpg' hidden)
+						video#intro-video(poster='img/intro.jpg' preload='auto') Your browswer does not support the video tag
+							source(src='img/intro-video.mp4' type='video/mp4')
+					.modal-footer
+						button.btn.btn-lg.btn-default(data-dismiss='modal') Done
+		#hint-modal.modal.fade
+			.modal-dialog.modal-sm
+				.modal-content
+					.modal-header
+						button.close(data-dismiss='modal' aria-label='close')
+							span(aria-hidden='true') &times;
+						h4.modal-title Would you like to {{hints ? 'use' : 'request'}} a hint?
+					.modal-body
+						div(ng-hide='hints')
+							p Your team currently has {{moment(public.timeRemaining * 1000).format('m')}} minutes left. Requesting a hint will remove 2 minutes from your clock.
+						div(ng-show='hints')
+							p Your team currently has {{hints}} {{hints > 1 ? 'hints' : 'hint'}} available for use. Would you like to use one of your hints?
+					.modal-footer
+						button.btn.btn-default.btn-lg.pull-left(data-dismiss='modal') #[i.fa.fa-times-circle] Nah
+						button.btn.btn-success.btn-lg(data-dismiss='modal' ng-click='requestHint()') #[i.fa.fa-question-circle] YES!
+		.container
+			header.hide
+				h1 The Game Escape
+			.jumbotron
+				.row
+					+col(10)
+						h1.digital
+							span {{moment(public.timeRemaining * 1000).format('mm:ss')}}
+						.display-message
+							h3.digital {{public.display}}
+					+col(2).major-buttons
+						ul
+							li
+								button.btn.btn-warning(data-toggle='modal' data-target='#keypad-modal') #[i.fa.fa-2x.fa-sign-out]#[br] ESCAPE
+								input.numeric-keypad(type='text' ng-model='guess' name='jigsaw' maxlength='5' hidden)
+							li
+								button.btn(class="{{hints ? 'btn-info' : 'btn-danger'}}" data-toggle='modal' data-target='#hint-modal' ng-hide='activeTeam.status == status.length - 1')  #[i.fa.fa-2x.fa-question-circle]#[br] {{hints ? 'Use Hint' : 'Request Hint'}}
+							li
+								button.btn.btn-success(ng-click='start()') #[i.fa.fa-2x.fa-youtube-play]#[br] Begin
+			hr
+			#lockout(ng-show='lockout > 0')
+				h3 Locked Out!
+				img.img.img-responsive.lockout-image(ng-src='{{lockoutImages[lockoutIndex]}}')
+				h4 You have submitted an incorrect answer.#[br] You are locked out of the Control Panel for #[strong {{lockout}}] seconds.
+			#questions.row(ng-hide='lockout > 0')
+				+col(null, 6, 6)
+					h3 Team: Demo
+					ul.button-list.unsolved-list.hide-cluebook
+						li(class='checkers-icon unsolved' ng-if='!checkers.solved')
+							a(ng-click='setCheckers()')
+								span.fa-stack.fa-2x
+									i.fa.fa-stack-2x.fa-square
+									i.fa.fa-stack-1x.text-white.fa-delicious
+					.clearfix
+					h4 Solved:
+					ul.button-list.solved-list
+						li(class='checkers-icon solved' ng-if='checkers.solved')
+							a(ng-click='setCheckers()')
+								span.fa-stack.fa-2x
+									i.fa.fa-stack-2x.fa-square
+									i.fa.fa-stack-1x.text-white.fa-delicious
+								i(class='fa fa-money tiny-icon')
+				.clearfix.visible-xs-block.visible-xs-only
+				hr.visible-xs-block.visible-xs-only
+				+col(null, 6, 6)
+					section.clue-section(ng-show="activePuzzle === 'checkers'" id="checkers")
+						.clue-head
+							.icon
+								h4
+									span.fa-stack.fa-2x
+										i.fa.fa-stack-2x.fa-square
+										i.fa.fa-stack-1x.fa-delicious.text-white
+							.title
+								h4
+									strong Where should the black checker go?
+							.major-buttons
+								button.btn.btn-primary.pull-right(ng-click='submitCheckerGuess()') #[i.fa.fa-lightbulb-o]#[br]Submit
+						div(ng-if='checkers.solved')
+							h3 #[i.fa.fa-check] SOLVED!
+							.well
+								p.lead.text-center
+									span.fa-stack.fa-3x
+										i.fa.fa-stack-2x.fa-circle.text-white
+										i.fa.fa-stack-1x.fa-inverse.fa-money
+									br
+									span.code 12 - 24 - 18
+						div(ng-if='!checkers.solved')
+							table.chess.checkers
+								tbody
+									tr(ng-repeat='row in checkers.rows')
+										th {{row}}
+										td(ng-repeat='col in checkers.columns',
+											ng-class='{active: isCoordSelected(checkers, col + row)}',
+											ng-click='toggleCoordSelect(checkers, col + row)')
+								tfoot
+									tr
+										th
+										th(ng-repeat='col in checkers.columns') {{col}}
+		| @@javascriptPublicReplaceFiles

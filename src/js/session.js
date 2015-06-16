@@ -333,6 +333,10 @@ escapeApp.controller('SessionCtrl', [
 			lockoutImages: EF.lockoutImages
 		});
 
+		$s.demo = function demo() {
+			window.location = 'http://gameescape.com/demo.html';
+		};
+
 		$s.startGame = function startGame() {
 			videoWatched = true;
 			$s.activeTeam.timerStarted = moment().format(timeFormat);
