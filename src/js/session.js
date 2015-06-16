@@ -334,7 +334,7 @@ escapeApp.controller('SessionCtrl', [
 		});
 
 		$s.demo = function demo() {
-			window.location = 'http://gameescape.com/demo.html';
+			window.location.href = 'demo.html';
 		};
 
 		$s.startGame = function startGame() {

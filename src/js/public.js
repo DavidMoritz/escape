@@ -142,7 +142,7 @@ escapeApp.controller('EscapeCtrl', [
 		}, 1000);
 
 		$s.start = function() {
-			window.location = 'http://gameescape.net/session.html';
+			window.location.href = 'session.html';
 		};
 
 		$s.setCheckers = function() {
