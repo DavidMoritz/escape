@@ -61,9 +61,9 @@ html(ng-app='escapeApp')
 							p.medal-title {{status[activeTeam.status].text}}
 						div(ng-hide='activeTeam.hints')
 							div(ng-hide='activeTeam.status == status.length - 1')
-								p Your team is currently holding {{status[activeTeam.status].text}} status. Requesting a hint will bring your team to {{status[activeTeam.status + 1].text}} status.
+								p Your team currently has {{moment(timeRemaining * 1000).format('mm')}} minutes left. Requesting a hint will remove 2 minutes from your clock.
 							div(ng-show='activeTeam.status == status.length - 1')
-								p This will not affect your team's {{status[activeTeam.status].text}} status.
+								p This will not affect your team's time.
 						div(ng-show='activeTeam.hints')
 							p Your team currently has {{activeTeam.hints}} {{activeTeam.hints > 1 ? 'hints' : 'hint'}} available for use. This will not affect your team's {{status[activeTeam.status].name}} status.
 					.modal-footer

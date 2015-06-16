@@ -111,7 +111,7 @@ escapeApp.controller('AdminCtrl', [
 			$s.allTeams.$add({
 				createdDate: currentTime,
 				name: $s.formFields.newTeamName,
-				hints: 0,
+				hints: 3,
 				finished: false,
 				timeAllowed: EF.initialTimeAllowed,
 				lockoutPeriod: EF.defaultLockoutPeriod,
