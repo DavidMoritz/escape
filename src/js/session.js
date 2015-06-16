@@ -387,6 +387,8 @@ escapeApp.controller('SessionCtrl', [
 				if ($s.activeTeam.status != EF.statuses.length) {
 					$s.activeTeam.status++;
 				}
+				// remove 2 minutes from the clock!
+				$s.activeTeam.timeAllowed -= 60 * 2;
 			}
 			$s.activeTeam.hintInProgress = true;
 		};
@@ -454,8 +456,10 @@ escapeApp.controller('SessionCtrl', [
 					$s.activeTeam.solvedQuestions = {};
 				}
 				$s.activeTeam.latestSolved = q.name;
-				// add 2 minutes to the clock!
-				$s.activeTeam.timeAllowed += 60 * 2;
+				if(q.name !== 'jigsaw') {
+					// add 2 minutes to the clock!
+					$s.activeTeam.timeAllowed += 60 * 2;
+				}
 				$s.activeTeam.solvedQuestions[q.name] = currentTime;
 				nextClue(q);
 			} else {
